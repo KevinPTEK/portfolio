@@ -1,0 +1,26 @@
+# Dépendances
+node_modules/
+.pnpm-store/
+
+# Build
+dist/
+dist-ssr/
+*.local
+
+# Éditeurs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# macOS
+.DS_Store
+
+# Journaux
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Outils
+.claude/settings.local.json
+.superpowers/
