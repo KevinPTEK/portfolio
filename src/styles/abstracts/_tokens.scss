@@ -1,0 +1,46 @@
+// Tokens globaux : les décisions de design partagées par tout le site.
+
+// ---------- Typographie ----------
+$font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+$font-serif: 'Playfair Display', Georgia, serif;
+
+$font-size-label: 11px; // étiquettes en capitales, tags
+$font-size-small: 12px; // liens de nav, numéros, mentions
+$font-size-ui: 14px; // boutons, interface
+$font-size-body: 16px; // texte courant
+$font-size-lead: 18px; // texte d'introduction des sections
+
+$tracking-label: 0.12em; // interlettrage des étiquettes
+
+// ---------- Espacements : grille de 4 px ----------
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 24px;
+$space-6: 32px;
+$space-7: 48px;
+$space-8: 64px;
+
+// ---------- Rayons ----------
+$radius-sm: 14px; // capture d'un projet
+$radius-md: 18px; // cartes
+$radius-lg: 22px; // modale
+$radius-pill: 999px; // boutons, étiquettes
+
+// ---------- Mise en page ----------
+$gutter: 20px; // marge latérale sur mobile
+$nav-width: 220px; // colonne fixe en bureau
+$content-offset: 260px; // décalage du contenu en bureau
+
+// ---------- Superposition ----------
+$z-nav: 30;
+$z-avatar: 40; // l'avatar fil rouge passe au-dessus de la nav
+$z-loader: 60; // le pré-chargeur couvre tout
+
+// ---------- Mouvement (mêmes valeurs dans animations/variants.js) ----------
+$ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+$duration-fast: 0.2s; // survols
+$duration-base: 0.6s; // entrée de la modale
+$duration-theme: 0.7s; // changement de pièce
+$duration-slow: 0.9s; // apparitions au défilement
