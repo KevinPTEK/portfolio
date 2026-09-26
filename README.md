@@ -72,7 +72,6 @@ src/
 
 Règle de dépendance : `sections/` importe `components/`, `animations/` et `data/` — jamais l'inverse. C'est ce qui garde les composants réutilisables.
 
-
 ## Démarche
 
 Le site a été conçu avant d'être codé : charte graphique, maquette interactive, puis spécification technique (stack, composants, accessibilité, budget de performance). Les tests ciblent les composants réutilisables et y cherchent les éléments comme le ferait un utilisateur, par leur rôle et leur nom accessible : un test qui passe est aussi un contrôle d'accessibilité.

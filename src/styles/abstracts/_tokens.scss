@@ -1,7 +1,11 @@
 // Tokens globaux : les décisions de design partagées par tout le site.
 
 // ---------- Typographie ----------
-$font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+$font-sans:
+  'Inter',
+  system-ui,
+  -apple-system,
+  sans-serif;
 $font-serif: 'Playfair Display', Georgia, serif;
 
 $font-size-label: 11px; // étiquettes en capitales, tags
