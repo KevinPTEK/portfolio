@@ -1,0 +1,50 @@
+// Couleurs des pièces, --bg (fond), --ink (texte), --ink-2 (texte secondaire), --accent et --line (filets)
+
+// thème appliqué avant tout JavaScript : le kraft de l'accueil
+$default-theme: paper-light;
+
+$themes: (
+  // les deux papiers des pièces personnelles
+  paper-light: (
+      scheme: light,
+      bg: #efd8b8,
+      ink: #2b1c10,
+      ink-2: #6e4e2e,
+      accent: #ae4715,
+      line: rgba(0, 0, 0, 0.14),
+    ),
+  paper-cool: (
+    scheme: light,
+    bg: #e9eef5,
+    ink: #1d1d1f,
+    ink-2: #5a6474,
+    accent: #3f5f9f,
+    line: rgba(29, 41, 66, 0.14),
+  ),
+
+  // Thème des projets
+  kasa: (
+      scheme: dark,
+      bg: #2b0f0f,
+      ink: #fff3f0,
+      ink-2: #e2b2aa,
+      accent: #ff6060,
+      line: rgba(255, 255, 255, 0.16),
+    ),
+  argent: (
+    scheme: dark,
+    bg: #12002b,
+    ink: #f3eeff,
+    ink-2: #b9aacf,
+    accent: #00bc77,
+    line: rgba(255, 255, 255, 0.16),
+  ),
+  events: (
+    scheme: dark,
+    bg: #0d2530,
+    ink: #eef6f8,
+    ink-2: #9fbac4,
+    accent: #f5b94a,
+    line: rgba(255, 255, 255, 0.16),
+  )
+);

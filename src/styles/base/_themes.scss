@@ -1,0 +1,21 @@
+@use '../abstracts' as *;
+
+@each $name, $theme in $themes {
+  $selector: "[data-theme='#{$name}']";
+
+  // le thème par défaut s'applique aussi à la racine de la page
+  @if $name == $default-theme {
+    $selector: ':root, #{$selector}';
+  }
+
+  #{$selector} {
+    @each $key, $value in $theme {
+      // scheme devient une vraie propriété CSS, le reste des variables de couleur
+      @if $key == scheme {
+        color-scheme: $value;
+      } @else {
+        --#{$key}: #{$value};
+      }
+    }
+  }
+}
