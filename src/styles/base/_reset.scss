@@ -1,0 +1,65 @@
+// Reset : neutralise les réglages par défaut des navigateurs.
+
+// 1. Les dimensions incluent le padding et la bordure
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// 2. Plus de marges par défaut
+* {
+  margin: 0;
+}
+
+// …sauf pour la modale native, que le navigateur centre avec margin: auto
+dialog {
+  margin: auto;
+}
+
+// 3. Pas d'agrandissement automatique du texte quand on tourne un mobile (iOS)
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+// 4. Puces retirées seulement sur les listes qui le déclarent (role="list")
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+// 5. Les liens prennent la couleur du texte ; le soulignement reste (WCAG 1.4.1)
+a {
+  color: inherit;
+}
+
+// 6. Images et médias : un bloc qui ne dépasse jamais de son conteneur
+img,
+picture,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+// 7. Boutons et champs héritent de la police du site (sinon : police système)
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+// 8. Un mot trop long (une adresse e-mail…) passe à la ligne au lieu de déborder (320 px, WCAG 1.4.10)
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
