@@ -2,11 +2,10 @@
 
 // ---------- Typographie ----------
 $font-sans:
-  'Inter',
-  system-ui,
-  -apple-system,
-  sans-serif;
-$font-serif: 'Playfair Display', Georgia, serif;
+  'Inter Variable', 'Inter Fallback Arial', 'Inter Fallback Roboto', sans-serif;
+$font-serif:
+  'Playfair Display', 'Playfair Fallback Georgia', 'Playfair Fallback Times',
+  serif;
 
 $font-size-label: 11px; // étiquettes en capitales, tags
 $font-size-small: 12px; // liens de nav, numéros, mentions

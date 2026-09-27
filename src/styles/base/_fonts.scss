@@ -1,0 +1,39 @@
+// Polices de secours ajustées : pendant le chargement d'Inter et de Playfair, le texte
+// s'affiche dans une police système redimensionnée pour occuper la même place,
+// Les polices web viennent de Fontsource (importées dans main.jsx).
+// Valeurs calculées avec Capsize (@capsizecss/core 4.1.3, createFontStack).
+
+@font-face {
+  font-family: 'Inter Fallback Arial';
+  src: local('Arial'), local('ArialMT');
+  ascent-override: 90.4365%;
+  descent-override: 22.518%;
+  line-gap-override: 0%;
+  size-adjust: 107.1194%;
+}
+
+// Android n'a pas Arial
+@font-face {
+  font-family: 'Inter Fallback Roboto';
+  src: local('Roboto Regular'), local('Roboto-Regular');
+  ascent-override: 90.2384%;
+  descent-override: 22.4686%;
+  size-adjust: 107.3546%;
+}
+
+@font-face {
+  font-family: 'Playfair Fallback Georgia';
+  src: local('Georgia');
+  ascent-override: 106.716%;
+  descent-override: 24.7558%;
+  size-adjust: 101.3906%;
+}
+
+@font-face {
+  font-family: 'Playfair Fallback Times';
+  src: local('Times New Roman'), local('TimesNewRomanPSMT');
+  ascent-override: 97.2483%;
+  descent-override: 22.5595%;
+  line-gap-override: 0%;
+  size-adjust: 111.2615%;
+}
