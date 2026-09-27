@@ -1,0 +1,25 @@
+@use 'tokens' as *;
+
+// Mouvement réduit
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// Anneau de focus clavier
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+// Étiquette en capitales (« 01 — À propos », « Front-end »…)
+@mixin label {
+  font-size: $font-size-label;
+  font-weight: 600;
+  letter-spacing: $tracking-label;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
