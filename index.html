@@ -2,9 +2,51 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>portfolio - Renou Kevin</title>
+
+    <!-- Référencement : écrit en dur, lisible sans JavaScript (§ 14) -->
+    <title>Kevin Renou — Développeur front-end React</title>
+    <meta
+      name="description"
+      content="Kevin Renou, développeur front-end React à Lyon. Des interfaces accessibles et sobres : découvrez mes projets, mes compétences et contactez-moi."
+    />
+
+    <!-- Icônes : ICO pour les anciens navigateurs, SVG pour les autres, PNG pour l'écran d'accueil iOS -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#EFD8B8" />
+
+    <!-- Aperçus de partage (LinkedIn, réseaux) : l'image et l'URL arriveront au déploiement -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Kevin Renou" />
+    <meta
+      property="og:title"
+      content="Kevin Renou — Développeur front-end React"
+    />
+    <meta
+      property="og:description"
+      content="Kevin Renou, développeur front-end React à Lyon. Des interfaces accessibles et sobres : découvrez mes projets, mes compétences et contactez-moi."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Données structurées : cette page présente une personne (Google, ProfilePage) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "mainEntity": {
+          "@type": "Person",
+          "name": "Kevin Renou",
+          "jobTitle": "Développeur front-end React",
+          "sameAs": [
+            "https://github.com/KevinPTEK",
+            "https://www.linkedin.com/in/kevin-renou"
+          ]
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
