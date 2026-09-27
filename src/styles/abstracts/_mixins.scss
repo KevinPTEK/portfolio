@@ -23,3 +23,12 @@
   text-transform: uppercase;
   color: var(--ink-2);
 }
+
+@mixin accent-word {
+  font-family: $font-serif;
+  font-size: 108%; // léger agrandissement de la maquette (1.08em, écrit en % : § 4.3)
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--accent);
+}

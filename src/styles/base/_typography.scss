@@ -1,0 +1,39 @@
+// Typographie du document : police, interligne, couleurs du thème.
+
+@use '../abstracts' as *;
+
+// Le document : texte et fond suivent le thème de la pièce visible
+body {
+  font-family: $font-sans;
+  font-size: $font-size-body;
+  line-height: 1.5; // WCAG 1.4.8
+  letter-spacing: -0.011em; // interlettrage dynamique d'Inter à 16 px
+  color: var(--ink);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased; // macOS uniquement
+  -moz-osx-font-smoothing: grayscale; // Firefox sur macOS
+  transition:
+    color $duration-theme $ease-out,
+    background-color $duration-theme $ease-out;
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+// Les titres n'ont pas de style par défaut
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  text-wrap: balance;
+}
+
+// Pas de mot seul en dernière ligne (amélioration progressive)
+p {
+  text-wrap: pretty;
+}
