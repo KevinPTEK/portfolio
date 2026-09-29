@@ -1,0 +1,22 @@
+@use '../../styles/abstracts' as *;
+
+// Espace réservé sous la barre fixe de la nav : valeur propre à la pièce
+$padding-top: 88px;
+
+// La pièce : au moins un écran de haut, aux couleurs de son thème
+.room {
+  position: relative; // repère des calques du fond
+  isolation: isolate; // les calques en z-index: -1 restent dans la pièce
+  display: grid;
+  grid-template-columns: minmax(0, $content-max-width);
+  justify-content: center;
+  align-content: center;
+  min-height: 100svh;
+  padding: $padding-top $gutter $space-8;
+  color: var(--ink);
+  background-color: var(--bg);
+
+  @include up(desktop) {
+    padding: $padding-top $space-8 $padding-top $content-offset;
+  }
+}
