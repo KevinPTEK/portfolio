@@ -79,7 +79,7 @@ Le site a été conçu avant d'être codé : charte graphique, maquette interact
 ## Avancement
 
 - [x] Initialisation : Vite, React, Sass, Motion, Vitest
-- [ ] Design system Sass et métadonnées SEO
+- [x] Design system Sass et métadonnées SEO
 - [ ] Composants d'interface, testés
 - [ ] Sections et données : site complet, responsive et accessible
 - [ ] Animations
