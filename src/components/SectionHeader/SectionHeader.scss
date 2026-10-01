@@ -1,0 +1,32 @@
+@use '../../styles/abstracts' as *;
+
+// Étiquette, titre et introduction, les uns sous les autres
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.section-header__label {
+  @include label;
+}
+
+// Grand titre fluide, de 44 à 120 px
+.section-header__title {
+  font-family: $font-serif;
+  // 44 px au plus petit : « Compétences, » tient dans les 280 px d'un écran de 320 px
+  font-size: clamp(44px, 8vw, 120px);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+.section-header__accent {
+  @include accent-word;
+}
+
+// Introduction : 560 px au plus, soit 60 à 65 caractères par ligne
+.section-header__lead {
+  max-width: 560px;
+  font-size: $font-size-lead;
+  color: var(--ink-2);
+}
