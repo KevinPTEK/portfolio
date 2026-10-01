@@ -1,0 +1,37 @@
+@use '../../styles/abstracts' as *;
+
+// Le nom à gauche, les points à droite
+.skill-meter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+}
+
+.skill-meter__name {
+  font-size: $font-size-body;
+}
+
+.skill-meter__detail {
+  font-size: $font-size-small;
+  color: var(--ink-2);
+}
+
+.skill-meter__level {
+  display: flex;
+  flex-shrink: 0;
+  gap: $space-1;
+}
+
+// Point vide : un anneau, visible sur tous les fonds (contraste ≥ 3:1)
+.skill-meter__dot {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+}
+
+// Point plein : la forme change, pas seulement la couleur
+.skill-meter__dot--filled {
+  background-color: var(--accent);
+}
