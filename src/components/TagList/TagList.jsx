@@ -11,7 +11,7 @@ import './TagList.scss'
  * @example
  * <TagList tags={['React', 'React Router', 'Sass']} />
  */
-export function TagList({ tags }) {
+export function TagList({ tags = [] }) {
   // une liste vide serait annoncée « liste, 0 élément » : on n'affiche rien
   if (tags.length === 0) return null
   return (
