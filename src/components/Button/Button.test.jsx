@@ -52,4 +52,9 @@ describe('Button', () => {
     const link = screen.getByRole('link', { name: 'Télécharger mon CV (PDF)' })
     expect(link).toHaveAttribute('download')
   })
+
+  it("sans href, n'annonce pas de nouvel onglet", () => {
+    render(<Button external>GitHub</Button>)
+    expect(screen.getByRole('button', { name: 'GitHub' })).toBeInTheDocument()
+  })
 })

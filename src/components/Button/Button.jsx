@@ -42,12 +42,14 @@ export function Button({
   arrow = false,
 }) {
   const className = `button button--${variant}`
-  const icon = getIcon({ external, download, arrow })
+  const opensNewTab = Boolean(href) && external
+  const isDownload = Boolean(href) && download
+  const icon = getIcon({ external: opensNewTab, download: isDownload, arrow })
 
   const content = (
     <>
       {children}
-      {external && <span className="button__hint"> (nouvel onglet)</span>}
+      {opensNewTab && <span className="button__hint"> (nouvel onglet)</span>}
       {icon && (
         <svg className="button__icon" viewBox="0 0 16 16" aria-hidden="true">
           <path d={ICON_PATHS[icon]} />
@@ -61,9 +63,9 @@ export function Button({
       <a
         className={className}
         href={href}
-        target={external ? '_blank' : undefined}
-        rel={external ? 'noopener' : undefined}
-        download={download}
+        target={opensNewTab ? '_blank' : undefined}
+        rel={opensNewTab ? 'noopener' : undefined}
+        download={isDownload}
       >
         {content}
       </a>
