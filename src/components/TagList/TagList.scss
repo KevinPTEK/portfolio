@@ -1,0 +1,19 @@
+@use '../../styles/abstracts' as *;
+
+// Les pastilles passent à la ligne quand la place manque (320 px)
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// Une pastille : information, pas un bouton (ni survol, ni curseur)
+.tag-list__item {
+  padding: $space-1 $space-3;
+  border: 1px solid var(--line);
+  border-radius: $radius-pill;
+  font-size: $font-size-label;
+  font-weight: 600;
+  letter-spacing: 0.06em; // plus serré que les étiquettes : le texte est dans une pastille
+  text-transform: uppercase;
+}
