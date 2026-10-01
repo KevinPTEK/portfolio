@@ -1,0 +1,59 @@
+@use '../../styles/abstracts' as *;
+
+// Bouton en pilule : même apparence pour un lien et pour un vrai bouton
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-5;
+  border: 1px solid transparent; // devient visible en mode contraste élevé
+  border-radius: $radius-pill;
+  font-size: $font-size-ui;
+  font-weight: 500;
+  text-decoration: none; // un bouton se reconnaît à sa forme (§ 10)
+  cursor: pointer; // même curseur pour le lien et le bouton
+  transition: transform $duration-fast $ease-out;
+
+  @include focus-ring;
+
+  // le survol n'existe qu'avec une souris : pas d'effet « collé » au doigt
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+// Plein : fond d'encre, texte couleur papier (s'inverse avec le thème)
+.button--primary {
+  color: var(--bg);
+  background-color: var(--ink);
+}
+
+// Bordé : fond transparent, filet du thème
+.button--ghost {
+  color: var(--ink);
+  background-color: transparent;
+  border-color: var(--line);
+}
+
+// Texte réservé aux lecteurs d'écran (« nouvel onglet »)
+.button__hint {
+  @include visually-hidden;
+}
+
+// Icône décorative : suit la couleur du texte
+.button__icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
