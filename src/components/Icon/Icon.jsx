@@ -9,9 +9,6 @@ const PATHS = {
 
 /**
  * Icône décorative, dessinée d'un trait de la couleur du texte.
-
-/**
- * Icône décorative, dessinée d'un trait de la couleur du texte.
  * Toujours cachée aux lecteurs d'écran : le texte voisin porte le sens.
  *
  * @param {object} props
