@@ -1,0 +1,9 @@
+@use '../../styles/abstracts' as *;
+
+.avatar {
+  aspect-ratio: 1; // reste rond même si sa largeur est réduite
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px var(--line);
+}
