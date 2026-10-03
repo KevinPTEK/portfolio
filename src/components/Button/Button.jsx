@@ -1,3 +1,4 @@
+import { Icon } from '../Icon/Icon.jsx'
 import './Button.scss'
 
 // Tracés des icônes, sur une grille de 16 px : → ↗ ↓
@@ -50,11 +51,7 @@ export function Button({
     <>
       {children}
       {opensNewTab && <span className="button__hint"> (nouvel onglet)</span>}
-      {icon && (
-        <svg className="button__icon" viewBox="0 0 16 16" aria-hidden="true">
-          <path d={ICON_PATHS[icon]} />
-        </svg>
-      )}
+      {icon && <Icon name={icon} className="button__icon" />}
     </>
   )
 

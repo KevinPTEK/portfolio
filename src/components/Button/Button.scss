@@ -46,14 +46,7 @@
   @include visually-hidden;
 }
 
-// Icône décorative : suit la couleur du texte
+// L'icône ne se tasse pas quand le libellé passe à la ligne
 .button__icon {
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
