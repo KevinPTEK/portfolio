@@ -12,11 +12,11 @@ describe('SkillMeter', () => {
     ).toBeInTheDocument()
   })
 
-  it('accepte une autre échelle que 3', () => {
+   it('accepte une autre échelle que 3', () => {
     render(<SkillMeter name="React" level={4} max={5} />)
-    expect(
-      screen.getByRole('img', { name: 'niveau 4 sur 5' }),
-    ).toBeInTheDocument()
+    const meter = screen.getByRole('img', { name: 'niveau 4 sur 5' })
+    // autant de points que max
+    expect(meter.children).toHaveLength(5)
   })
 
   it('affiche le nom de la compétence', () => {

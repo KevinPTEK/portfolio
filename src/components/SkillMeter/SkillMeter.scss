@@ -31,7 +31,11 @@
   border-radius: 50%;
 }
 
-// Point plein : la forme change, pas seulement la couleur
 .skill-meter__dot--filled {
   background-color: var(--accent);
+
+  // en contraste forcé, le navigateur remplace les fonds : on impose la couleur du texte
+  @media (forced-colors: active) {
+    background-color: CanvasText;
+  }
 }
