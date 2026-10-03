@@ -36,24 +36,31 @@ describe('ProjectCard', () => {
     expect(title).toHaveAttribute('id', 'kasa-title')
   })
 
-  it('affiche sa place parmi les projets, sur deux chiffres', () => {
-    renderCard()
-    expect(screen.getByText('02 / 03')).toBeInTheDocument()
-  })
+  // deux jeux de valeurs : un calcul faux ne peut pas tomber juste deux fois
+  it.each([
+    [0, 3, '01 / 03'],
+    [4, 12, '05 / 12'],
+  ])(
+    'index %i sur %i : affiche « %s », sur deux chiffres',
+    (index, total, label) => {
+      renderCard({ index, total })
+      expect(screen.getByText(label)).toBeInTheDocument()
+    },
+  )
 
-  it('affiche le résumé et une pastille par technologie', () => {
+  it('affiche le résumé et les technologies, dans leur ordre', () => {
     renderCard()
     expect(
       screen.getByText('Application de location immobilière.'),
     ).toBeInTheDocument()
-    expect(screen.getAllByRole('listitem')).toHaveLength(3)
+    const tags = screen.getAllByRole('listitem').map((item) => item.textContent)
+    expect(tags).toEqual(['React', 'React Router', 'Sass'])
   })
 
   it('ouvre ce projet au clic sur « Voir le projet »', async () => {
     const user = userEvent.setup()
     const handleOpen = vi.fn()
     renderCard({ onOpen: handleOpen })
-    // le nom du projet, masqué, distingue les trois boutons
     const button = screen.getByRole('button', { name: 'Voir le projet Kasa' })
     // la flèche → de la maquette
     expect(button.querySelector('svg')).toBeInTheDocument()
@@ -61,6 +68,16 @@ describe('ProjectCard', () => {
     expect(handleOpen).toHaveBeenCalledTimes(1)
     expect(handleOpen).toHaveBeenCalledWith(project)
   })
+
+  it.each([project, { ...project, title: 'ArgentBank' }])(
+    'nomme le bouton avec le projet : $title',
+    (data) => {
+      renderCard({ project: data })
+      expect(
+        screen.getByRole('button', { name: `Voir le projet ${data.title}` }),
+      ).toBeInTheDocument()
+    },
+  )
 
   it('montre la capture avec son texte alternatif, chargée en différé', () => {
     renderCard()

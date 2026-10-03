@@ -14,7 +14,13 @@ function pad(number) {
  * son titre, son résumé, ses technologies et le bouton qui ouvre la modale.
  *
  * @param {object} props
- * @param {object} props.project - un projet de projects.json (§ 5.1)
+ * @param {{
+ *   title: string,
+ *   accentWord: string,
+ *   summary: string,
+ *   tags: string[],
+ *   cover: { src: string, alt: string },
+ * }} props.project - un projet de projects.json (§ 5.1) : les champs lus ici
  * @param {string} props.titleId - id du titre, à donner à la prop labelledBy de Room
  * @param {number} props.index - place du projet dans la liste, à partir de 0
  * @param {number} props.total - nombre de projets
@@ -38,9 +44,12 @@ export function ProjectCard({ project, titleId, index, total, onOpen }) {
           compact
         />
         <TagList tags={tags} />
-        <Button variant="primary" onClick={() => onOpen(project)} arrow>
-          Voir le projet<VisuallyHidden> {title}</VisuallyHidden>
-        </Button>
+        {/* dans un bloc, le bouton reste en ligne : il garde sa largeur */}
+        <div>
+          <Button variant="primary" onClick={() => onOpen(project)} arrow>
+            Voir le projet<VisuallyHidden> {title}</VisuallyHidden>
+          </Button>
+        </div>
       </div>
       {/* après le texte dans le code (le titre ouvre la pièce), en premier à l'écran */}
       <img
