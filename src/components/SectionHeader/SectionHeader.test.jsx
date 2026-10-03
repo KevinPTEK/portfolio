@@ -4,7 +4,7 @@ import { SectionHeader } from './SectionHeader.jsx'
 
 // Exemple d'usage : l'en-tête de la pièce « Compétences »
 function renderHeader(props) {
-  render(
+  return render(
     <SectionHeader
       titleId="skills-title"
       label="03 — Compétences"
@@ -48,5 +48,21 @@ describe('SectionHeader', () => {
     renderHeader()
     // un seul paragraphe : l'étiquette
     expect(screen.getAllByRole('paragraph')).toHaveLength(1)
+  })
+
+  it('en compact, prend la variante plus petite', () => {
+    const { container } = renderHeader({ compact: true })
+    expect(container.querySelector('header')).toHaveClass(
+      'section-header',
+      'section-header--compact',
+    )
+  })
+
+  it("sans compact, n'a que sa classe", () => {
+    const { container } = renderHeader()
+    expect(container.querySelector('header')).toHaveAttribute(
+      'class',
+      'section-header',
+    )
   })
 })

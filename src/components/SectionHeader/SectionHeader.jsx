@@ -10,6 +10,7 @@ import './SectionHeader.scss'
  * @param {string} props.title - début du titre (« Compétences, »)
  * @param {string} props.accent - mot en accent, en italique (« honnêtement. »)
  * @param {string} [props.lead] - introduction sous le titre
+ *  * @param {boolean} [props.compact=false] - plus petit : la pièce d'un projet partage la place avec sa capture
  *
  * @example
  * <SectionHeader
@@ -19,9 +20,20 @@ import './SectionHeader.scss'
  *   accent="honnêtement."
  * />
  */
-export function SectionHeader({ titleId, label, title, accent, lead }) {
+export function SectionHeader({
+  titleId,
+  label,
+  title,
+  accent,
+  lead,
+  compact = false,
+}) {
+  const className = compact
+    ? 'section-header section-header--compact'
+    : 'section-header'
+
   return (
-    <header className="section-header">
+    <header className={className}>
       <p className="section-header__label">{label}</p>
       <h2 className="section-header__title" id={titleId}>
         {title} <span className="section-header__accent">{accent}</span>
