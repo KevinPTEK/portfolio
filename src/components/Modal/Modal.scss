@@ -1,0 +1,54 @@
+@use '../../styles/abstracts' as *;
+
+// La fenêtre, centrée par le navigateur, aux couleurs de son thème.
+// Pas de display ici : il écraserait le display: none d'un <dialog> fermé.
+.modal {
+  width: min(920px, calc(100% - #{$space-6}));
+  max-height: calc(100dvh - #{$space-6});
+  padding: 0;
+  overflow: hidden; // c'est le contenu qui défile : le ✕ reste en place
+  color: var(--ink);
+  background-color: var(--bg);
+  border: 1px solid transparent; // devient visible en mode contraste élevé
+  border-radius: $radius-lg;
+  box-shadow: 0 60px 120px -40px rgba(0, 0, 0, 0.6);
+
+  // la page derrière : assombrie et floutée
+  &::backdrop {
+    background-color: rgba(8, 8, 10, 0.6);
+    backdrop-filter: blur(8px);
+  }
+}
+
+// La page ne défile plus derrière une modale ouverte ; la barre de défilement
+// laisse sa place vide, le contenu ne se décale pas
+html:has(.modal:modal) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+// Le contenu remplit la fenêtre et défile seul, sans entraîner la page
+.modal__content {
+  max-height: inherit;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+// Le ✕ : en haut à droite, au-dessus du contenu qui défile ; 44 px (cible AAA)
+.modal__close {
+  position: absolute;
+  top: $space-3;
+  right: $space-3;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--ink);
+  background-color: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+
+  @include focus-ring;
+}
