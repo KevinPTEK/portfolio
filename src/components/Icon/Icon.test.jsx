@@ -23,4 +23,20 @@ describe('Icon', () => {
     const { container } = render(<Icon name="inconnue" />)
     expect(container).toBeEmptyDOMElement()
   })
+
+  it("sans classe du parent, n'a que la sienne", () => {
+    const { container } = render(<Icon name="arrow" />)
+    expect(container.querySelector('svg')).toHaveAttribute('class', 'icon')
+  })
+
+  // it.each répète le même test pour chaque valeur de la liste
+  it.each(['arrow', 'external', 'download'])("dessine l'icône %s", (name) => {
+    const { container } = render(<Icon name={name} />)
+    expect(container.querySelector('path')).toHaveAttribute('d')
+  })
+
+  it("n'affiche rien pour un nom hérité d'Object", () => {
+    const { container } = render(<Icon name="constructor" />)
+    expect(container).toBeEmptyDOMElement()
+  })
 })

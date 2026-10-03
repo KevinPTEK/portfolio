@@ -9,6 +9,9 @@ const PATHS = {
 
 /**
  * Icône décorative, dessinée d'un trait de la couleur du texte.
+
+/**
+ * Icône décorative, dessinée d'un trait de la couleur du texte.
  * Toujours cachée aux lecteurs d'écran : le texte voisin porte le sens.
  *
  * @param {object} props
@@ -19,9 +22,7 @@ const PATHS = {
  * <Icon name="external" className="button__icon" />
  */
 export function Icon({ name, className }) {
-  const path = PATHS[name]
-
-  if (!path) return null
+  if (!Object.hasOwn(PATHS, name)) return null
 
   return (
     <svg
@@ -29,7 +30,7 @@ export function Icon({ name, className }) {
       viewBox="0 0 16 16"
       aria-hidden="true"
     >
-      <path d={path} />
+      <path d={PATHS[name]} />
     </svg>
   )
 }

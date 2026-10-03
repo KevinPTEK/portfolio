@@ -57,4 +57,19 @@ describe('Button', () => {
     render(<Button external>GitHub</Button>)
     expect(screen.getByRole('button', { name: 'GitHub' })).toBeInTheDocument()
   })
+
+  it("affiche l'icône qui annonce le comportement", () => {
+    const { container } = render(
+      <Button href="https://github.com/KevinPTEK" external>
+        GitHub
+      </Button>,
+    )
+    // l'icône est cachée aux lecteurs d'écran : on la cherche par sa balise
+    expect(container.querySelector('svg')).toBeInTheDocument()
+  })
+
+  it("sans comportement particulier, n'affiche pas d'icône", () => {
+    const { container } = render(<Button onClick={() => {}}>Envoyer</Button>)
+    expect(container.querySelector('svg')).not.toBeInTheDocument()
+  })
 })

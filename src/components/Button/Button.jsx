@@ -1,13 +1,6 @@
 import { Icon } from '../Icon/Icon.jsx'
 import './Button.scss'
 
-// Tracés des icônes, sur une grille de 16 px : → ↗ ↓
-const ICON_PATHS = {
-  arrow: 'M3 8h10M9 4l4 4-4 4',
-  external: 'M5 11l6-6M6 5h5v5',
-  download: 'M8 3v8M4 7l4 4 4-4M3 13h10',
-}
-
 // L'icône découle de ce que fait le bouton : on ne peut pas l'oublier
 function getIcon({ external, download, arrow }) {
   if (external) return 'external'
