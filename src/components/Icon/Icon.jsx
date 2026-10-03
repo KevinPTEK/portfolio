@@ -20,7 +20,7 @@ const PATHS = {
  */
 export function Icon({ name, className }) {
   const path = PATHS[name]
-  // un nom inconnu n'affiche rien plutôt qu'un carré vide
+
   if (!path) return null
 
   return (
