@@ -5,8 +5,20 @@
   @include label;
 }
 
-// Texte réservé aux lecteurs d'écran (« nouvel onglet »)
-.social-links__hint {
-  @include visually-hidden;
-  text-transform: none; // invisible : aucune raison de le mettre en capitales
+// Un lien : au moins 24 px de haut (WCAG 2.5.8), icône centrée sur le texte
+.social-links__link {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  min-height: 24px;
+  text-decoration: none; // liste de liens, reconnaissable à sa place et à ↗ (§ 10)
+
+  @include focus-ring;
+
+  // le survol n'existe qu'avec une souris : pas d'effet « collé » au doigt
+  @media (hover: hover) {
+    &:hover {
+      color: var(--ink);
+    }
+  }
 }

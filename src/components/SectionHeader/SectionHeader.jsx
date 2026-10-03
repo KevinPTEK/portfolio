@@ -10,7 +10,7 @@ import './SectionHeader.scss'
  * @param {string} props.title - début du titre (« Compétences, »)
  * @param {string} props.accent - mot en accent, en italique (« honnêtement. »)
  * @param {string} [props.lead] - introduction sous le titre
- *  * @param {boolean} [props.compact=false] - plus petit : la pièce d'un projet partage la place avec sa capture
+ * @param {boolean} [props.compact=false] - plus petit : la pièce d'un projet partage la place avec sa capture
  *
  * @example
  * <SectionHeader
