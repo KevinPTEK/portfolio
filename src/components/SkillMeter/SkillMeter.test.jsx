@@ -12,7 +12,7 @@ describe('SkillMeter', () => {
     ).toBeInTheDocument()
   })
 
-   it('accepte une autre échelle que 3', () => {
+  it('accepte une autre échelle que 3', () => {
     render(<SkillMeter name="React" level={4} max={5} />)
     const meter = screen.getByRole('img', { name: 'niveau 4 sur 5' })
     // autant de points que max
