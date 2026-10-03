@@ -5,6 +5,7 @@ const PATHS = {
   arrow: 'M3 8h10M9 4l4 4-4 4', // →
   external: 'M5 11l6-6M6 5h5v5', // ↗
   download: 'M8 3v8M4 7l4 4 4-4M3 13h10', // ↓
+  close: 'M4 4l8 8M12 4l-8 8', // ✕
 }
 
 /**
@@ -12,7 +13,7 @@ const PATHS = {
  * Toujours cachée aux lecteurs d'écran : le texte voisin porte le sens.
  *
  * @param {object} props
- * @param {'arrow' | 'external' | 'download'} props.name - icône à dessiner
+ * @param {'arrow' | 'external' | 'download' | 'close'} props.name - icône à dessiner
  * @param {string} [props.className] - classe du parent qui place l'icône (mix BEM)
  *
  * @example

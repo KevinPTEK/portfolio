@@ -29,11 +29,13 @@ describe('Icon', () => {
     expect(container.querySelector('svg')).toHaveAttribute('class', 'icon')
   })
 
-  // it.each répète le même test pour chaque valeur de la liste
-  it.each(['arrow', 'external', 'download'])("dessine l'icône %s", (name) => {
-    const { container } = render(<Icon name={name} />)
-    expect(container.querySelector('path')).toHaveAttribute('d')
-  })
+  it.each(['arrow', 'external', 'download', 'close'])(
+    "dessine l'icône %s",
+    (name) => {
+      const { container } = render(<Icon name={name} />)
+      expect(container.querySelector('path')).toHaveAttribute('d')
+    },
+  )
 
   it("n'affiche rien pour un nom hérité d'Object", () => {
     const { container } = render(<Icon name="constructor" />)
