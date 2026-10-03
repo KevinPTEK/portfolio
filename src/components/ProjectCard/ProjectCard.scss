@@ -1,0 +1,38 @@
+@use '../../styles/abstracts' as *;
+
+// Une colonne sur mobile (capture au-dessus), deux à partir de la tablette
+.project-card {
+  display: grid;
+  gap: $space-6;
+  align-items: center;
+
+  @include up(tablet) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-7;
+  }
+
+  @include up(desktop) {
+    grid-template-columns: minmax(0, 52%) minmax(0, 1fr);
+    gap: $space-8;
+  }
+}
+
+// Texte : les éléments gardent leur largeur (le bouton ne s'étire pas)
+.project-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $space-4;
+}
+
+// La capture : en premier à l'écran, dans un cadre 4:3 réservé avant son chargement
+.project-card__cover {
+  order: -1;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: $radius-sm;
+  box-shadow:
+    0 40px 80px -30px rgba(0, 0, 0, 0.6),
+    0 0 0 1px var(--line);
+}
