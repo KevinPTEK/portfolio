@@ -1,0 +1,6 @@
+@use '../../styles/abstracts' as *;
+
+.visually-hidden {
+  @include visually-hidden;
+  text-transform: none; // invisible : ne reprend pas les capitales d'une étiquette
+}

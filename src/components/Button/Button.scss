@@ -41,11 +41,6 @@
   border-color: var(--line);
 }
 
-// Texte réservé aux lecteurs d'écran (« nouvel onglet »)
-.button__hint {
-  @include visually-hidden;
-}
-
 // L'icône ne se tasse pas quand le libellé passe à la ligne
 .button__icon {
   flex-shrink: 0;

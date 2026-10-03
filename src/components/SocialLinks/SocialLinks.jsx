@@ -1,4 +1,5 @@
 import { Icon } from '../Icon/Icon.jsx'
+import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden.jsx'
 import './SocialLinks.scss'
 
 /**
@@ -33,7 +34,7 @@ export function SocialLinks({ links = [], className }) {
             rel="me noopener"
           >
             {name}
-            <span className="social-links__hint"> (nouvel onglet)</span>
+            <VisuallyHidden> (nouvel onglet)</VisuallyHidden>
             <Icon name="external" />
           </a>
         </li>

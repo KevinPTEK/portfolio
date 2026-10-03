@@ -1,4 +1,5 @@
 import { Icon } from '../Icon/Icon.jsx'
+import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden.jsx'
 import './Button.scss'
 
 // L'icône découle de ce que fait le bouton : on ne peut pas l'oublier
@@ -43,7 +44,7 @@ export function Button({
   const content = (
     <>
       {children}
-      {opensNewTab && <span className="button__hint"> (nouvel onglet)</span>}
+      {opensNewTab && <VisuallyHidden> (nouvel onglet)</VisuallyHidden>}
       {icon && <Icon name={icon} className="button__icon" />}
     </>
   )
