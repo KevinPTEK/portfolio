@@ -26,4 +26,5 @@
 // Texte réservé aux lecteurs d'écran (« nouvel onglet »)
 .social-links__hint {
   @include visually-hidden;
+  text-transform: none; // invisible : aucune raison de le mettre en capitales
 }
