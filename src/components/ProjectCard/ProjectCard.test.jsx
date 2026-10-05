@@ -7,7 +7,7 @@ import { ProjectCard } from './ProjectCard.jsx'
 const project = {
   id: 'kasa',
   name: 'Kasa',
-  title: 'Kasa',
+  title: 'Kasa — location.',
   accentWord: '— location.',
   summary: 'Application de location immobilière.',
   tags: ['React', 'React Router', 'Sass'],
@@ -70,10 +70,15 @@ describe('ProjectCard', () => {
     expect(handleOpen).toHaveBeenCalledWith(project)
   })
 
-  // Argent Bank : le titre (« Argent ») n'est pas le nom complet
+  // Argent Bank : le titre (« Argent Bank. ») n'est pas le nom complet
   it.each([
     project,
-    { ...project, name: 'Argent Bank', title: 'Argent', accentWord: 'Bank.' },
+    {
+      ...project,
+      name: 'Argent Bank',
+      title: 'Argent Bank.',
+      accentWord: 'Bank.',
+    },
   ])('nomme le bouton avec le nom complet du projet : $name', (data) => {
     renderCard({ project: data })
     expect(

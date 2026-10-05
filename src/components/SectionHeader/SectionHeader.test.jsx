@@ -8,7 +8,7 @@ function renderHeader(props) {
     <SectionHeader
       titleId="skills-title"
       label="03 — Compétences"
-      title="Compétences,"
+      title="Compétences, honnêtement."
       accent="honnêtement."
       {...props}
     />,
@@ -24,6 +24,27 @@ describe('SectionHeader', () => {
         name: 'Compétences, honnêtement.',
       }),
     ).toBeInTheDocument()
+  })
+
+  // 724events : la fin du nom est en accent, collée, sans espace
+  it('colle le mot en accent quand le titre le colle', () => {
+    renderHeader({ title: '724events.', accent: 'events.' })
+    // happy-dom ajoute une espace avant le <span> dans le nom accessible :
+    // on vérifie donc le texte exact du titre (Chrome lit bien « 724events. »)
+    const heading = screen.getByRole('heading', { level: 2 })
+    expect(heading.textContent).toBe('724events.')
+    expect(screen.getByText('events.')).toBeInTheDocument()
+  })
+
+  it("si l'accent n'est pas la fin du titre, affiche le titre entier", () => {
+    renderHeader({ accent: 'ailleurs.' })
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'Compétences, honnêtement.',
+      }),
+    ).toBeInTheDocument()
+    expect(screen.queryByText('ailleurs.')).not.toBeInTheDocument()
   })
 
   it("donne au titre l'id qui nomme la pièce", () => {
