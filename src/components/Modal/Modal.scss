@@ -1,12 +1,15 @@
 @use '../../styles/abstracts' as *;
 
+$close-size: 44px; // cible tactile AAA
+
 // La fenêtre, centrée par le navigateur, aux couleurs de son thème.
 // Pas de display ici : il écraserait le display: none d'un <dialog> fermé.
 .modal {
   width: min(920px, calc(100% - #{$space-6}));
-  max-height: calc(100dvh - #{$space-6});
+  max-width: none; // sinon le navigateur la limite à 100 % - 38 px
+  max-height: none; // c'est le contenu qui porte la hauteur maximale
   padding: 0;
-  overflow: hidden; // c'est le contenu qui défile : le ✕ reste en place
+  overflow: hidden; // le contenu ne déborde pas des coins arrondis
   color: var(--ink);
   background-color: var(--bg);
   border: 1px solid transparent; // devient visible en mode contraste élevé
@@ -27,23 +30,24 @@ html:has(.modal:modal) {
   scrollbar-gutter: stable;
 }
 
-// Le contenu remplit la fenêtre et défile seul, sans entraîner la page
+// La zone qui défile : tout le contenu, ✕ compris, sans entraîner la page
 .modal__content {
-  max-height: inherit;
+  max-height: calc(100dvh - #{$space-6});
   overflow: auto;
   overscroll-behavior: contain;
 }
 
-// Le ✕ : en haut à droite, au-dessus du contenu qui défile ; 44 px (cible AAA)
+// Le ✕ : collé en haut à droite pendant le défilement ; la marge négative
+// du bas l'empêche de repousser le contenu qui suit
 .modal__close {
-  position: absolute;
+  position: sticky;
   top: $space-3;
-  right: $space-3;
   z-index: 1;
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: $close-size;
+  height: $close-size;
+  margin: $space-3 $space-3 (-($space-3 + $close-size)) auto;
   color: var(--ink);
   background-color: var(--bg);
   border: 1px solid var(--line);
