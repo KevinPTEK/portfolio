@@ -1,0 +1,87 @@
+[
+  {
+    "id": "argent",
+    "name": "Argent Bank",
+    "title": "Argent Bank.",
+    "accentWord": "Bank.",
+    "summary": "Une application bancaire en React et Redux : connexion par jeton, session conservée, profil modifiable, et l'API des transactions décrite avec Swagger.",
+    "context": "Argent Bank, une nouvelle banque en ligne, lance son application web. À partir du HTML statique et de l'API fournis, j'ai construit en React la connexion et le profil de l'utilisateur, puis rédigé avec Swagger les routes de la future gestion des transactions.",
+    "challenges": [
+      "Garder l'utilisateur connecté après un rechargement, selon la case « Se souvenir de moi »",
+      "Afficher le nouveau pseudo à deux endroits à la fois : la navigation et le profil",
+      "Choisir les routes et les verbes de l'API des transactions (GET, PATCH), sans POST ni DELETE"
+    ],
+    "learned": [
+      "Organiser un état global avec Redux Toolkit : slices, thunks, sélecteurs",
+      "Séparer l'affichage, l'état et les appels au serveur",
+      "Décrire une API avec Swagger avant qu'elle soit codée"
+    ],
+    "tags": ["React", "Redux Toolkit", "React Router", "Swagger"],
+    "links": {
+      "code": "https://github.com/KevinPTEK/ArgentBank"
+    },
+    "cover": {
+      "src": "/images/argent-cover.webp",
+      "blur": "/images/argent-cover-blur.webp",
+      "alt": "Page d'accueil d'Argent Bank"
+    },
+    "theme": "argent"
+  },
+  {
+    "id": "events",
+    "name": "724events",
+    "title": "724events.",
+    "accentWord": "events.",
+    "summary": "Le débogage d'un site React laissé par un autre développeur : 6 bugs corrigés, les tests remis au vert et un cahier de recette de 26 scénarios.",
+    "context": "724events, une agence événementielle, a hérité d'un site React qui ne fonctionnait plus correctement. Je suis parti des tests en échec pour retrouver et corriger les bugs, puis j'ai rédigé le cahier de recette qui vérifie tout le parcours du visiteur.",
+    "challenges": [
+      "Comprendre un code que je n'avais pas écrit, à partir des tests en échec",
+      "Trancher entre deux consignes contradictoires sur l'ordre du carrousel",
+      "Corriger un bug qu'aucun test ne couvrait : la pagination cassée par le filtre"
+    ],
+    "learned": [
+      "Isoler un bug avec React DevTools, la console et l'inspection du DOM",
+      "Nettoyer un effet React : dépendances et minuteurs annulés",
+      "Rédiger des scénarios de recette au format Given / When / Then"
+    ],
+    "tags": ["React", "Jest", "Testing Library", "Débogage"],
+    "links": {
+      "code": "https://github.com/KevinPTEK/724events-debug"
+    },
+    "cover": {
+      "src": "/images/events-cover.webp",
+      "blur": "/images/events-cover-blur.webp",
+      "alt": "Page d'accueil de 724events"
+    },
+    "theme": "events"
+  },
+  {
+    "id": "nina",
+    "name": "Nina Carducci",
+    "title": "Nina Carducci.",
+    "accentWord": "Carducci.",
+    "summary": "L'optimisation du site d'une photographe : Lighthouse de 75 à 99 en performances, 100 en accessibilité et en référencement, images de 29 Mo à 944 Ko.",
+    "context": "Nina Carducci, photographe à Bordeaux, avait un site lent et peu visible sur Google. Je l'ai optimisé sans changer son apparence (images, structure du code, référencement local, accessibilité), j'ai mesuré chaque gain avec Lighthouse en mode ordinateur, puis tout expliqué dans un rapport destiné à la cliente.",
+    "challenges": [
+      "Alléger 14 photographies publiées dans leur définition d'origine, sans perte visible",
+      "Supprimer les sauts de mise en page au chargement en déclarant la taille des images",
+      "Corriger les 17 erreurs d'accessibilité relevées par WAVE"
+    ],
+    "learned": [
+      "Lire un audit Lighthouse et classer les corrections selon leur effet",
+      "Le référencement local : balises meta, Open Graph, données structurées Schema.org",
+      "Expliquer des choix techniques à une cliente qui n'est pas développeuse"
+    ],
+    "tags": ["Lighthouse", "SEO", "Accessibilité", "Schema.org"],
+    "links": {
+      "site": "https://kevinptek.github.io/ninacarducci/",
+      "code": "https://github.com/KevinPTEK/ninacarducci"
+    },
+    "cover": {
+      "src": "/images/nina-cover.webp",
+      "blur": "/images/nina-cover-blur.webp",
+      "alt": "Page d'accueil du site de Nina Carducci"
+    },
+    "theme": "nina"
+  }
+]
