@@ -4,15 +4,15 @@
     "name": "Argent Bank",
     "title": "Argent Bank.",
     "accentWord": "Bank.",
-    "summary": "Une application bancaire en React et Redux : connexion par jeton, session conservée, profil modifiable, et l'API des transactions décrite avec Swagger.",
+    "summary": "Une application bancaire en React et Redux\u00a0: connexion par jeton, session conservée, pseudo modifiable, et 3\u00a0routes d'API décrites avec Swagger.",
     "context": "Argent Bank, une nouvelle banque en ligne, lance son application web. À partir du HTML statique et de l'API fournis, j'ai construit en React la connexion et le profil de l'utilisateur, puis rédigé avec Swagger les routes de la future gestion des transactions.",
     "challenges": [
-      "Garder l'utilisateur connecté après un rechargement, selon la case « Se souvenir de moi »",
-      "Afficher le nouveau pseudo à deux endroits à la fois : la navigation et le profil",
+      "Garder l'utilisateur connecté après un rechargement, et après la fermeture du navigateur si la case «\u00a0Remember me\u00a0» est cochée",
+      "Mettre à jour le pseudo dans la navigation dès l'enregistrement, sans recharger la page",
       "Choisir les routes et les verbes de l'API des transactions (GET, PATCH), sans POST ni DELETE"
     ],
     "learned": [
-      "Organiser un état global avec Redux Toolkit : slices, thunks, sélecteurs",
+      "Organiser un état global avec Redux Toolkit\u00a0: slices, thunks, sélecteurs",
       "Séparer l'affichage, l'état et les appels au serveur",
       "Décrire une API avec Swagger avant qu'elle soit codée"
     ],
@@ -32,16 +32,16 @@
     "name": "724events",
     "title": "724events.",
     "accentWord": "events.",
-    "summary": "Le débogage d'un site React laissé par un autre développeur : 6 bugs corrigés, les tests remis au vert et un cahier de recette de 26 scénarios.",
-    "context": "724events, une agence événementielle, a hérité d'un site React qui ne fonctionnait plus correctement. Je suis parti des tests en échec pour retrouver et corriger les bugs, puis j'ai rédigé le cahier de recette qui vérifie tout le parcours du visiteur.",
+    "summary": "Le débogage d'un site React laissé par un autre développeur\u00a0: 6\u00a0bugs corrigés, les tests remis au vert et un cahier de recette de 20\u00a0scénarios.",
+    "context": "Chez 724events, une agence événementielle, un premier développeur avait laissé le site React avec plusieurs bugs. Je suis parti des tests en échec pour les retrouver et les corriger, puis j'ai rédigé le cahier de recette qui vérifie le parcours du visiteur.",
     "challenges": [
       "Comprendre un code que je n'avais pas écrit, à partir des tests en échec",
       "Trancher entre deux consignes contradictoires sur l'ordre du carrousel",
-      "Corriger un bug qu'aucun test ne couvrait : la pagination cassée par le filtre"
+      "Corriger un bug qu'aucun test ne couvrait\u00a0: la pagination cassée par le filtre"
     ],
     "learned": [
       "Isoler un bug avec React DevTools, la console et l'inspection du DOM",
-      "Nettoyer un effet React : dépendances et minuteurs annulés",
+      "Nettoyer un effet React\u00a0: dépendances et minuteurs annulés",
       "Rédiger des scénarios de recette au format Given / When / Then"
     ],
     "tags": ["React", "Jest", "Testing Library", "Débogage"],
@@ -60,16 +60,16 @@
     "name": "Nina Carducci",
     "title": "Nina Carducci.",
     "accentWord": "Carducci.",
-    "summary": "L'optimisation du site d'une photographe : Lighthouse de 75 à 99 en performances, 100 en accessibilité et en référencement, images de 29 Mo à 944 Ko.",
-    "context": "Nina Carducci, photographe à Bordeaux, avait un site lent et peu visible sur Google. Je l'ai optimisé sans changer son apparence (images, structure du code, référencement local, accessibilité), j'ai mesuré chaque gain avec Lighthouse en mode ordinateur, puis tout expliqué dans un rapport destiné à la cliente.",
+    "summary": "L'optimisation du site d'une photographe\u00a0: Lighthouse de 75 à 99 en performances, 100 en accessibilité et en référencement, images de 29\u00a0Mo à 944\u00a0Ko.",
+    "context": "Nina Carducci, photographe à Bordeaux, avait un site lent et peu visible sur Google. Je l'ai optimisé en respectant sa charte graphique (images, structure du code, référencement local, accessibilité), j'ai mesuré les gains avec Lighthouse (mode ordinateur) et WAVE, puis tout expliqué dans un rapport destiné à la cliente.",
     "challenges": [
-      "Alléger 14 photographies publiées dans leur définition d'origine, sans perte visible",
+      "Alléger 14\u00a0photographies publiées dans leur définition d'origine, sans perte visible",
       "Supprimer les sauts de mise en page au chargement en déclarant la taille des images",
-      "Corriger les 17 erreurs d'accessibilité relevées par WAVE"
+      "Corriger les 17\u00a0erreurs d'accessibilité relevées par WAVE"
     ],
     "learned": [
-      "Lire un audit Lighthouse et classer les corrections selon leur effet",
-      "Le référencement local : balises meta, Open Graph, données structurées Schema.org",
+      "Lire un audit Lighthouse et mesurer l'effet de chaque correction",
+      "Le référencement local\u00a0: balises meta, Open Graph, données structurées Schema.org",
       "Expliquer des choix techniques à une cliente qui n'est pas développeuse"
     ],
     "tags": ["Lighthouse", "SEO", "Accessibilité", "Schema.org"],
