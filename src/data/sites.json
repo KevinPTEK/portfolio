@@ -1,0 +1,15 @@
+[
+  {
+    "id": "tournetmarou",
+    "name": "Tourn&Marou",
+    "summary": "L'intégration du site vitrine d'un réparateur de vélos entre Lyon et Vienne\u00a0: 5\u00a0pages en HTML, Sass et JavaScript, sans framework ni dépendance à l'exécution.",
+    "tags": ["HTML", "Sass", "JavaScript", "Schema.org"],
+    "links": {
+      "site": "https://tournetmarou.netlify.app/"
+    },
+    "cover": {
+      "src": "/images/tournetmarou-cover.webp",
+      "alt": "Page d'accueil du site de Tourn&Marou"
+    }
+  }
+]

@@ -1,21 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import projects from './projects.json'
+import {
+  FILLED,
+  HTTPS,
+  IMAGE_PATH,
+  SLUG,
+  UNPROTECTED_SPACE,
+  withoutDuplicates,
+} from './rules.js'
 
 // Une faute dans projects.json ne casse pas le build : elle casse la page,
 // ou pire, l'affiche mal sans aucune erreur. Ces tests sont les règles que
 // chaque projet doit respecter, aujourd'hui et quand on en ajoutera un.
-
-// au moins un caractère visible (pas vide, pas que des espaces)
-const FILLED = /\S/
-// minuscules, chiffres et tirets : devient un id HTML (« argent-title ») ou un data-theme
-const SLUG = /^[a-z0-9-]+$/
-// une adresse web complète et sécurisée : quelque chose après https://, aucune espace
-const HTTPS = /^https:\/\/\S+$/
-// une image WebP de public/images (servie à la racine du site)
-const IMAGE = /^\/images\/.+\.webp$/
-
-// la même liste sans ses doublons : si elle diffère, le message d'échec montre le doublon
-const withoutDuplicates = (values) => [...new Set(values)]
 
 describe('projects.json', () => {
   it('contient au moins un projet', () => {
@@ -54,6 +50,21 @@ describe('projects.json', () => {
         expect(project[field]).toMatch(FILLED)
       },
     )
+
+    it('met une espace insécable avant « : ; ! ? » et dans les guillemets', () => {
+      // une espace simple laisse la ligne se couper juste avant la ponctuation
+      const texts = [
+        project.name,
+        project.title,
+        project.summary,
+        project.context,
+        ...project.challenges,
+        ...project.learned,
+      ]
+      for (const text of texts) {
+        expect(text).not.toMatch(UNPROTECTED_SPACE)
+      }
+    })
 
     it('met en accent la fin exacte de son titre', () => {
       // sinon SectionHeader affiche le titre sans accent, sans erreur
@@ -101,8 +112,8 @@ describe('projects.json', () => {
     })
 
     it('a une capture, sa version floutée et un texte alternatif', () => {
-      expect(project.cover.src).toMatch(IMAGE)
-      expect(project.cover.blur).toMatch(IMAGE)
+      expect(project.cover.src).toMatch(IMAGE_PATH)
+      expect(project.cover.blur).toMatch(IMAGE_PATH)
       expect(project.cover.alt).toMatch(FILLED)
     })
 
