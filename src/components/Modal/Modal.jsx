@@ -10,7 +10,8 @@ import './Modal.scss'
  *
  * @param {object} props
  * @param {boolean} props.open - ouverte ou fermée : c'est le parent qui décide
- * @param {() => void} props.onClose - appelée quand la modale s'est fermée, quelle qu'en soit la raison
+ * @param {() => void} props.onClose - appelée quand la modale s'est fermée, quelle qu'en soit
+ *   la raison ; le parent doit y remettre open à false
  * @param {string} props.labelledBy - id du titre (dans children) qui nomme la modale
  * @param {string} [props.theme] - un thème de _themes.scss (« kasa »…)
  * @param {import('react').ReactNode} props.children - le contenu
@@ -22,17 +23,22 @@ import './Modal.scss'
  */
 export function Modal({ open, onClose, labelledBy, theme, children }) {
   const dialogRef = useRef(null)
+  const closeRef = useRef(null)
   // le geste a-t-il commencé sur le fond ? (une sélection de texte peut finir dessus)
   const pressedOnBackdrop = useRef(false)
 
   // Le parent dit « ouverte » ou « fermée », le <dialog> exécute
   useEffect(() => {
     const dialog = dialogRef.current
-    if (open && !dialog.open) dialog.showModal()
+    if (open && !dialog.open) {
+      dialog.showModal()
+      // le focus va au ✕, pas à la zone qui défile (que Chrome rend focalisable)
+      closeRef.current.focus()
+    }
     if (!open && dialog.open) dialog.close()
   }, [open])
 
-  function close() {
+  function closeDialog() {
     dialogRef.current.close()
   }
 
@@ -42,8 +48,10 @@ export function Modal({ open, onClose, labelledBy, theme, children }) {
   }
 
   function handleClick(event) {
-    if (pressedOnBackdrop.current && event.target === event.currentTarget) {
-      close()
+    const startedOnBackdrop = pressedOnBackdrop.current
+    pressedOnBackdrop.current = false // un geste = un clic
+    if (startedOnBackdrop && event.target === event.currentTarget) {
+      closeDialog()
     }
   }
 
@@ -57,12 +65,20 @@ export function Modal({ open, onClose, labelledBy, theme, children }) {
       onPointerDown={handlePointerDown}
       onClick={handleClick}
     >
-      {/* premier dans le code : il reçoit le focus à l'ouverture */}
-      <button className="modal__close" type="button" onClick={close}>
-        <Icon name="close" />
-        <VisuallyHidden>Fermer</VisuallyHidden>
-      </button>
-      <div className="modal__content">{children}</div>
+      <div className="modal__content">
+        {/* premier dans le code : il reçoit le focus à l'ouverture ; placé dans
+            la zone qui défile, les flèches du clavier la font défiler */}
+        <button
+          ref={closeRef}
+          className="modal__close"
+          type="button"
+          onClick={closeDialog}
+        >
+          <Icon name="close" />
+          <VisuallyHidden>Fermer</VisuallyHidden>
+        </button>
+        {children}
+      </div>
     </dialog>
   )
 }
