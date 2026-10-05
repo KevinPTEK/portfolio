@@ -6,6 +6,7 @@ import { ProjectCard } from './ProjectCard.jsx'
 // Exemple d'usage : la pièce de Kasa, deuxième de trois
 const project = {
   id: 'kasa',
+  name: 'Kasa',
   title: 'Kasa',
   accentWord: '— location.',
   summary: 'Application de location immobilière.',
@@ -69,15 +70,16 @@ describe('ProjectCard', () => {
     expect(handleOpen).toHaveBeenCalledWith(project)
   })
 
-  it.each([project, { ...project, title: 'ArgentBank' }])(
-    'nomme le bouton avec le projet : $title',
-    (data) => {
-      renderCard({ project: data })
-      expect(
-        screen.getByRole('button', { name: `Voir le projet ${data.title}` }),
-      ).toBeInTheDocument()
-    },
-  )
+  // Argent Bank : le titre (« Argent ») n'est pas le nom complet
+  it.each([
+    project,
+    { ...project, name: 'Argent Bank', title: 'Argent', accentWord: 'Bank.' },
+  ])('nomme le bouton avec le nom complet du projet : $name', (data) => {
+    renderCard({ project: data })
+    expect(
+      screen.getByRole('button', { name: `Voir le projet ${data.name}` }),
+    ).toBeInTheDocument()
+  })
 
   it('montre la capture avec son texte alternatif, chargée en différé', () => {
     renderCard()

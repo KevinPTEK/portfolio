@@ -15,6 +15,7 @@ function pad(number) {
  *
  * @param {object} props
  * @param {{
+ *   name: string,
  *   title: string,
  *   accentWord: string,
  *   summary: string,
@@ -30,7 +31,7 @@ function pad(number) {
  * <ProjectCard project={kasa} titleId="kasa-title" index={0} total={3} onOpen={openProject} />
  */
 export function ProjectCard({ project, titleId, index, total, onOpen }) {
-  const { title, accentWord, summary, tags, cover } = project
+  const { name, title, accentWord, summary, tags, cover } = project
 
   return (
     <div className="project-card">
@@ -47,7 +48,7 @@ export function ProjectCard({ project, titleId, index, total, onOpen }) {
         {/* dans un bloc, le bouton reste en ligne : il garde sa largeur */}
         <div>
           <Button variant="primary" onClick={() => onOpen(project)} arrow>
-            Voir le projet<VisuallyHidden> {title}</VisuallyHidden>
+            Voir le projet<VisuallyHidden> {name}</VisuallyHidden>
           </Button>
         </div>
       </div>
