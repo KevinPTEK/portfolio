@@ -1,0 +1,99 @@
+@use '../../styles/abstracts' as *;
+
+// Les marges de l'accueil (mix sur .room) : pas de nav visible, donc ni les
+// 88 px du haut ni le décalage de gauche des autres pièces (maquette).
+// Et toute la largeur : le menu se cale contre le bord droit, même sur grand
+// écran (le plafond de 1 200 px des autres pièces le centrerait).
+// Même spécificité que .room : ces règles l'emportent parce que Home.jsx importe
+// Room avant ./Home.scss — garder cet ordre des imports.
+$padding-top: $space-6; // 32 px
+$padding-top-desktop: $space-6 + $space-2; // 40 px
+$padding-left-desktop: $space-6 + $space-2; // 40 px
+$padding-bottom: $space-5; // 24 px
+
+.home {
+  grid-template-columns: minmax(0, 1fr);
+  padding: $padding-top $gutter $padding-bottom;
+
+  @include up(desktop) {
+    padding: $padding-top-desktop $space-8 $padding-bottom $padding-left-desktop;
+  }
+}
+
+// Le contenu en haut, la rangée « © 2026 · Défiler » en bas de l'écran
+.home__layout {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: $space-7;
+  min-height: calc(100svh - #{$padding-top + $padding-bottom});
+
+  @include up(desktop) {
+    min-height: calc(100svh - #{$padding-top-desktop + $padding-bottom});
+  }
+}
+
+// Identité puis menu ; en bureau, côte à côte sur toute la hauteur :
+// l'identité en haut à gauche, le menu centré (charte, § 5)
+.home__content {
+  display: grid;
+  align-content: start;
+  gap: $space-7;
+
+  @include up(desktop) {
+    grid-template-columns: minmax(300px, 36%) minmax(0, 1fr);
+    align-content: stretch;
+    align-items: center;
+  }
+}
+
+// Portrait, nom, métier, profils : collés en haut à gauche
+.home__identity {
+  display: grid;
+  justify-items: start; // le portrait garde ses 104 px
+  align-self: start;
+  gap: $space-1;
+}
+
+.home__name {
+  margin-top: $space-3; // un peu d'air sous le portrait
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.home__job {
+  font-size: clamp(18px, 1.8vw, 24px);
+  color: var(--ink-2);
+}
+
+.home__links {
+  margin-top: $space-5;
+}
+
+// Le menu géant, calé contre le bord droit en bureau
+.home__menu {
+  @include up(desktop) {
+    justify-self: end;
+  }
+}
+
+// La rangée du bas : « © 2026 » à gauche, « Défiler » à droite
+.home__footer {
+  @include label;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home__scroll {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+}
+
+// la flèche → tournée vers le bas
+.home__scroll-icon {
+  transform: rotate(90deg);
+}

@@ -42,4 +42,14 @@ describe('Room', () => {
     })
     expect(within(room).getByTestId('background')).toBeInTheDocument()
   })
+
+  it('ajoute la classe de la section qui la règle (mix BEM)', () => {
+    const room = renderRoom({ className: 'home' })
+    expect(room).toHaveAttribute('class', 'room home')
+  })
+
+  it("sans className, n'a que sa classe", () => {
+    const room = renderRoom()
+    expect(room).toHaveAttribute('class', 'room')
+  })
 })

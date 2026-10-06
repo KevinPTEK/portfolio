@@ -11,11 +11,13 @@
   @include label;
 }
 
-// Grand titre fluide, de 44 à 120 px
+// Grand titre fluide, de 44 à 110 px
 .section-header__title {
   font-family: $font-serif;
-  // 44 px au plus petit : « Compétences, » tient dans les 280 px d'un écran de 320 px
-  font-size: clamp(44px, 8vw, 120px);
+  // 44 px au plus petit : « Compétences, » tient dans les 280 px d'un écran de 320 px.
+  // 110 px au plus (et non 120, maquette) : max ≤ 2,5 × min, sinon le texte n'atteint
+  // pas 200 % au zoom de 500 % (183 % calculés dès 1 500 px — WCAG 1.4.4, Barvian)
+  font-size: clamp(44px, 8vw, 110px);
   line-height: 0.95;
   letter-spacing: -0.01em;
 }

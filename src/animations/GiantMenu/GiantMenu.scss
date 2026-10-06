@@ -1,0 +1,122 @@
+@use '../../styles/abstracts' as *;
+
+// Le menu géant : une pièce par ligne
+.giant-menu {
+  display: grid;
+}
+
+// Une ligne : Playfair en grandes capitales ; au survol, elle glisse un peu à droite.
+// Taille : « COMPÉTENCES » mesure 7,2 fois la taille du texte, plus son numéro ;
+// à 320 px il n'a que 280 px de place, d'où 11,5vw sur mobile (37 px à 320,
+// 44 px dès 383 px). Le zoom réduit la largeur de la page : la règle mobile
+// s'applique alors partout. Le minimum réel est donc 37 px, et le maximum doit
+// rester ≤ 2,5 × 37 = 92 px pour que le texte atteigne 200 % au zoom de 500 %
+// (WCAG 1.4.4, Maxwell Barvian).
+.giant-menu__link {
+  position: relative; // repère du numéro
+  display: inline-block; // la largeur du mot : le numéro s'accroche juste après
+  min-height: 44px; // cible tactile, même quand le texte descend à 37 px
+  // l'italique déborde à droite du mot romain (jusqu'à 0,133 em pour « TRAVAUX »,
+  // mesuré) : cette marge, proportionnelle au texte, le garde loin du numéro
+  padding-right: 0.15em;
+  font-family: $font-serif;
+  font-size: clamp(37px, 11.5vw, 44px);
+  line-height: 1.04;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  text-decoration: none; // liste de liens, reconnaissable à sa place (§ 10)
+  color: var(--ink);
+  transition: transform 0.9s $ease-out;
+
+  @include focus-ring;
+
+  &:focus-visible {
+    transform: translateX(0.06em);
+  }
+
+  // le survol n'existe qu'avec une souris : pas d'effet « collé » au doigt
+  @media (hover: hover) {
+    &:hover {
+      transform: translateX(0.06em);
+    }
+  }
+
+  @include up(tablet) {
+    font-size: clamp(44px, 7vw, 92px);
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+// Le mot, repère de son calque italique
+.giant-menu__word {
+  position: relative;
+  display: inline-block;
+  transition: color 0.8s $ease-out;
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+// Le calque italique : le même mot, dessiné par le CSS (aucun texte en double
+// dans le HTML). « / '' » est son texte alternatif, vide : les lecteurs d'écran
+// l'ignorent. Sans cette syntaxe, le navigateur n'a pas de calque — et le mot
+// ne doit alors pas disparaître au survol : tout est dans @supports.
+@supports (content: 'x' / '') {
+  .giant-menu__word::after {
+    content: attr(data-label) / '';
+    position: absolute;
+    inset: 0;
+    font-style: italic;
+    color: var(--accent);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.8s $ease-out;
+
+    @include reduced-motion {
+      transition: none;
+    }
+
+    // en contraste forcé, les couleurs sont imposées : le mot « transparent »
+    // redeviendrait visible sous le calque — on garde le mot seul
+    @media (forced-colors: active) {
+      content: none;
+    }
+  }
+
+  .giant-menu__link:focus-visible .giant-menu__word {
+    color: transparent;
+  }
+
+  .giant-menu__link:focus-visible .giant-menu__word::after {
+    opacity: 1;
+  }
+
+  @media (hover: hover) {
+    .giant-menu__link:hover .giant-menu__word {
+      color: transparent;
+    }
+
+    .giant-menu__link:hover .giant-menu__word::after {
+      opacity: 1;
+    }
+  }
+}
+
+// Le numéro : petit, en haut à droite du mot, comme un exposant. Hors du flux,
+// il ne peut pas passer à la ligne sous un mot qui remplit toute la largeur
+.giant-menu__number {
+  position: absolute;
+  top: 11px; // à hauteur des capitales
+  left: 100%;
+  margin-left: 6px; // au-delà de l'anneau de focus (décalé de 3 px, épais de 2 px)
+  white-space: nowrap;
+  font-family: $font-sans;
+  font-size: $font-size-small;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+}

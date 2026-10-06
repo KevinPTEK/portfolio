@@ -1,0 +1,6 @@
+[
+  { "id": "about", "label": "À propos" },
+  { "id": "work", "label": "Travaux" },
+  { "id": "skills", "label": "Compétences" },
+  { "id": "contact", "label": "Contact" }
+]
