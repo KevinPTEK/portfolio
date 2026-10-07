@@ -13,12 +13,12 @@ import './Modal.scss'
  * @param {() => void} props.onClose - appelée quand la modale s'est fermée, quelle qu'en soit
  *   la raison ; le parent doit y remettre open à false
  * @param {string} props.labelledBy - id du titre (dans children) qui nomme la modale
- * @param {string} [props.theme] - un thème de _themes.scss (« kasa »…)
+ * @param {string} [props.theme] - un thème de _themes.scss (« argent »…)
  * @param {import('react').ReactNode} props.children - le contenu
  *
  * @example
- * <Modal open={Boolean(project)} onClose={closeProject} labelledBy="modal-title" theme="kasa">
- *   <h2 id="modal-title">Kasa</h2>
+ * <Modal open={Boolean(project)} onClose={closeProject} labelledBy="modal-title" theme="argent">
+ *   <h2 id="modal-title">Argent Bank.</h2>
  * </Modal>
  */
 export function Modal({ open, onClose, labelledBy, theme, children }) {

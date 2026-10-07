@@ -22,29 +22,33 @@ $themes: (
     line: rgba(29, 41, 66, 0.14),
   ),
 
-  // Thème des projets
-  kasa: (
+  // Thème des projets (contrastes sur le fond : ink, ink-2, accent)
+  // Argent Bank : 17,4 / 9,2 / 8,0
+  argent: (
       scheme: dark,
-      bg: #2b0f0f,
-      ink: #fff3f0,
-      ink-2: #e2b2aa,
-      accent: #ff6060,
+      bg: #12002b,
+      ink: #f3eeff,
+      ink-2: #b9aacf,
+      accent: #00bc77,
       line: rgba(255, 255, 255, 0.16),
     ),
-  argent: (
-    scheme: dark,
-    bg: #12002b,
-    ink: #f3eeff,
-    ink-2: #b9aacf,
-    accent: #00bc77,
-    line: rgba(255, 255, 255, 0.16),
-  ),
+  // 724events : 14,5 / 7,8 / 6,1 — l'accent est le violet clair de sa palette ;
+  // le violet de la marque (#5b32ff) ne donnerait que 2,5 sur ce fond
   events: (
-    scheme: dark,
-    bg: #0d2530,
-    ink: #eef6f8,
-    ink-2: #9fbac4,
-    accent: #f5b94a,
-    line: rgba(255, 255, 255, 0.16),
-  )
+      scheme: dark,
+      bg: #0d2530,
+      ink: #eef6f8,
+      ink-2: #9fbac4,
+      accent: #a691fc,
+      line: rgba(255, 255, 255, 0.16),
+    ),
+  // Nina Carducci : 16,1 / 10,1 / 7,4 — un brun chaud et l'orange de son site
+  nina: (
+      scheme: dark,
+      bg: #24170f,
+      ink: #fff4ec,
+      ink-2: #ddbfa9,
+      accent: #e5975f,
+      line: rgba(255, 255, 255, 0.16),
+    )
 );

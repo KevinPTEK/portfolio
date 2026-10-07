@@ -6,7 +6,7 @@ import './Room.scss'
  *
  * @param {object} props
  * @param {string} props.id - identifiant de la pièce : cible des liens, lien courant de la nav
- * @param {string} props.theme - thème de couleurs : `paper-light`, `paper-cool`, `kasa`…
+ * @param {string} props.theme - thème de couleurs : `paper-light`, `paper-cool`, `argent`…
  * @param {string} props.labelledBy - id du titre qui nomme la pièce (sans nom, une section n'est pas une région)
  * @param {import('react').ReactNode} [props.background] - calque décoratif, dessiné derrière le contenu
  * @param {import('react').ReactNode} props.children - contenu de la pièce

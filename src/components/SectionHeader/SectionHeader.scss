@@ -20,6 +20,9 @@
   font-size: clamp(44px, 8vw, 110px);
   line-height: 0.95;
   letter-spacing: -0.01em;
+
+  // focalisable par le code (titleRef) : le même anneau que le reste du site
+  @include focus-ring;
 }
 
 .section-header__accent {
@@ -34,9 +37,17 @@
 }
 
 // Variante compacte : l'en-tête d'un projet partage la pièce avec sa capture
+// (ou la modale avec la capture). Sa colonne est étroite et change d'une mise
+// en page à l'autre : le titre suit donc la largeur de l'en-tête (requête de
+// conteneur), pas celle de la fenêtre.
 .section-header--compact {
+  container-type: inline-size; // l'en-tête devient le repère des unités cqi
+
   .section-header__title {
-    font-size: clamp(44px, 6vw, 84px);
+    // « 724events. », d'un seul tenant, mesure 4,52 fois la taille du texte :
+    // à 21 % de la largeur de l'en-tête (21cqi), il tient toujours sur sa ligne.
+    // 84 / 44 < 2,5 : le titre atteint 200 % au zoom (§ 10)
+    font-size: clamp(44px, 21cqi, 84px);
   }
 
   .section-header__lead {

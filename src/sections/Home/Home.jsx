@@ -8,15 +8,11 @@ import { Room } from '../../components/Room/Room.jsx'
 import { SocialLinks } from '../../components/SocialLinks/SocialLinks.jsx'
 import menu from '../../data/menu.json'
 import socials from '../../data/socials.json'
+import { pad } from '../../utils/pad.js'
 import './Home.scss'
 
 // ?no-inline : sous 4 Ko, Vite glisserait l'image dans le JS (§ 6, Avatar)
 const avatarSrcSet = `${avatar128} 128w, ${avatar256} 256w, ${avatar512} 512w`
-
-// Deux chiffres, comme la maquette : 1 → « 01 »
-function pad(number) {
-  return String(number).padStart(2, '0')
-}
 
 // une ligne du menu géant par pièce, numérotée dans l'ordre de menu.json
 const menuItems = menu.map(({ id, label }, index) => ({

@@ -1,0 +1,20 @@
+@use '../../styles/abstracts' as *;
+
+// Les projets empilés : chaque pièce reste collée en haut de l'écran et la
+// suivante glisse par-dessus. Seulement quand la pièce tient dans l'écran :
+// une pièce plus haute resterait collée pendant que la suivante la recouvre,
+// et son bas (le bouton « Voir le projet ») ne serait jamais visible.
+// Mesuré à 700 px de haut, de 640 à 1 600 px de large : 617 px au plus (644 au-delà
+// de 1 440, quand le contenu atteint son plafond de 1 200 px).
+// Sur mobile, ou au zoom (l'écran devient « petit »), les pièces se suivent.
+// Un résumé ou un titre plus long : refaire la mesure.
+// Même spécificité que .room : ces règles l'emportent parce que Work.jsx
+// importe Room avant ./Work.scss — garder cet ordre des imports.
+.work__project {
+  @include up(tablet) {
+    @media (min-height: 700px) {
+      position: sticky;
+      top: 0;
+    }
+  }
+}

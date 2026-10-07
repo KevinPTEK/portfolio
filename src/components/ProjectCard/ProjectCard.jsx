@@ -2,12 +2,8 @@ import { Button } from '../Button/Button.jsx'
 import { SectionHeader } from '../SectionHeader/SectionHeader.jsx'
 import { TagList } from '../TagList/TagList.jsx'
 import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden.jsx'
+import { pad } from '../../utils/pad.js'
 import './ProjectCard.scss'
-
-// Deux chiffres, comme la maquette : 1 → « 01 »
-function pad(number) {
-  return String(number).padStart(2, '0')
-}
 
 /**
  * Contenu de la pièce d'un projet : sa capture, sa position (« 01 / 03 »),
@@ -28,7 +24,7 @@ function pad(number) {
  * @param {(project: object) => void} props.onOpen - ouvre la modale de ce projet
  *
  * @example
- * <ProjectCard project={kasa} titleId="kasa-title" index={0} total={3} onOpen={openProject} />
+ * <ProjectCard project={argent} titleId="argent-title" index={0} total={3} onOpen={openProject} />
  */
 export function ProjectCard({ project, titleId, index, total, onOpen }) {
   const { name, title, accentWord, summary, tags, cover } = project

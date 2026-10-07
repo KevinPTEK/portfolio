@@ -1,0 +1,60 @@
+@use '../../styles/abstracts' as *;
+
+// La capture au-dessus du texte ; en bureau, à gauche (maquette)
+.project-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+
+  @include up(desktop) {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+// Le texte : les rubriques les unes sous les autres
+.project-details__body {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  padding: $space-6 $space-5;
+
+  @include up(tablet) {
+    padding: $space-6;
+  }
+}
+
+.project-details__part {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  color: var(--ink-2);
+}
+
+// « Contexte », « Problèmes rencontrés »… : des étiquettes, mais de vrais titres
+.project-details__heading {
+  @include label;
+}
+
+.project-details__list {
+  padding-left: $space-5; // les puces restent : ce sont de vraies listes
+}
+
+.project-details__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+}
+
+// La capture : en premier à l'écran, dans un cadre 4:3 réservé avant son chargement ;
+// en bureau, elle reste en haut de sa colonne pendant qu'on lit le texte
+.project-details__cover {
+  order: -1;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+
+  @include up(desktop) {
+    position: sticky;
+    top: 0;
+  }
+}

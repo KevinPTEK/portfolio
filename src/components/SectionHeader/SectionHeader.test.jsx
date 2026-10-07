@@ -86,4 +86,20 @@ describe('SectionHeader', () => {
       'section-header',
     )
   })
+
+  it('avec titleRef, le titre peut recevoir le focus par le code', () => {
+    // la modale y place le focus quand son contenu change (« Projet suivant »)
+    const titleRef = { current: null }
+    renderHeader({ titleRef })
+    const heading = screen.getByRole('heading', { level: 2 })
+    expect(titleRef.current).toBe(heading)
+    expect(heading).toHaveAttribute('tabindex', '-1')
+  })
+
+  it("sans titleRef, le titre n'entre pas dans le parcours du focus", () => {
+    renderHeader()
+    expect(screen.getByRole('heading', { level: 2 })).not.toHaveAttribute(
+      'tabindex',
+    )
+  })
 })

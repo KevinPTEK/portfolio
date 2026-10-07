@@ -1,4 +1,7 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import menu from './menu.json'
 import projects from './projects.json'
 import {
   FILLED,
@@ -13,6 +16,14 @@ import {
 // ou pire, l'affiche mal sans aucune erreur. Ces tests sont les règles que
 // chaque projet doit respecter, aujourd'hui et quand on en ajoutera un.
 
+// les noms des thèmes, lus dans la map Sass : chaque entrée s'écrit « nom: ( »
+const THEMES = [
+  ...readFileSync(
+    join(import.meta.dirname, '../styles/abstracts/_themes.scss'),
+    'utf8',
+  ).matchAll(/^\s*([a-z0-9-]+): \(/gm),
+].map(([, name]) => name)
+
 describe('projects.json', () => {
   it('contient au moins un projet', () => {
     expect(projects.length).toBeGreaterThan(0)
@@ -22,6 +33,14 @@ describe('projects.json', () => {
     // l'id sert de key React et d'id HTML : deux fois le même casse les deux
     const ids = projects.map((project) => project.id)
     expect(ids).toEqual(withoutDuplicates(ids))
+  })
+
+  it("ne réutilise l'id d'aucune pièce du site (home, about, work…)", () => {
+    // l'id d'un projet est l'id HTML de sa pièce : « work » ferait deux #work
+    const roomIds = ['home', ...menu.map((room) => room.id)]
+    for (const project of projects) {
+      expect(roomIds).not.toContain(project.id)
+    }
   })
 
   it('donne à chaque projet sa propre capture et son propre dépôt', () => {
@@ -41,8 +60,11 @@ describe('projects.json', () => {
       },
     )
 
-    // à écrire avec les thèmes nina et events : un thème mal écrit (« ninaa ») passe encore
-    it.todo('a un thème défini dans _themes.scss')
+    it('a un thème défini dans _themes.scss', () => {
+      // un thème inconnu (« ninaa ») : data-theme ne correspond à aucune règle CSS,
+      // la pièce garde les couleurs de la page, sans aucune erreur
+      expect(THEMES).toContain(project.theme)
+    })
 
     it.each(['name', 'title', 'accentWord', 'summary', 'context'])(
       'a un texte « %s » rempli',
@@ -87,10 +109,13 @@ describe('projects.json', () => {
       },
     )
 
-    it('a des tags tous différents', () => {
-      // chaque tag sert de key React dans TagList
-      expect(project.tags).toEqual(withoutDuplicates(project.tags))
-    })
+    it.each(['challenges', 'learned', 'tags'])(
+      'a une liste « %s » sans doublon',
+      (field) => {
+        // chaque texte sert de key React (TagList, listes du détail)
+        expect(project[field]).toEqual(withoutDuplicates(project[field]))
+      },
+    )
 
     it('a un lien vers son code en https', () => {
       expect(project.links.code).toMatch(HTTPS)

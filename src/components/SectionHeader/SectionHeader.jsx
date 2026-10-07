@@ -12,6 +12,8 @@ import './SectionHeader.scss'
  *   (« honnêtement. ») ; l'espace éventuel vient du titre : « 724events. » → « events. »
  * @param {string} [props.lead] - introduction sous le titre
  * @param {boolean} [props.compact=false] - plus petit : la pièce d'un projet partage la place avec sa capture
+ * @param {import('react').RefObject<HTMLHeadingElement>} [props.titleRef] - pour placer le focus
+ *   sur le titre par le code (tabIndex -1 : hors du parcours au clavier)
  *
  * @example
  * <SectionHeader
@@ -28,6 +30,7 @@ export function SectionHeader({
   accent,
   lead,
   compact = false,
+  titleRef,
 }) {
   // L'accent est la fin du titre : on coupe le titre juste avant lui.
   // Sinon (faute dans les données), le titre s'affiche entier, sans accent.
@@ -41,7 +44,13 @@ export function SectionHeader({
   return (
     <header className={className}>
       <p className="section-header__label">{label}</p>
-      <h2 className="section-header__title" id={titleId}>
+      <h2
+        className="section-header__title"
+        id={titleId}
+        ref={titleRef}
+        // focalisable par le code seulement, et seulement si on le demande
+        tabIndex={titleRef ? -1 : undefined}
+      >
         {start}
         {hasAccent && <span className="section-header__accent">{accent}</span>}
       </h2>
