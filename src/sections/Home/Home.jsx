@@ -1,26 +1,13 @@
 import { GiantMenu } from '../../animations/GiantMenu/GiantMenu.jsx'
 import { LivingBackground } from '../../animations/LivingBackground/LivingBackground.jsx'
-import avatar128 from '../../assets/images/avatar-128.webp?no-inline'
-import avatar256 from '../../assets/images/avatar-256.webp?no-inline'
-import avatar512 from '../../assets/images/avatar-512.webp?no-inline'
+import { avatar } from '../../assets/images/avatar.js'
 import { Avatar } from '../../components/Avatar/Avatar.jsx'
 import { Icon } from '../../components/Icon/Icon.jsx'
 import { Room } from '../../components/Room/Room.jsx'
 import { SocialLinks } from '../../components/SocialLinks/SocialLinks.jsx'
-import menu from '../../data/menu.json'
+import { menuItems } from '../../data/menuItems.js'
 import socials from '../../data/socials.json'
-import { pad } from '../../utils/pad.js'
 import './Home.scss'
-
-// ?no-inline : sous 4 Ko, Vite glisserait l'image dans le JS (§ 6, Avatar)
-const avatarSrcSet = `${avatar128} 128w, ${avatar256} 256w, ${avatar512} 512w`
-
-// une ligne du menu géant par pièce, numérotée dans l'ordre de menu.json
-const menuItems = menu.map(({ id, label }, index) => ({
-  label,
-  href: `#${id}`,
-  number: pad(index + 1),
-}))
 
 /**
  * L'accueil : qui je suis à gauche (portrait, nom, métier, profils),
@@ -39,14 +26,15 @@ export function Home() {
         <div className="home__content">
           <div className="home__identity">
             {/* alt vide : mon nom est écrit juste à côté */}
-            <Avatar src={avatar256} srcSet={avatarSrcSet} alt="" size={104} />
+            <Avatar src={avatar.src} srcSet={avatar.srcSet} alt="" size={104} />
             <h1 className="home__name" id="home-title">
               Kevin Renou.
             </h1>
             <p className="home__job">Développeur front-end.</p>
             <SocialLinks links={socials} className="home__links" />
           </div>
-          <nav className="home__menu" aria-label="Menu principal">
+          {/* id : la cible du lien « Menu » de la barre mobile (Nav) */}
+          <nav className="home__menu" id="menu" aria-label="Menu principal">
             <GiantMenu items={menuItems} />
           </nav>
         </div>

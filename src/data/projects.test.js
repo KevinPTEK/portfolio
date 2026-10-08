@@ -33,8 +33,15 @@ describe('projects.json', () => {
 
   it("ne réutilise l'id d'aucune pièce du site (home, about, work…)", () => {
     // l'id d'un projet est l'id HTML de sa pièce : « work » ferait deux #work
-    // (other-work : la pièce « Autres réalisations », hors du menu)
-    const roomIds = ['home', 'other-work', ...menu.map((room) => room.id)]
+    // (other-work : la pièce « Autres réalisations », hors du menu ;
+    // main : la cible du lien d'évitement ; menu : le menu géant de l'accueil)
+    const roomIds = [
+      'home',
+      'other-work',
+      'main',
+      'menu',
+      ...menu.map((room) => room.id),
+    ]
     for (const project of projects) {
       expect(roomIds).not.toContain(project.id)
     }

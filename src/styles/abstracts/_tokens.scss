@@ -41,6 +41,7 @@ $content-max-width: 1200px; // plafond du contenu sur grand écran
 // ---------- Superposition ----------
 $z-nav: 30;
 $z-avatar: 40; // l'avatar fil rouge passe au-dessus de la nav
+$z-skip-link: 50; // le lien d'évitement, au focus, passe au-dessus de tout le site
 $z-loader: 60; // le pré-chargeur couvre tout
 
 // ---------- Mouvement (mêmes valeurs dans animations/variants.js) ----------

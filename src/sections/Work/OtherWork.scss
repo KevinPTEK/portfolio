@@ -1,5 +1,12 @@
 @use '../../styles/abstracts' as *;
 
+// « réalisations. » mesure 5,59 fois la taille du titre : à 21cqi (réglage des
+// projets), il était coupé en plein mot de 320 à 480 px. 100 / 5,59 = 17,9
+// → 17cqi (décision de Kevin, 8 oct. : ce titre seul, les projets gardent 21)
+.other-work {
+  --compact-title-scale: 17cqi;
+}
+
 // Les cartes : autant de colonnes d'au moins 280 px que la largeur en permet.
 // auto-fill et non auto-fit : les colonnes vides restent, si bien qu'une carte
 // seule garde la largeur d'une colonne au lieu de s'étirer sur toute la pièce.

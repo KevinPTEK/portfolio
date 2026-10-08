@@ -70,6 +70,13 @@ describe('Home', () => {
     )
   })
 
+  it('donne au menu principal l’id « menu » : la cible du lien « Menu » de la barre', () => {
+    render(<Home />)
+    expect(
+      screen.getByRole('navigation', { name: 'Menu principal' }),
+    ).toHaveAttribute('id', 'menu')
+  })
+
   it('affiche « © 2026 »', () => {
     render(<Home />)
     expect(screen.getByText('© 2026')).toBeInTheDocument()

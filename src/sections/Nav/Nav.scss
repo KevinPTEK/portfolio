@@ -1,0 +1,234 @@
+@use '../../styles/abstracts' as *;
+
+// La barre du haut (mobile, tablette) : la hauteur d'un portrait de 28 px
+// et de ses marges (maquette : 14 px en haut et en bas)
+$bar-height: 56px;
+
+// Au doigt, des cibles de 44 px de haut (spec § 10, critère AAA 2.5.5 ; le AA
+// 2.5.8 n'en demande que 24, ce que la souris garde en bureau). La barre de
+// 56 px les accueille.
+@mixin touch-target {
+  @media (pointer: coarse) {
+    min-height: 44px;
+  }
+}
+
+// Jamais de focus caché sous la barre (WCAG 2.4.11 ; échec F110 du W3C) :
+// un élément atteint au clavier — ou une pièce atteinte par un lien — défile
+// jusque sous la barre, pas derrière elle. Rien à réserver en bureau : la
+// colonne est à gauche, le contenu décalé de 260 px.
+html {
+  scroll-padding-top: $bar-height;
+
+  @include up(desktop) {
+    scroll-padding-top: 0;
+  }
+}
+
+// ---------- La nav : barre en haut, colonne en bureau ----------
+
+// Ses couleurs sont celles du <body> (pièce courante). Barre et colonne sont
+// presque opaques, sans flou d'arrière-plan (décisions de Kevin, 8 oct. ;
+// spec § 8 et § 11) : leur texte reste lisible quoi qui défile dessous —
+// transparente (maquette), la colonne tombait à 1,1 : 1 quand la frontière
+// entre une pièce sombre et une pièce claire passait sous elle (mesuré, § 8).
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: $z-nav;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  height: $bar-height;
+  padding: 0 $gutter;
+  color: var(--ink);
+  background-color: color-mix(in srgb, var(--bg) 92%, transparent);
+
+  // bureau : une colonne de toute la hauteur, bordée d'un filet
+  @include up(desktop) {
+    inset: 0 auto 0 0;
+    width: $nav-width;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: $space-6;
+    overflow-y: auto; // une fenêtre très basse ne coupe rien
+    border-right: 1px solid var(--line);
+  }
+}
+
+// Sur l'accueil : invisible, et donc hors de la tabulation et de l'arbre
+// d'accessibilité (un simple décalage hors de l'écran laisserait les liens
+// atteignables à l'aveugle)
+.nav--hidden {
+  visibility: hidden;
+}
+
+// ---------- Identité ----------
+
+.nav__identity {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.nav__brand {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  font-size: $font-size-ui;
+  font-weight: 600;
+  text-decoration: none;
+
+  @include touch-target;
+  @include focus-ring;
+
+  @include up(desktop) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-4;
+    font-size: $font-size-lead;
+    letter-spacing: -0.02em;
+  }
+}
+
+// le portrait suit la largeur de son emplacement (max-width: 100 % du reset)
+.nav__avatar {
+  display: block;
+  width: 28px;
+
+  @include up(desktop) {
+    width: 56px;
+  }
+}
+
+.nav__dot {
+  color: var(--accent);
+}
+
+// métier et profils : la colonne de bureau seulement
+.nav__details {
+  display: none;
+
+  @include up(desktop) {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+  }
+}
+
+.nav__job {
+  font-size: $font-size-ui;
+  color: var(--ink-2);
+}
+
+// ---------- Les pièces ----------
+
+// absentes de la barre mobile : « Menu » ramène au menu géant
+.nav__sections {
+  display: none;
+
+  @include up(tablet) {
+    display: block;
+  }
+}
+
+.nav__list {
+  display: flex;
+  gap: $space-4;
+
+  @include up(desktop) {
+    flex-direction: column;
+    gap: $space-2;
+  }
+}
+
+.nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  min-height: 24px; // cible de 24 px au moins (WCAG 2.5.8)
+  font-size: $font-size-small;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none; // liste de liens, reconnaissable à sa place (§ 10)
+
+  @include touch-target;
+  @include focus-ring;
+
+  @include up(desktop) {
+    font-size: $font-size-ui;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--ink);
+    }
+  }
+
+  // la place du point est réservée sur chaque lien : sans elle, les liens
+  // se décalaient de 14 px à chaque changement de pièce (revue, mesuré)
+  &::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  // la pièce affichée : texte plein et point d'accent — une forme, pas
+  // seulement une couleur (WCAG 1.4.1)
+  &[aria-current='location'] {
+    color: var(--ink);
+
+    &::after {
+      background-color: var(--accent);
+
+      // contraste forcé : un fond retiré ferait disparaître le point
+      @media (forced-colors: active) {
+        background-color: CanvasText;
+      }
+    }
+  }
+}
+
+.nav__number {
+  font-size: $font-size-label;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+}
+
+// ---------- Barre mobile : retour au menu géant ----------
+
+.nav__menu-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 $space-3;
+  border: 1px solid var(--line);
+  border-radius: $radius-pill;
+  font-size: $font-size-small;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  @include touch-target;
+  @include focus-ring;
+
+  @include up(tablet) {
+    display: none;
+  }
+}
+
+// ---------- Colonne de bureau : © en bas ----------
+
+.nav__copyright {
+  display: none;
+
+  @include up(desktop) {
+    display: block;
+    @include label;
+  }
+}

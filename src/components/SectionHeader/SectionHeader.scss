@@ -46,8 +46,10 @@
   .section-header__title {
     // « 724events. », d'un seul tenant, mesure 4,52 fois la taille du texte :
     // à 21 % de la largeur de l'en-tête (21cqi), il tient toujours sur sa ligne.
-    // 84 / 44 < 2,5 : le titre atteint 200 % au zoom (§ 10)
-    font-size: clamp(44px, 21cqi, 84px);
+    // Une section dont le titre a un mot plus long règle --compact-title-scale
+    // sur elle-même (au plus 100 / largeur du mot en em). 84 / 44 < 2,5 : le
+    // titre atteint 200 % au zoom (§ 10)
+    font-size: clamp(44px, var(--compact-title-scale, 21cqi), 84px);
   }
 
   .section-header__lead {

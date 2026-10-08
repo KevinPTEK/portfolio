@@ -1,0 +1,25 @@
+@use '../../styles/abstracts' as *;
+
+// Une pilule pleine en haut à gauche, au-dessus de tout, le temps du focus ;
+// le reste du temps, masquée à l'écran mais atteignable au clavier (un
+// display: none ou un visibility: hidden la retireraient de la tabulation)
+.skip-link {
+  position: fixed;
+  top: $space-3;
+  left: $space-3;
+  z-index: $z-skip-link;
+  padding: $space-3 $space-5;
+  border: 1px solid transparent; // visible en contraste forcé (comme Button)
+  border-radius: $radius-pill;
+  font-size: $font-size-ui;
+  font-weight: 600;
+  color: var(--bg);
+  background-color: var(--ink);
+  text-decoration: none;
+
+  @include focus-ring;
+
+  &:not(:focus) {
+    @include visually-hidden;
+  }
+}
