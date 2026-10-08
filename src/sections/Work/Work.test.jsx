@@ -35,10 +35,15 @@ describe('Work', () => {
     },
   )
 
-  it("garde les pièces dans l'ordre de projects.json", () => {
+  it("garde les projets dans l'ordre de projects.json, puis les autres réalisations", () => {
     render(<Work />)
     const ids = [...document.querySelectorAll('section')].map((room) => room.id)
-    expect(ids).toEqual(projects.map((project) => project.id))
+    expect(ids).toEqual([
+      ...projects.map((project) => project.id),
+      'other-work',
+    ])
+    // dans #work : le menu « Travaux » mène aux projets comme aux autres réalisations
+    expect(document.querySelector('#work #other-work')).not.toBe(null)
   })
 
   it('garde la modale montée, fermée, avant toute ouverture', () => {

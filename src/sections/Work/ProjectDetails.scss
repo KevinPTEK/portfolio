@@ -48,10 +48,7 @@
 // La capture : en premier à l'écran, dans un cadre 4:3 réservé avant son chargement ;
 // en bureau, elle reste en haut de sa colonne pendant qu'on lit le texte
 .project-details__cover {
-  order: -1;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  @include cover-frame;
 
   @include up(desktop) {
     position: sticky;

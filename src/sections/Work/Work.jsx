@@ -3,13 +3,14 @@ import { Modal } from '../../components/Modal/Modal.jsx'
 import { ProjectCard } from '../../components/ProjectCard/ProjectCard.jsx'
 import { Room } from '../../components/Room/Room.jsx'
 import projects from '../../data/projects.json'
+import { OtherWork } from './OtherWork.jsx'
 import { ProjectDetails } from './ProjectDetails.jsx'
 import './Work.scss'
 
 /**
  * Les travaux : une pièce par projet, aux couleurs du projet, empilées
- * (la suivante glisse par-dessus quand l'écran est assez grand), et la modale
- * de détail, ouverte par « Voir le projet ».
+ * (la suivante glisse par-dessus quand l'écran est assez grand), puis les
+ * autres réalisations, et la modale de détail, ouverte par « Voir le projet ».
  * Le conteneur n'est pas une région : chaque projet en est une (§ 8).
  */
 export function Work() {
@@ -80,6 +81,8 @@ export function Work() {
           </Room>
         )
       })}
+
+      <OtherWork />
 
       <Modal
         open={isOpen}

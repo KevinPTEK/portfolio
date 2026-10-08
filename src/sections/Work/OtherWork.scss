@@ -1,0 +1,23 @@
+@use '../../styles/abstracts' as *;
+
+// Les cartes : autant de colonnes d'au moins 280 px que la largeur en permet.
+// auto-fill et non auto-fit : les colonnes vides restent, si bien qu'une carte
+// seule garde la largeur d'une colonne au lieu de s'étirer sur toute la pièce.
+// min(100%, 280px) : sous 280 px de place (petit écran, zoom), la colonne
+// rétrécit au lieu de déborder.
+.other-work__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: $space-5;
+  margin-top: $space-7;
+}
+
+// Une case de grille par carte : la carte s'y étire, et toutes les cartes
+// d'une rangée prennent la même hauteur. La colonne est déclarée en
+// minmax(0, 1fr) : laissée implicite (auto), elle s'élargirait au mot le plus
+// long de la carte (une adresse dans le résumé), qui déborderait de la page
+// au lieu de passer à la ligne — même cause que ProjectCard (§ 6)
+.other-work__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}

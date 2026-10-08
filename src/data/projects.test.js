@@ -1,6 +1,7 @@
-import { readFileSync } from 'node:fs'
-import { join } from 'node:path'
+// @vitest-environment node
+// (aucun DOM ici : des données, et les thèmes compilés par Sass dans Node)
 import { describe, expect, it } from 'vitest'
+import { readThemes } from '../styles/readThemes.js'
 import menu from './menu.json'
 import projects from './projects.json'
 import {
@@ -16,13 +17,8 @@ import {
 // ou pire, l'affiche mal sans aucune erreur. Ces tests sont les règles que
 // chaque projet doit respecter, aujourd'hui et quand on en ajoutera un.
 
-// les noms des thèmes, lus dans la map Sass : chaque entrée s'écrit « nom: ( »
-const THEMES = [
-  ...readFileSync(
-    join(import.meta.dirname, '../styles/abstracts/_themes.scss'),
-    'utf8',
-  ).matchAll(/^\s*([a-z0-9-]+): \(/gm),
-].map(([, name]) => name)
+// les noms des thèmes, lus dans le CSS compilé (la même lecture que themes.test.js)
+const THEMES = readThemes().themes.map((theme) => theme.name)
 
 describe('projects.json', () => {
   it('contient au moins un projet', () => {
@@ -37,7 +33,8 @@ describe('projects.json', () => {
 
   it("ne réutilise l'id d'aucune pièce du site (home, about, work…)", () => {
     // l'id d'un projet est l'id HTML de sa pièce : « work » ferait deux #work
-    const roomIds = ['home', ...menu.map((room) => room.id)]
+    // (other-work : la pièce « Autres réalisations », hors du menu)
+    const roomIds = ['home', 'other-work', ...menu.map((room) => room.id)]
     for (const project of projects) {
       expect(roomIds).not.toContain(project.id)
     }

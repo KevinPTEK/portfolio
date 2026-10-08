@@ -15,6 +15,15 @@
     @media (min-height: 700px) {
       position: sticky;
       top: 0;
+
+      // Focus clavier dans la pièce (Maj+Tab depuis la pièce suivante) : collée,
+      // elle resterait sous la suivante et son bouton serait entièrement caché
+      // (WCAG 2.4.11). Elle se décolle et reprend sa place dans le flux, où rien
+      // ne la recouvre ; le navigateur défile jusqu'au bouton. :focus-visible et
+      // non :focus-within : après un clic de souris, l'empilement reste intact.
+      &:has(:focus-visible) {
+        position: relative;
+      }
     }
   }
 }

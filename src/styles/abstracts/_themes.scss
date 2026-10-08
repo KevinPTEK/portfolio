@@ -1,4 +1,8 @@
 // Couleurs des pièces, --bg (fond), --ink (texte), --ink-2 (texte secondaire), --accent et --line (filets)
+// --surface : le fond translucide d'une carte posée dans la pièce (blanc à 55 % sur papier,
+// comme les cartes de la maquette ; 6 % sur les projets). Contrastes sur la carte calculés
+// sur un fond uni (ink / ink-2 / accent) : kraft 14,2 / 6,5 / 4,9, froid 15,7 / 5,6 / 5,8,
+// argent 15,6 / 8,2 / 7,1, events 12,2 / 6,6 / 5,1, nina 13,7 / 8,6 / 6,3
 
 // thème appliqué avant tout JavaScript : le kraft de l'accueil
 $default-theme: paper-light;
@@ -12,6 +16,7 @@ $themes: (
       ink-2: #6e4e2e,
       accent: #ae4715,
       line: rgba(0, 0, 0, 0.14),
+      surface: rgba(255, 255, 255, 0.55),
     ),
   paper-cool: (
     scheme: light,
@@ -20,6 +25,7 @@ $themes: (
     ink-2: #5a6474,
     accent: #3f5f9f,
     line: rgba(29, 41, 66, 0.14),
+    surface: rgba(255, 255, 255, 0.55),
   ),
 
   // Thème des projets (contrastes sur le fond : ink, ink-2, accent)
@@ -31,6 +37,7 @@ $themes: (
       ink-2: #b9aacf,
       accent: #00bc77,
       line: rgba(255, 255, 255, 0.16),
+      surface: rgba(255, 255, 255, 0.06),
     ),
   // 724events : 14,5 / 7,8 / 6,1 — l'accent est le violet clair de sa palette ;
   // le violet de la marque (#5b32ff) ne donnerait que 2,5 sur ce fond
@@ -41,6 +48,7 @@ $themes: (
       ink-2: #9fbac4,
       accent: #a691fc,
       line: rgba(255, 255, 255, 0.16),
+      surface: rgba(255, 255, 255, 0.06),
     ),
   // Nina Carducci : 16,1 / 10,1 / 7,4 — un brun chaud et l'orange de son site
   nina: (
@@ -50,5 +58,6 @@ $themes: (
       ink-2: #ddbfa9,
       accent: #e5975f,
       line: rgba(255, 255, 255, 0.16),
+      surface: rgba(255, 255, 255, 0.06),
     )
 );

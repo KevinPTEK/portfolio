@@ -45,3 +45,13 @@
   white-space: nowrap;
   border: 0;
 }
+
+// La capture d'un site (ProjectCard, ProjectDetails, SiteCard) : écrite après
+// le texte dans le code (le titre ouvre la carte), remise en premier à l'écran ;
+// cadre 4:3 réservé avant son chargement (aucun saut de mise en page)
+@mixin cover-frame {
+  order: -1;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
