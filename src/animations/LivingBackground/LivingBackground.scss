@@ -1,0 +1,149 @@
+@use 'sass:map';
+@use '../../styles/abstracts' as *;
+
+// ---------- Outils ----------
+
+// Un bruit fractal en niveaux de gris : un petit SVG (feTurbulence) en image de
+// fond, calculé une fois par tuile puis répété — sa largeur donne la taille de
+// la tuile. Le filtre est calculé sur la tuile exacte (x, y, width, height) :
+// par défaut il déborde de 10 % de chaque côté, le bruit se raccorde alors sur
+// 1,2 tuile et chaque répétition laisse une couture (revue du 8 oct.).
+// Un calque de fond n'a pas d'opacité propre : elle est cuite dans le SVG
+// (opacity du rectangle). # et % s'écrivent %23 et %25 dans une adresse data:
+@function noise($size, $frequency, $octaves, $opacity) {
+  @return url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='#{$size}' height='#{$size}'><filter id='n' x='0' y='0' width='1' height='1'><feTurbulence type='fractalNoise' baseFrequency='#{$frequency}' numOctaves='#{$octaves}' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='#{$opacity}'/></svg>");
+}
+
+// Les deux papiers de la charte (§ 5) : le kraft et le blanc bleuté.
+// Le milieu du dégradé est la couleur de fond du thème de la pièce.
+$paper-tones: (
+  kraft: (
+    highlight: #fff3e2,
+    shade: #f0cfa6,
+    top: #fbebd6,
+    middle: map.get($themes, paper-light, bg),
+    bottom: #e3c49c,
+    grain: 0.62,
+    clouds: 0.5,
+    hatch: rgba(107, 75, 42, 0.075),
+    // 0,18 dans la charte : allégée le 8 oct. pour le texte des coins (§ 10)
+    vignette: rgba(120, 90, 50, 0.12),
+  ),
+  cool: (
+    highlight: #fbfcfe,
+    shade: #d6dfee,
+    top: #f6f8fc,
+    middle: map.get($themes, paper-cool, bg),
+    bottom: #dce4f0,
+    grain: 0.5,
+    clouds: 0.42,
+    hatch: rgba(65, 80, 107, 0.055),
+    vignette: rgba(50, 66, 96, 0.14),
+  ),
+);
+
+// ---------- Le calque ----------
+
+// Derrière le contenu de la pièce (Room l'isole : z-index -1 y reste) ;
+// il rogne ce qui dépasse, puisque Room ne le fait pas (§ 6)
+.living-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+
+  // contraste forcé : les images en url() ne sont pas retirées (MDN) — le
+  // bruit et la capture resteraient sous le texte aux couleurs du système ;
+  // plus de contraste demandé : le grain et la hachure aussi. Reste le fond
+  // uni de la pièce, celui des contrastes calculés (§ 10)
+  @media (forced-colors: active), (prefers-contrast: more) {
+    display: none;
+  }
+}
+
+// ---------- Papier : un seul élément ----------
+
+// Les calques sont les images de fond d'un même élément, fusionnées entre
+// elles (background-blend-mode) : rien ne se mélange avec le reste de la page,
+// contrairement à des éléments en mix-blend-mode (la maquette). Du haut vers
+// le bas : vignette, hachure de crayon, nuances, grain, puis le dégradé du
+// papier. Entièrement fixe (charte : le papier ne bouge jamais).
+.living-background--paper {
+  background-image:
+    radial-gradient(
+      120% 90% at 50% 40%,
+      transparent 45%,
+      var(--paper-vignette)
+    ),
+    repeating-linear-gradient(
+      48deg,
+      var(--paper-hatch) 0 1px,
+      transparent 1px 5px
+    ),
+    var(--paper-clouds), var(--paper-grain),
+    radial-gradient(
+      110% 100% at 15% 10%,
+      var(--paper-highlight),
+      transparent 55%
+    ),
+    radial-gradient(100% 90% at 85% 90%, var(--paper-shade), transparent 60%),
+    linear-gradient(
+      160deg,
+      var(--paper-top),
+      var(--paper-middle) 60%,
+      var(--paper-bottom)
+    );
+  // un mode par calque, dans le même ordre (vérifié par le test du style)
+  background-blend-mode:
+    normal, multiply, overlay, multiply, normal, normal, normal;
+}
+
+@each $tone, $paper in $paper-tones {
+  .living-background--#{$tone} {
+    --paper-highlight: #{map.get($paper, highlight)};
+    --paper-shade: #{map.get($paper, shade)};
+    --paper-top: #{map.get($paper, top)};
+    --paper-middle: #{map.get($paper, middle)};
+    --paper-bottom: #{map.get($paper, bottom)};
+    --paper-grain: #{noise(300, 0.75, 4, map.get($paper, grain))};
+    --paper-clouds: #{noise(600, 0.008, 3, map.get($paper, clouds))};
+    --paper-hatch: #{map.get($paper, hatch)};
+    --paper-vignette: #{map.get($paper, vignette)};
+  }
+}
+
+// ---------- Capture d'un projet ----------
+
+// Mesurés sur le vrai rendu (décision de Kevin, 8 oct., § 10) : avec ce voile
+// de la couleur de la pièce et cette lueur, tout petit texte des trois projets
+// reste au-dessus de 5 : 1 au pixel le plus clair. La lueur de la maquette
+// (38 %) éclairait surtout la zone du texte : c'est elle qui coûtait le plus.
+$cover-veil: 82%;
+$cover-glow: 15%;
+
+// La capture pré-floutée (flou et saturation cuits dans l'image : aucun
+// filtre à l'exécution, § 11), étirée sur toute la pièce
+.living-background__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Par-dessus : le voile de la couleur de la pièce, un dégradé sombre vers le
+// bas, la lueur de l'accent et le grain (fusionné avec les calques du dessous)
+.living-background--cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: color-mix(in srgb, var(--bg) $cover-veil, transparent);
+  background-image:
+    #{noise(160, 0.9, 2, 0.07)},
+    radial-gradient(
+      70% 60% at 28% 45%,
+      color-mix(in srgb, var(--accent) $cover-glow, transparent),
+      transparent 70%
+    ),
+    linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.35));
+  background-blend-mode: overlay, normal, normal;
+}

@@ -39,6 +39,15 @@ describe('OtherWork', () => {
     expect(room).toHaveClass('room', 'other-work')
   })
 
+  it('pose le papier kraft derrière la pièce', () => {
+    render(<OtherWork />)
+    const room = screen.getByRole('region', { name: 'Autres réalisations.' })
+    expect(room.firstElementChild).toHaveClass(
+      'living-background--paper',
+      'living-background--kraft',
+    )
+  })
+
   it("affiche l'étiquette, le titre avec son accent et l'introduction", () => {
     render(<OtherWork />)
     expect(screen.getByText('Et aussi')).toBeInTheDocument()

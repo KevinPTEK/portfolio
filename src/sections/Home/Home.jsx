@@ -1,4 +1,5 @@
 import { GiantMenu } from '../../animations/GiantMenu/GiantMenu.jsx'
+import { LivingBackground } from '../../animations/LivingBackground/LivingBackground.jsx'
 import avatar128 from '../../assets/images/avatar-128.webp?no-inline'
 import avatar256 from '../../assets/images/avatar-256.webp?no-inline'
 import avatar512 from '../../assets/images/avatar-512.webp?no-inline'
@@ -32,6 +33,7 @@ export function Home() {
       theme="paper-light"
       labelledBy="home-title"
       className="home"
+      background={<LivingBackground tone="kraft" />}
     >
       <div className="home__layout">
         <div className="home__content">

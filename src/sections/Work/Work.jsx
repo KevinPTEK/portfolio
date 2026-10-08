@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { LivingBackground } from '../../animations/LivingBackground/LivingBackground.jsx'
 import { Modal } from '../../components/Modal/Modal.jsx'
 import { ProjectCard } from '../../components/ProjectCard/ProjectCard.jsx'
 import { Room } from '../../components/Room/Room.jsx'
@@ -70,6 +71,9 @@ export function Work() {
             theme={project.theme}
             labelledBy={titleId}
             className="work__project"
+            background={
+              <LivingBackground variant="cover" image={project.cover.blur} />
+            }
           >
             <ProjectCard
               project={project}

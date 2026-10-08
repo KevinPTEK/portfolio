@@ -35,6 +35,19 @@ describe('Work', () => {
     },
   )
 
+  it.each(projects)(
+    'pose derrière $name sa propre capture floutée',
+    (project) => {
+      render(<Work />)
+      const background = document.getElementById(project.id).firstElementChild
+      expect(background).toHaveClass('living-background--cover')
+      expect(background.querySelector('img')).toHaveAttribute(
+        'src',
+        project.cover.blur,
+      )
+    },
+  )
+
   it("garde les projets dans l'ordre de projects.json, puis les autres réalisations", () => {
     render(<Work />)
     const ids = [...document.querySelectorAll('section')].map((room) => room.id)

@@ -1,7 +1,7 @@
 // Couleurs des pièces, --bg (fond), --ink (texte), --ink-2 (texte secondaire), --accent et --line (filets)
 // --surface : le fond translucide d'une carte posée dans la pièce (blanc à 55 % sur papier,
 // comme les cartes de la maquette ; 6 % sur les projets). Contrastes sur la carte calculés
-// sur un fond uni (ink / ink-2 / accent) : kraft 14,2 / 6,5 / 4,9, froid 15,7 / 5,6 / 5,8,
+// sur un fond uni (ink / ink-2 / accent) : kraft 14,2 / 9,4 / 6,6, froid 15,7 / 5,6 / 5,8,
 // argent 15,6 / 8,2 / 7,1, events 12,2 / 6,6 / 5,1, nina 13,7 / 8,6 / 6,3
 
 // thème appliqué avant tout JavaScript : le kraft de l'accueil
@@ -9,12 +9,16 @@ $default-theme: paper-light;
 
 $themes: (
   // les deux papiers des pièces personnelles
+  // kraft : ink-2 et accent assombris le 8 oct. (#6e4e2e, #ae4715) — le bas du
+  // papier (#e3c49c) et son grain sont plus sombres que bg : mesurés sur le vrai
+  // fond, ink-2 tombait à 3,3 (sans les 2 % de pixels les plus sombres) et
+  // l'accent à 2,5 (pixel le plus sombre) (§ 10). Sur fond uni : 11,9 / 7,9 / 5,5
   paper-light: (
       scheme: light,
       bg: #efd8b8,
       ink: #2b1c10,
-      ink-2: #6e4e2e,
-      accent: #ae4715,
+      ink-2: #523720,
+      accent: #8f380e,
       line: rgba(0, 0, 0, 0.14),
       surface: rgba(255, 255, 255, 0.55),
     ),

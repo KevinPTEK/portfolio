@@ -26,6 +26,18 @@ describe('Home', () => {
     )
   })
 
+  it("pose le papier kraft derrière la pièce, caché aux lecteurs d'écran", () => {
+    render(<Home />)
+    const room = screen.getByRole('region', { name: 'Kevin Renou.' })
+    // premier enfant de la pièce : le fond, avant le contenu (Room)
+    const background = room.firstElementChild
+    expect(background).toHaveClass(
+      'living-background--paper',
+      'living-background--kraft',
+    )
+    expect(background).toHaveAttribute('aria-hidden', 'true')
+  })
+
   it('dit mon métier', () => {
     render(<Home />)
     expect(screen.getByText('Développeur front-end.')).toBeInTheDocument()

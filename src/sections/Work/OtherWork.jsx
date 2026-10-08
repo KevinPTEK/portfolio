@@ -1,3 +1,4 @@
+import { LivingBackground } from '../../animations/LivingBackground/LivingBackground.jsx'
 import { Room } from '../../components/Room/Room.jsx'
 import { SectionHeader } from '../../components/SectionHeader/SectionHeader.jsx'
 import { SiteCard } from '../../components/SiteCard/SiteCard.jsx'
@@ -18,6 +19,7 @@ export function OtherWork() {
       theme="paper-light"
       labelledBy="other-work-title"
       className="other-work"
+      background={<LivingBackground tone="kraft" />}
     >
       <SectionHeader
         titleId="other-work-title"

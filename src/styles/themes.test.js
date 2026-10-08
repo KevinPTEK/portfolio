@@ -19,7 +19,7 @@ const EXPECTED = [
 
 // ---------- Contraste WCAG (formule de la luminance relative) ----------
 
-// « #6e4e2e » ou « rgba(255, 255, 255, 0.55) » → { rgb, alpha }
+// « #523720 » ou « rgba(255, 255, 255, 0.55) » → { rgb, alpha }
 function parseColor(value) {
   const hex = value.match(/^#([0-9a-f]{6})$/i)
   if (hex) {

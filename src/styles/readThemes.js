@@ -9,7 +9,7 @@ import { compile } from 'sass-embedded'
  *
  * @returns {{ css: string, themes: { name: string, declarations: Record<string, string> }[] }}
  *   le CSS compilé, et un objet par bloc [data-theme=…] :
- *   son nom et ses déclarations (« --ink-2 » → « #6e4e2e »)
+ *   son nom et ses déclarations (« --ink-2 » → « #523720 »)
  */
 export function readThemes() {
   const { css } = compile(join(import.meta.dirname, 'main.scss'))
@@ -23,7 +23,7 @@ export function readThemes() {
 
   const themes = [...blocks].map(([, , name, block]) => ({
     name,
-    // une déclaration par ligne : « --ink-2: #6e4e2e; »
+    // une déclaration par ligne : « --ink-2: #523720; »
     declarations: Object.fromEntries(
       [...block.matchAll(/^\s*([a-z0-9-]+):\s*([^;]+);/gm)].map(
         ([, property, value]) => [property, value.trim()],
