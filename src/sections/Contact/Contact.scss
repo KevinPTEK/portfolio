@@ -1,0 +1,23 @@
+@use '../../styles/abstracts' as *;
+
+// L'adresse en grand, en Playfair, soulignée à l'accent (charte § 5).
+// 56 / 24 < 2,5 : elle atteint 200 % au zoom (§ 10). Une adresse n'a pas
+// d'espace : à 320 px, elle se coupe où il faut plutôt que de déborder.
+.contact__email {
+  display: inline-block;
+  margin-top: $space-7;
+  font-family: $font-serif;
+  font-size: clamp(24px, 5vw, 56px);
+  line-height: 1.2;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.15em;
+  overflow-wrap: anywhere;
+
+  @include focus-ring;
+}
+
+.contact__actions {
+  @include actions-row;
+  margin-top: $space-6;
+}

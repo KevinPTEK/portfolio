@@ -2,6 +2,7 @@ import { avatar } from '../../assets/images/avatar.js'
 import { Avatar } from '../../components/Avatar/Avatar.jsx'
 import { SocialLinks } from '../../components/SocialLinks/SocialLinks.jsx'
 import { menuItems } from '../../data/menuItems.js'
+import profile from '../../data/profile.json'
 import socials from '../../data/socials.json'
 import './Nav.scss'
 
@@ -29,11 +30,12 @@ export function Nav({ currentSection = null, isHidden = false }) {
             <Avatar src={avatar.src} srcSet={avatar.srcSet} alt="" size={56} />
           </span>
           <span>
-            Kevin Renou<span className="nav__dot">.</span>
+            {profile.name}
+            <span className="nav__dot">.</span>
           </span>
         </a>
         <div className="nav__details">
-          <p className="nav__job">Développeur front-end.</p>
+          <p className="nav__job">{profile.job}</p>
           <SocialLinks links={socials} />
         </div>
       </div>
@@ -60,7 +62,7 @@ export function Nav({ currentSection = null, isHidden = false }) {
       <a className="nav__menu-link" href="#menu">
         Menu
       </a>
-      <p className="nav__copyright">© 2026</p>
+      <p className="nav__copyright">{profile.copyright}</p>
     </header>
   )
 }

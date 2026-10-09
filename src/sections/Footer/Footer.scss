@@ -1,0 +1,55 @@
+@use '../../styles/abstracts' as *;
+
+// Une bande au kraft de « Contact », sous la pièce : © à gauche, « Haut de
+// page » à droite. Ses propres couleurs (data-theme) : elle reste lisible
+// quelle que soit la pièce courante du <body>.
+.footer {
+  position: relative; // repère du fond
+  isolation: isolate; // le fond en z-index -1 reste dans le pied de page
+  display: grid;
+  // plafonné et centré comme le contenu des pièces (Room) : à 2 560 px, il
+  // reste aligné sur lui (revue)
+  grid-template-columns: minmax(0, $content-max-width);
+  justify-content: center;
+  padding: $space-5 $gutter;
+  color: var(--ink);
+  background-color: var(--bg);
+  border-top: 1px solid var(--line);
+
+  @include up(desktop) {
+    padding: $space-5 $space-8 $space-5 $content-offset;
+  }
+}
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+}
+
+.footer__signature {
+  @include label;
+}
+
+// en encre principale : 4,54 : 1 seulement en ink-2 sur le grain (mesuré),
+// une marge trop mince ; le lien se distingue en plus de la signature
+.footer__top {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  min-height: 24px; // cible de 24 px au moins (WCAG 2.5.8)
+  text-decoration: none;
+
+  @include label;
+  color: var(--ink);
+
+  @include touch-target;
+  @include focus-ring;
+}
+
+// la flèche → tournée vers le haut
+.footer__top-icon {
+  transform: rotate(-90deg);
+}

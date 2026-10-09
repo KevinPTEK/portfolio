@@ -4,15 +4,6 @@
 // et de ses marges (maquette : 14 px en haut et en bas)
 $bar-height: 56px;
 
-// Au doigt, des cibles de 44 px de haut (spec § 10, critère AAA 2.5.5 ; le AA
-// 2.5.8 n'en demande que 24, ce que la souris garde en bureau). La barre de
-// 56 px les accueille.
-@mixin touch-target {
-  @media (pointer: coarse) {
-    min-height: 44px;
-  }
-}
-
 // Jamais de focus caché sous la barre (WCAG 2.4.11 ; échec F110 du W3C) :
 // un élément atteint au clavier — ou une pièce atteinte par un lien — défile
 // jusque sous la barre, pas derrière elle. Rien à réserver en bureau : la

@@ -1,0 +1,76 @@
+@use '../../styles/abstracts' as *;
+
+// Une colonne sur mobile (portrait au-dessus), deux en bureau : le portrait à
+// gauche, le texte à droite (maquette)
+.about__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: $space-6;
+
+  @include up(desktop) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+    gap: $space-8;
+    align-items: center;
+  }
+}
+
+.about__text {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  font-size: $font-size-lead;
+}
+
+// des classes, pas des sélecteurs de balise : l'étiquette et le titre de
+// SectionHeader sont aussi des <p> dans ce bloc (revue)
+.about__paragraph {
+  color: var(--ink-2);
+}
+
+.about__highlight {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.about__actions {
+  @include actions-row;
+  margin-top: $space-2;
+}
+
+// Le portrait dans une carte 4:5 translucide, posé sur son reflet flouté.
+// Devant le texte à l'écran, après lui dans le code.
+.about__portrait {
+  order: -1;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 260px; // sur mobile, le titre reste dans le premier écran (revue)
+  aspect-ratio: 4 / 5;
+  overflow: hidden; // le reflet, décoratif, ne dépasse pas de la carte
+  border-radius: $radius-md;
+  background-color: var(--surface);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.35);
+
+  @include up(tablet) {
+    max-width: 380px;
+  }
+}
+
+// flou et saturation cuits dans l'image : aucun filtre à l'exécution (§ 11)
+.about__reflection {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+}
+
+// le portrait suit la largeur de son emplacement (max-width: 100 % du reset)
+.about__avatar {
+  position: relative;
+  width: 70%;
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.7);
+}

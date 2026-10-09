@@ -6,6 +6,7 @@ import { Icon } from '../../components/Icon/Icon.jsx'
 import { Room } from '../../components/Room/Room.jsx'
 import { SocialLinks } from '../../components/SocialLinks/SocialLinks.jsx'
 import { menuItems } from '../../data/menuItems.js'
+import profile from '../../data/profile.json'
 import socials from '../../data/socials.json'
 import './Home.scss'
 
@@ -28,9 +29,9 @@ export function Home() {
             {/* alt vide : mon nom est écrit juste à côté */}
             <Avatar src={avatar.src} srcSet={avatar.srcSet} alt="" size={104} />
             <h1 className="home__name" id="home-title">
-              Kevin Renou.
+              {profile.name}.
             </h1>
-            <p className="home__job">Développeur front-end.</p>
+            <p className="home__job">{profile.job}</p>
             <SocialLinks links={socials} className="home__links" />
           </div>
           {/* id : la cible du lien « Menu » de la barre mobile (Nav) */}
@@ -39,7 +40,7 @@ export function Home() {
           </nav>
         </div>
         <div className="home__footer">
-          <p className="home__copyright">© 2026</p>
+          <p className="home__copyright">{profile.copyright}</p>
           {/* une indication pour les yeux ; le menu mène déjà aux pièces */}
           <p className="home__scroll" aria-hidden="true">
             Défiler

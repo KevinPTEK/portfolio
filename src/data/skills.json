@@ -1,0 +1,85 @@
+[
+  {
+    "group": "Front-end",
+    "items": [
+      {
+        "name": "HTML sémantique",
+        "level": 3,
+        "proof": "tournetmarou"
+      },
+      {
+        "name": "CSS & Sass",
+        "detail": "BEM, responsive, animations",
+        "level": 3,
+        "proof": "tournetmarou"
+      },
+      {
+        "name": "JavaScript ES6+",
+        "detail": "DOM, fetch, async",
+        "level": 2,
+        "proof": "argent"
+      },
+      {
+        "name": "React",
+        "detail": "Hooks, Router",
+        "level": 2,
+        "proof": "argent"
+      },
+      {
+        "name": "Redux",
+        "detail": "Bases",
+        "level": 1,
+        "proof": "argent"
+      }
+    ]
+  },
+  {
+    "group": "Outils",
+    "items": [
+      {
+        "name": "Git & GitHub",
+        "level": 2
+      },
+      {
+        "name": "Vite",
+        "level": 2
+      },
+      {
+        "name": "VS Code",
+        "level": 3
+      },
+      {
+        "name": "Figma",
+        "detail": "Lecture de maquettes",
+        "level": 2
+      }
+    ]
+  },
+  {
+    "group": "Qualité",
+    "items": [
+      {
+        "name": "Responsive design",
+        "level": 3
+      },
+      {
+        "name": "Accessibilité",
+        "detail": "WCAG, clavier, ARIA",
+        "level": 2,
+        "proof": "nina"
+      },
+      {
+        "name": "SEO & performance",
+        "detail": "Lighthouse",
+        "level": 2,
+        "proof": "nina"
+      },
+      {
+        "name": "Tests & débogage",
+        "detail": "Jest, DevTools",
+        "level": 1,
+        "proof": "events"
+      }
+    ]
+  }
+]

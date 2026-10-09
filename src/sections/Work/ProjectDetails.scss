@@ -40,9 +40,7 @@
 }
 
 .project-details__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $space-3;
+  @include actions-row;
 }
 
 // La capture : en premier à l'écran, dans un cadre 4:3 réservé avant son chargement ;

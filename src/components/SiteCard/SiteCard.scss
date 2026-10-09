@@ -37,9 +37,7 @@ $inner-radius: $radius-md - $border-width;
 }
 
 .site-card__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $space-3;
+  @include actions-row;
   margin-top: auto;
 }
 

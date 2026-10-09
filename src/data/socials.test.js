@@ -10,6 +10,10 @@ describe('socials.json', () => {
     expect(socials.length).toBeGreaterThan(0)
   })
 
+  it('contient LinkedIn : « À propos » cherche ce profil par son nom', () => {
+    expect(socials.map((social) => social.name)).toContain('LinkedIn')
+  })
+
   it('donne à chaque profil une adresse et un nom différents', () => {
     // l'adresse sert de key React ; deux fois le même nom, on ne saurait lequel choisir
     const hrefs = socials.map((social) => social.href)

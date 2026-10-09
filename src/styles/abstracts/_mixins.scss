@@ -55,3 +55,19 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+// Au doigt, une cible de 44 px de haut (spec § 10, critère AAA 2.5.5 ; le AA
+// 2.5.8 n'en demande que 24, ce que la souris garde). Nav, pied de page.
+@mixin touch-target {
+  @media (pointer: coarse) {
+    min-height: 44px;
+  }
+}
+
+// Une rangée de boutons qui passent à la ligne quand la place manque
+// (ProjectDetails, SiteCard, About, Contact)
+@mixin actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+}

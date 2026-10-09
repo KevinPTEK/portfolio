@@ -10,3 +10,16 @@ export const menuItems = menu.map(({ id, label }, index) => ({
   href: `#${id}`,
   number: pad(index + 1),
 }))
+
+/**
+ * L'étiquette d'une pièce du menu : « 01 — À propos ». Appelée au rendu, pas à
+ * l'import : un id inconnu dit lequel, au lieu d'une page blanche (revue).
+ *
+ * @param {string} id - l'id de la pièce dans menu.json
+ * @returns {string}
+ */
+export function sectionLabel(id) {
+  const item = menuItems.find((entry) => entry.id === id)
+  if (!item) throw new Error(`menu.json n'a pas d'entrée « ${id} »`)
+  return `${item.number} — ${item.label}`
+}
