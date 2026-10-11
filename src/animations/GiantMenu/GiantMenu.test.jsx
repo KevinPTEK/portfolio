@@ -38,13 +38,10 @@ describe('GiantMenu', () => {
     expect(hrefs).toEqual(['#about', '#work', '#skills'])
   })
 
-  it('donne au calque italique le libellé de chaque ligne', () => {
-    // le CSS dessine le mot en italique avec attr(data-label) : un seul mot dans le HTML
-    render(<GiantMenu items={items} />)
-    const words = screen
-      .getAllByRole('link')
-      .map((link) => link.querySelector('[data-label]').dataset.label)
-    expect(words).toEqual(['À propos', 'Travaux', 'Compétences'])
+  it("n'écrit chaque libellé qu'une fois (aucun calque, aucun data-label)", () => {
+    const { container } = render(<GiantMenu items={items} />)
+    expect(container.querySelector('[data-label]')).toBe(null)
+    expect(container.textContent).toBe('À propos 01Travaux 02Compétences 03')
   })
 
   it('sans pièce, ne rend rien', () => {

@@ -1,11 +1,34 @@
 @use '../../styles/abstracts' as *;
 
+// Le survol B, « grossissement et projecteur » (§ 7.5) : le mot mis en avant
+// grandit de 8 % et prend la couleur d'accent ; les autres s'estompent vers
+// un mélange d'encre et de papier. Grand texte (≥ 24 px) : seuil 3 : 1
+// (WCAG 1.4.3 ; lecture prudente : il vaut aussi pendant le survol). Mesuré sur le
+// vrai kraft (11 oct.) : 75 % d'encre → 3,37 : 1 au pire pixel, 4,3 au
+// 2e centile ; 60 % ne donnait que 2,2 et 70 % 2,9 au pire pixel
+$zoom: 1.08;
+$dimmed: color-mix(in srgb, var(--ink) 75%, var(--bg));
+
+// le mot mis en avant (survol, focus clavier). Il ne grandit qu'en bureau :
+// plus étroit, « COMPÉTENCES » n'a pas la place — 8 px de défilement
+// horizontal à 320 px, anneau de focus coupé à gauche de 768 à 1 023 px
+// (check-menu-zoom.mjs, 11 oct.)
+@mixin highlighted {
+  color: var(--accent);
+
+  @include motion-allowed {
+    @include up(desktop) {
+      transform: scale($zoom);
+    }
+  }
+}
+
 // Le menu géant : une pièce par ligne
 .giant-menu {
   display: grid;
 }
 
-// Une ligne : Playfair en grandes capitales ; au survol, elle glisse un peu à droite.
+// Une ligne : Playfair en grandes capitales ; au survol, le mot grandit (§ 7.5).
 // Taille : « COMPÉTENCES » mesure 7,2 fois la taille du texte, plus son numéro ;
 // à 320 px il n'a que 280 px de place, d'où 11,5vw sur mobile (37 px à 320,
 // 44 px dès 383 px). Le zoom réduit la largeur de la page : la règle mobile
@@ -16,8 +39,8 @@
   position: relative; // repère du numéro
   display: inline-block; // la largeur du mot : le numéro s'accroche juste après
   min-height: 44px; // cible tactile, même quand le texte descend à 37 px
-  // l'italique déborde à droite du mot romain (jusqu'à 0,133 em pour « TRAVAUX »,
-  // mesuré) : cette marge, proportionnelle au texte, le garde loin du numéro
+  // de l'air entre le mot et son numéro, proportionnel au texte (née pour
+  // loger l'ancien calque italique ; gardée telle que dans le prototype B)
   padding-right: 0.15em;
   font-family: $font-serif;
   font-size: clamp(37px, 11.5vw, 44px);
@@ -26,83 +49,55 @@
   text-transform: uppercase;
   text-decoration: none; // liste de liens, reconnaissable à sa place (§ 10)
   color: var(--ink);
-  transition: transform 0.9s $ease-out;
+  // il grandit depuis son centre, à hauteur des capitales : depuis sa gauche,
+  // « COMPÉTENCES » sortait de l'écran en bureau, où le menu touche la marge
+  // droite (4 à 15 px de défilement horizontal, mesuré le 11 oct.)
+  transform-origin: 50% 60%;
+  // le changement de couleur n'est pas un mouvement : il reste en fondu sous
+  // « réduire les animations » (§ 10)
+  transition: color $duration-base $ease-out;
 
   @include focus-ring;
 
+  @include motion-allowed {
+    transition:
+      transform $duration-base $ease-out,
+      color $duration-base $ease-out;
+  }
+
   &:focus-visible {
-    transform: translateX(0.06em);
+    @include highlighted;
   }
 
   // le survol n'existe qu'avec une souris : pas d'effet « collé » au doigt
   @media (hover: hover) {
     &:hover {
-      transform: translateX(0.06em);
+      @include highlighted;
     }
   }
 
   @include up(tablet) {
     font-size: clamp(44px, 7vw, 92px);
   }
+}
 
-  @include reduced-motion {
-    transition: none;
+// Le projecteur : quand un mot est mis en avant, les autres s'estompent
+// (:has, Baseline 2023 : « le menu qui contient un lien survolé »).
+// Avec une souris, survol et focus clavier comptent ensemble : deux règles
+// séparées estompaient chacune le mot que l'autre mettait en avant (souris
+// sur un mot, Tab sur un autre — revue du 11 oct.)
+@media (hover: hover) {
+  .giant-menu:has(.giant-menu__link:is(:hover, :focus-visible))
+    .giant-menu__link:not(:hover, :focus-visible) {
+    color: $dimmed;
   }
 }
 
-// Le mot, repère de son calque italique
-.giant-menu__word {
-  position: relative;
-  display: inline-block;
-  transition: color 0.8s $ease-out;
-
-  @include reduced-motion {
-    transition: none;
-  }
-}
-
-// Le calque italique : le même mot, dessiné par le CSS (aucun texte en double
-// dans le HTML). « / '' » est son texte alternatif, vide : les lecteurs d'écran
-// l'ignorent. Sans cette syntaxe, le navigateur n'a pas de calque — et le mot
-// ne doit alors pas disparaître au survol : tout est dans @supports.
-@supports (content: 'x' / '') {
-  .giant-menu__word::after {
-    content: attr(data-label) / '';
-    position: absolute;
-    inset: 0;
-    font-style: italic;
-    color: var(--accent);
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.8s $ease-out;
-
-    @include reduced-motion {
-      transition: none;
-    }
-
-    // en contraste forcé, les couleurs sont imposées : le mot « transparent »
-    // redeviendrait visible sous le calque — on garde le mot seul
-    @media (forced-colors: active) {
-      content: none;
-    }
-  }
-
-  .giant-menu__link:focus-visible .giant-menu__word {
-    color: transparent;
-  }
-
-  .giant-menu__link:focus-visible .giant-menu__word::after {
-    opacity: 1;
-  }
-
-  @media (hover: hover) {
-    .giant-menu__link:hover .giant-menu__word {
-      color: transparent;
-    }
-
-    .giant-menu__link:hover .giant-menu__word::after {
-      opacity: 1;
-    }
+// sans souris (écran tactile), le focus clavier seul
+@media (hover: none) {
+  .giant-menu:has(.giant-menu__link:focus-visible)
+    .giant-menu__link:not(:focus-visible) {
+    color: $dimmed;
   }
 }
 

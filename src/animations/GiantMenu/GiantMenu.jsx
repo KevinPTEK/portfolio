@@ -2,8 +2,8 @@ import './GiantMenu.scss'
 
 /**
  * Menu typographique géant : une pièce par ligne, en grandes capitales, avec
- * son numéro. Au survol et au focus, le mot passe en italique couleur d'accent
- * (un calque dessiné par le CSS, à partir de data-label).
+ * son numéro. Au survol et au focus, le mot prend la couleur d'accent (et
+ * grandit, en bureau), les autres s'estompent (en CSS, § 7.5).
  * Le parent décide du repère : <nav aria-label="Menu principal"> sur l'accueil.
  *
  * @param {object} props
@@ -23,9 +23,7 @@ export function GiantMenu({ items = [] }) {
       {items.map(({ label, href, number }) => (
         <li key={href}>
           <a className="giant-menu__link" href={href}>
-            <span className="giant-menu__word" data-label={label}>
-              {label}
-            </span>
+            {label}
             {/* l'espace donne le nom « À propos 01 » ; à l'écran, le numéro hors du flux l'efface */}
             <span className="giant-menu__number"> {number}</span>
           </a>

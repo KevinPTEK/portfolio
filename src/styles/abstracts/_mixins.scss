@@ -7,6 +7,14 @@
   }
 }
 
+// Mouvement permis : seulement si « réduire les animations » n'est pas
+// demandé — écrire le mouvement ici plutôt que l'annuler dans reduced-motion
+@mixin motion-allowed {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
 // Anneau de focus clavier
 @mixin focus-ring {
   &:focus-visible {
