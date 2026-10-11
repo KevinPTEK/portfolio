@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'tokens' as *;
 
 // Mouvement réduit
@@ -13,6 +14,25 @@
   @media (prefers-reduced-motion: no-preference) {
     @content;
   }
+}
+
+// Le passage d'une pièce à l'autre (§ 7.7) : le fond glisse en ligne droite,
+// le texte change d'un coup à mi-chemin. Animer les deux ensemble les ferait
+// passer par le même gris (1,09 : 1, calcul de la revue du 8 oct.).
+// Ligne droite : la moitié du temps tombe sur la moitié de la couleur.
+// $more : les autres transitions de l'élément (une seule déclaration
+// transition par élément)
+@mixin theme-fade($more...) {
+  $half: $duration-theme * 0.5;
+  $fade: (
+    --bg $duration-theme linear,
+    --line $duration-theme linear,
+    --surface $duration-theme linear,
+    --ink 0s linear $half,
+    --ink-2 0s linear $half,
+    --accent 0s linear $half
+  );
+  transition: list.join($fade, $more, $separator: comma);
 }
 
 // Anneau de focus clavier

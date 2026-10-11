@@ -71,6 +71,22 @@ describe('Nav', () => {
     ).toBe(expected)
   })
 
+  it('a quatre enfants, dans l’ordre de la cascade (Nav.scss les vise par leur rang)', () => {
+    // identité (immobile : l'avatar volant s'y pose, § 7.9), pièces,
+    // « Menu », © — un enfant ajouté ou déplacé décalerait la cascade
+    render(<Nav />)
+    expect(
+      [...screen.getByRole('banner').children].map(
+        ({ className }) => className,
+      ),
+    ).toEqual([
+      'nav__identity',
+      'nav__sections',
+      'nav__menu-link',
+      'nav__copyright',
+    ])
+  })
+
   it("ramène au haut de l'accueil par mon nom, portrait décoratif", () => {
     render(<Nav />)
     // happy-dom ajoute une espace avant le <span> du point dans le nom

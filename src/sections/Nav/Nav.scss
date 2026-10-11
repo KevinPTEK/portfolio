@@ -4,6 +4,16 @@
 // et de ses marges (maquette : 14 px en haut et en bas)
 $bar-height: 56px;
 
+// Le rideau (§ 7.11) : la nav se dévoile de haut en bas en quittant
+// l'accueil, puis son contenu monte en cascade (valeurs du prototype validé)
+$curtain: 0.7s;
+// il démarre doucement, file, se pose (pas le mot-clé ease-in-out du CSS)
+$curtain-ease: cubic-bezier(0.7, 0, 0.2, 1);
+$cascade: 0.5s;
+// le rideau est alors ouvert à 19 % : le contenu monte pendant qu'il se dévoile
+$cascade-start: 0.25s;
+$cascade-step: 0.07s;
+
 // Jamais de focus caché sous la barre (WCAG 2.4.11 ; échec F110 du W3C) :
 // un élément atteint au clavier — ou une pièce atteinte par un lien — défile
 // jusque sous la barre, pas derrière elle. Rien à réserver en bureau : la
@@ -35,6 +45,21 @@ html {
   padding: 0 $gutter;
   color: var(--ink);
   background-color: color-mix(in srgb, var(--bg) 92%, transparent);
+  // le rideau ouvert : une forme, pour que le navigateur sache l'animer depuis
+  // le rideau fermé (depuis « none », clip-path sauterait d'un coup)
+  clip-path: inset(0);
+  @include theme-fade(clip-path $curtain $curtain-ease, visibility $curtain);
+
+  @include reduced-motion {
+    // ni rideau ni cascade : un fondu de toute la nav ; les couleurs fondent
+    // quand même (une couleur n'est pas un mouvement, § 10). On remplace ici
+    // au lieu d'écrire le mouvement dans motion-allowed : rideau et couleurs
+    // tiennent dans une seule déclaration transition
+    @include theme-fade(
+      opacity $duration-fast linear,
+      visibility $duration-fast
+    );
+  }
 
   // bureau : une colonne de toute la hauteur, bordée d'un filet
   @include up(desktop) {
@@ -51,9 +76,42 @@ html {
 
 // Sur l'accueil : invisible, et donc hors de la tabulation et de l'arbre
 // d'accessibilité (un simple décalage hors de l'écran laisserait les liens
-// atteignables à l'aveugle)
+// atteignables à l'aveugle). visibility s'anime « comme un pas » (MDN) :
+// visible pendant tout le rideau, cachée une fois fermé.
 .nav--hidden {
   visibility: hidden;
+  // le rideau fermé : rogné depuis le bas jusqu'en haut
+  clip-path: inset(0 0 100% 0);
+
+  @include reduced-motion {
+    clip-path: none;
+    opacity: 0;
+  }
+}
+
+// La cascade : le contenu monte quand le rideau s'ouvre, dans l'ordre
+// (identité, pièces, « Menu », ©). L'identité ne fait que paraître :
+// l'avatar volant s'y pose (§ 7.9), elle ne doit pas bouger sous lui.
+@include motion-allowed {
+  .nav > * {
+    transition:
+      opacity $cascade $ease-out,
+      transform $cascade $ease-out;
+  }
+
+  .nav--hidden > * {
+    opacity: 0;
+  }
+
+  .nav--hidden > :not(.nav__identity) {
+    transform: translateY(10px);
+  }
+
+  @for $i from 1 through 4 {
+    .nav:not(.nav--hidden) > :nth-child(#{$i}) {
+      transition-delay: $cascade-start + ($i - 1) * $cascade-step;
+    }
+  }
 }
 
 // ---------- Identité ----------
