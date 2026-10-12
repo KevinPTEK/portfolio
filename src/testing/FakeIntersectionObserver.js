@@ -5,6 +5,9 @@ import { afterEach, beforeEach, vi } from 'vitest'
 // IntersectionObserver permet de dire « cette pièce croise la ligne ».
 // À installer par useFakeIntersectionObserver(), en tête du describe.
 export class FakeIntersectionObserver {
+  // le dernier observateur créé : celui de useCurrentRoom dans les tests
+  // d'App ; celui de Motion dans ceux de Reveal (un test qui monterait les
+  // deux ensemble ferait viser le mauvais à cross())
   static last = null
 
   constructor(callback, options) {
@@ -17,6 +20,11 @@ export class FakeIntersectionObserver {
 
   observe(target) {
     this.targets.push(target)
+  }
+
+  // Motion arrête d'observer un bloc démonté (Reveal)
+  unobserve(target) {
+    this.targets = this.targets.filter((observed) => observed !== target)
   }
 
   disconnect() {

@@ -1,4 +1,5 @@
 import { LivingBackground } from '../../animations/LivingBackground/LivingBackground.jsx'
+import { Reveal } from '../../animations/Reveal/Reveal.jsx'
 import { avatar } from '../../assets/images/avatar.js'
 import { Avatar } from '../../components/Avatar/Avatar.jsx'
 import { Button } from '../../components/Button/Button.jsx'
@@ -26,7 +27,7 @@ export function About() {
       background={<LivingBackground tone="cool" />}
     >
       <div className="about__layout">
-        <div className="about__text">
+        <Reveal className="about__text">
           <SectionHeader
             titleId="about-title"
             label={sectionLabel('about')}
@@ -58,11 +59,11 @@ export function About() {
               LinkedIn
             </Button>
           </div>
-        </div>
+        </Reveal>
 
         {/* après le texte dans le code (le titre ouvre la pièce), devant à
             l'écran ; décoratif : mon prénom est le titre */}
-        <div className="about__portrait">
+        <Reveal className="about__portrait">
           <img className="about__reflection" src={avatar.blur} alt="" />
           <span className="about__avatar">
             <Avatar
@@ -73,7 +74,7 @@ export function About() {
               loading="lazy"
             />
           </span>
-        </div>
+        </Reveal>
       </div>
     </Room>
   )

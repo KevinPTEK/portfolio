@@ -1,4 +1,5 @@
 import { LivingBackground } from '../../animations/LivingBackground/LivingBackground.jsx'
+import { Reveal, RevealItem } from '../../animations/Reveal/Reveal.jsx'
 import { Room } from '../../components/Room/Room.jsx'
 import { SectionHeader } from '../../components/SectionHeader/SectionHeader.jsx'
 import { SkillMeter } from '../../components/SkillMeter/SkillMeter.jsx'
@@ -29,21 +30,23 @@ export function Skills() {
       className="skills"
       background={<LivingBackground tone="cool" />}
     >
-      <SectionHeader
-        titleId="skills-title"
-        label={sectionLabel('skills')}
-        title="Compétences, honnêtement."
-        accent="honnêtement."
-        // les mots du nom des points (« niveau 3 sur 3 ») : un lecteur d'écran
-        // n'a pas à faire le rapprochement (revue du 9 oct.)
-        lead={
-          "Trois points (niveau 3 sur 3)\u00a0: à l'aise en autonomie. Deux (niveau 2)\u00a0: opérationnel avec de la pratique. Un (niveau 1)\u00a0: les bases, en cours d'approfondissement."
-        }
-      />
+      <Reveal>
+        <SectionHeader
+          titleId="skills-title"
+          label={sectionLabel('skills')}
+          title="Compétences, honnêtement."
+          accent="honnêtement."
+          // les mots du nom des points (« niveau 3 sur 3 ») : un lecteur d'écran
+          // n'a pas à faire le rapprochement (revue du 9 oct.)
+          lead={
+            "Trois points (niveau 3 sur 3)\u00a0: à l'aise en autonomie. Deux (niveau 2)\u00a0: opérationnel avec de la pratique. Un (niveau 1)\u00a0: les bases, en cours d'approfondissement."
+          }
+        />
+      </Reveal>
       {/* role="list" : sans puces, Safari ne l'annoncerait plus comme une liste (§ 10) */}
-      <ul className="skills__groups" role="list">
+      <Reveal as="ul" stagger className="skills__groups" role="list">
         {skills.map(({ group, items }) => (
-          <li key={group} className="skills__group">
+          <RevealItem as="li" key={group} className="skills__group">
             <h3 className="skills__group-title">{group}</h3>
             <ul className="skills__list" role="list">
               {items.map(({ name, detail, level, proof }) => {
@@ -60,9 +63,9 @@ export function Skills() {
                 )
               })}
             </ul>
-          </li>
+          </RevealItem>
         ))}
-      </ul>
+      </Reveal>
     </Room>
   )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { LivingBackground } from '../../animations/LivingBackground/LivingBackground.jsx'
+import { Reveal } from '../../animations/Reveal/Reveal.jsx'
 import { Modal } from '../../components/Modal/Modal.jsx'
 import { ProjectCard } from '../../components/ProjectCard/ProjectCard.jsx'
 import { Room } from '../../components/Room/Room.jsx'
@@ -75,13 +76,15 @@ export function Work() {
               <LivingBackground variant="cover" image={project.cover.blur} />
             }
           >
-            <ProjectCard
-              project={project}
-              titleId={titleId}
-              index={position}
-              total={projects.length}
-              onOpen={() => openProject(position)}
-            />
+            <Reveal>
+              <ProjectCard
+                project={project}
+                titleId={titleId}
+                index={position}
+                total={projects.length}
+                onOpen={() => openProject(position)}
+              />
+            </Reveal>
           </Room>
         )
       })}

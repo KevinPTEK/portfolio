@@ -1,0 +1,24 @@
+// Les blocs de Reveal partent invisibles (Motion écrit opacity: 0 dans
+// l'attribut style). Trois cas où ils doivent se voir quand même : le moteur
+// ne s'est pas chargé (<html data-motion="off">, § 7.1), l'impression, et le
+// focus clavier entré dans un bloc pas encore apparu (l'anneau resterait
+// invisible le temps que l'observateur réagisse et que le bloc monte).
+// !important : seul moyen de l'emporter sur un style écrit dans l'attribut.
+@mixin shown {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+[data-motion='off'] .reveal {
+  @include shown;
+}
+
+.reveal:focus-within {
+  @include shown;
+}
+
+@media print {
+  .reveal {
+    @include shown;
+  }
+}

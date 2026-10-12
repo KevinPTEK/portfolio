@@ -1,4 +1,5 @@
 import { LivingBackground } from '../../animations/LivingBackground/LivingBackground.jsx'
+import { Reveal, RevealItem } from '../../animations/Reveal/Reveal.jsx'
 import { Room } from '../../components/Room/Room.jsx'
 import { SectionHeader } from '../../components/SectionHeader/SectionHeader.jsx'
 import { SiteCard } from '../../components/SiteCard/SiteCard.jsx'
@@ -21,22 +22,24 @@ export function OtherWork() {
       className="other-work"
       background={<LivingBackground tone="kraft" />}
     >
-      <SectionHeader
-        titleId="other-work-title"
-        label="Et aussi"
-        title="Autres réalisations."
-        accent="réalisations."
-        lead="Des sites vitrines intégrés pour des clients, en ligne."
-        compact
-      />
+      <Reveal>
+        <SectionHeader
+          titleId="other-work-title"
+          label="Et aussi"
+          title="Autres réalisations."
+          accent="réalisations."
+          lead="Des sites vitrines intégrés pour des clients, en ligne."
+          compact
+        />
+      </Reveal>
       {/* role="list" : sans puces, Safari ne l'annoncerait plus comme une liste (§ 10) */}
-      <ul className="other-work__list" role="list">
+      <Reveal as="ul" stagger className="other-work__list" role="list">
         {sites.map((site) => (
-          <li key={site.id} className="other-work__item">
+          <RevealItem as="li" key={site.id} className="other-work__item">
             <SiteCard site={site} />
-          </li>
+          </RevealItem>
         ))}
-      </ul>
+      </Reveal>
     </Room>
   )
 }
