@@ -73,6 +73,9 @@ $padding-bottom: $space-5; // 24 px
 
 // Le menu géant, calé contre le bord droit en bureau
 .home__menu {
+  // cible du lien « Menu » de la barre mobile (§ 7.6)
+  @include focus-target;
+
   @include up(desktop) {
     justify-self: end;
   }

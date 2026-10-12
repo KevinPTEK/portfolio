@@ -1,4 +1,5 @@
 import { useCurrentRoom } from './animations/useCurrentRoom.js'
+import { useScrollTo } from './animations/useScrollTo.js'
 import { SkipLink } from './components/SkipLink/SkipLink.jsx'
 import { menuItems } from './data/menuItems.js'
 import { About } from './sections/About/About.jsx'
@@ -16,6 +17,8 @@ const SECTION_IDS = menuItems.map(({ id }) => id)
 // Les pièces du site, dans l'ordre (§ 8)
 export function App() {
   const { room, section } = useCurrentRoom(SECTION_IDS)
+  // le défilement animé vers les pièces, et les liens directs (§ 7.6)
+  useScrollTo()
 
   return (
     <>

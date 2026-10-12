@@ -35,6 +35,16 @@
   transition: list.join($fade, $more, $separator: comma);
 }
 
+// Cible d'un lien interne ou du lien d'évitement : focalisable par le code
+// seulement (tabindex -1, posé par useScrollTo ou dans le JSX), ce n'est pas
+// un contrôle — pas d'anneau autour d'une pièce ou de la page entière
+// (<main>, les pièces, « Travaux », le menu de l'accueil)
+@mixin focus-target {
+  &:focus {
+    outline: none;
+  }
+}
+
 // Anneau de focus clavier
 @mixin focus-ring {
   &:focus-visible {

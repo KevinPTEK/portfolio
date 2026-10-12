@@ -1,6 +1,6 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { App } from './App.jsx'
 import { menuItems } from './data/menuItems.js'
 import {
@@ -23,6 +23,10 @@ const banner = () =>
 
 describe('App', () => {
   useFakeIntersectionObserver()
+  // un lien cliqué change l'adresse (useScrollTo) : rendue même si un test échoue
+  afterEach(() => {
+    window.history.replaceState(null, '', '/')
+  })
 
   it("commence par le lien d'évitement, vers le contenu", async () => {
     const user = userEvent.setup()
@@ -82,6 +86,17 @@ describe('App', () => {
       .getAllByRole('link')
       .filter((candidate) => candidate.hasAttribute('aria-current'))
     expect(current.map((candidate) => candidate.textContent)).toEqual([link])
+  })
+
+  it('anime le défilement : un lien du menu met le focus sur la pièce et l’adresse à jour', () => {
+    // useScrollTo branché (le trajet lui-même : useScrollTo.test.jsx)
+    render(<App />)
+    const link = within(
+      screen.getByRole('navigation', { name: 'Menu principal' }),
+    ).getByRole('link', { name: /À propos/ })
+    expect(fireEvent.click(link)).toBe(false)
+    expect(document.getElementById('about')).toHaveFocus()
+    expect(window.location.hash).toBe('#about')
   })
 
   it('mène chaque lien du menu à un élément de la page', () => {

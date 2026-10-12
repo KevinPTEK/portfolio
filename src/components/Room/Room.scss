@@ -15,6 +15,9 @@ $vertical-space: 88px;
   color: var(--ink);
   background-color: var(--bg);
 
+  // cible des liens internes (§ 7.6)
+  @include focus-target;
+
   @include up(desktop) {
     padding: $vertical-space $space-8 $vertical-space $content-offset;
   }

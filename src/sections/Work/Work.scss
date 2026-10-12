@@ -27,3 +27,8 @@
     }
   }
 }
+
+// Cible du lien « Travaux » (§ 7.6) : le conteneur des projets
+.work {
+  @include focus-target;
+}
