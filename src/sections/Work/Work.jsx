@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { LivingBackground } from '../../animations/LivingBackground/LivingBackground.jsx'
-import { Reveal } from '../../animations/Reveal/Reveal.jsx'
 import { Modal } from '../../components/Modal/Modal.jsx'
-import { ProjectCard } from '../../components/ProjectCard/ProjectCard.jsx'
-import { Room } from '../../components/Room/Room.jsx'
 import projects from '../../data/projects.json'
 import { OtherWork } from './OtherWork.jsx'
 import { ProjectDetails } from './ProjectDetails.jsx'
+import { ProjectRoom } from './ProjectRoom.jsx'
+import { useProjectStack } from './useProjectStack.js'
 import './Work.scss'
 
 /**
@@ -23,6 +21,8 @@ export function Work() {
   const detailsTitleRef = useRef(null)
   // « Projet suivant » vient-il d'être demandé ? (le focus suivra, après le rendu)
   const movedToNext = useRef(false)
+  // le passage entre projets : le recouvert recule, l'arrivant monte (§ 7.10)
+  const stack = useProjectStack()
 
   const shown = projects[shownIndex]
   const next = projects[(shownIndex + 1) % projects.length]
@@ -63,31 +63,16 @@ export function Work() {
 
   return (
     <div className="work" id="work">
-      {projects.map((project, position) => {
-        const titleId = `${project.id}-title`
-        return (
-          <Room
-            key={project.id}
-            id={project.id}
-            theme={project.theme}
-            labelledBy={titleId}
-            className="work__project"
-            background={
-              <LivingBackground variant="cover" image={project.cover.blur} />
-            }
-          >
-            <Reveal>
-              <ProjectCard
-                project={project}
-                titleId={titleId}
-                index={position}
-                total={projects.length}
-                onOpen={() => openProject(position)}
-              />
-            </Reveal>
-          </Room>
-        )
-      })}
+      {projects.map((project, position) => (
+        <ProjectRoom
+          key={project.id}
+          project={project}
+          position={position}
+          total={projects.length}
+          onOpen={() => openProject(position)}
+          stack={stack}
+        />
+      ))}
 
       <OtherWork />
 

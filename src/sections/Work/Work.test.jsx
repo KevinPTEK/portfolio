@@ -1,7 +1,8 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import projects from '../../data/projects.json'
+import { preferReducedMotion } from '../../testing/motion.js'
 import { Work } from './Work.jsx'
 
 // Les travaux : une pièce par projet de projects.json, et la modale de détail.
@@ -148,5 +149,143 @@ describe('Work', () => {
     expect(dialog.open).toBe(false)
     expect(dialog).toHaveAttribute('data-theme', second.theme)
     expect(dialog.querySelector('h2').textContent).toBe(second.title)
+  })
+})
+
+// Le passage entre projets (§ 7.10) : chaque projet écrit son arrivée, de 0
+// à 1, en --arrival sur lui-même et en --covered sur le précédent. happy-dom
+// ne calcule aucune position : on place les repères à la main, puis on fait
+// défiler (une image de faux requestAnimationFrame)
+describe('Work — le passage entre projets', () => {
+  const HEIGHT = window.innerHeight
+  beforeEach(() => {
+    vi.useFakeTimers({
+      toFake: ['requestAnimationFrame', 'cancelAnimationFrame'],
+    })
+    Object.defineProperty(window, 'innerHeight', {
+      value: 1000,
+      configurable: true,
+    })
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+    window.happyDOM.setViewport({ width: 1024, height: 768 })
+    Object.defineProperty(window, 'innerHeight', {
+      value: HEIGHT,
+      configurable: true,
+    })
+  })
+
+  const markers = () => [...document.querySelectorAll('.work__marker')]
+  const rooms = () => projects.map(({ id }) => document.getElementById(id))
+  // le haut de chaque repère, puis une image
+  const scrollToMarkers = (...tops) => {
+    markers().forEach((marker, position) => {
+      marker.getBoundingClientRect = () => ({ top: tops[position] })
+    })
+    fireEvent.scroll(window)
+    vi.advanceTimersByTime(16)
+  }
+  const value = (room, name) => room.style.getPropertyValue(name)
+
+  it('place un repère sans hauteur juste avant chaque projet', () => {
+    render(<Work />)
+    expect(markers()).toHaveLength(projects.length)
+    markers().forEach((marker, position) => {
+      expect(marker).toHaveAttribute('aria-hidden', 'true')
+      expect(marker.nextElementSibling).toHaveAttribute(
+        'id',
+        projects[position].id,
+      )
+    })
+  })
+
+  it('724events arrive à 40 % : Argent Bank recouvert à 40 %, 724events arrivé à 40 %', () => {
+    render(<Work />)
+    scrollToMarkers(-2000, 600, 1600)
+    const [argent, events, nina] = rooms()
+    expect(value(argent, '--covered')).toBe('0.4')
+    expect(value(events, '--arrival')).toBe('0.4')
+    expect(value(events, '--covered')).toBe('0')
+    expect(value(nina, '--arrival')).toBe('0')
+  })
+
+  it('Nina arrive à 70 % : c’est 724events qui recule, Argent Bank reste couvert', () => {
+    render(<Work />)
+    scrollToMarkers(-2000, -1000, 300)
+    const [argent, events, nina] = rooms()
+    expect(value(events, '--covered')).toBe('0.7')
+    expect(value(nina, '--arrival')).toBe('0.7')
+    expect(value(argent, '--covered')).toBe('1')
+    expect(value(events, '--arrival')).toBe('1')
+  })
+
+  it('suit la hauteur réelle de l’écran (900 px)', () => {
+    Object.defineProperty(window, 'innerHeight', {
+      value: 900,
+      configurable: true,
+    })
+    render(<Work />)
+    scrollToMarkers(-2000, 450, 1600)
+    const [argent, events] = rooms()
+    expect(value(events, '--arrival')).toBe('0.5')
+    expect(value(argent, '--covered')).toBe('0.5')
+  })
+
+  it.each([
+    ['sous « réduire les animations »', () => preferReducedMotion()],
+    [
+      'sur un écran étroit (pas d’empilement)',
+      () => window.happyDOM.setViewport({ width: 375, height: 812 }),
+    ],
+  ])('n’écrit rien %s : aucune règle n’y lit les variables', (_, setup) => {
+    // les écrire recalculait le style des pièces pour rien (revue)
+    setup()
+    render(<Work />)
+    scrollToMarkers(-2000, 600, 1600)
+    for (const room of rooms()) {
+      expect(value(room, '--arrival')).toBe('')
+      expect(value(room, '--covered')).toBe('')
+    }
+  })
+
+  it("le premier projet n'arrive par-dessus personne : il n'a pas d'arrivée", () => {
+    render(<Work />)
+    scrollToMarkers(500, 1600, 2600)
+    const [argent] = rooms()
+    expect(value(argent, '--arrival')).toBe('')
+  })
+
+  it('calcule dès le montage (rechargement au milieu des projets)', () => {
+    // happy-dom place tout en haut (0) : chaque projet est « arrivé »
+    render(<Work />)
+    const [argent, events] = rooms()
+    expect(value(argent, '--covered')).toBe('1')
+    expect(value(events, '--arrival')).toBe('1')
+  })
+
+  it('lit toutes les positions avant d’écrire : une seule mise en page par image', () => {
+    render(<Work />)
+    const order = []
+    markers().forEach((marker) => {
+      marker.getBoundingClientRect = () => {
+        order.push('lecture')
+        return { top: 500 }
+      }
+    })
+    rooms().forEach((room) => {
+      const set = room.style.setProperty.bind(room.style)
+      room.style.setProperty = (...args) => {
+        order.push('écriture')
+        set(...args)
+      }
+    })
+    fireEvent.scroll(window)
+    vi.advanceTimersByTime(16)
+    // aucune écriture avant la dernière lecture
+    expect(order).toContain('écriture')
+    expect(order.indexOf('écriture')).toBeGreaterThan(
+      order.lastIndexOf('lecture'),
+    )
   })
 })

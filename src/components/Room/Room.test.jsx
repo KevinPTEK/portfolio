@@ -52,4 +52,14 @@ describe('Room', () => {
     const room = renderRoom()
     expect(room).toHaveAttribute('class', 'room')
   })
+
+  it('donne sa section à ref (le passage entre projets y écrit ses variables)', () => {
+    const ref = { current: null }
+    render(
+      <Room id="argent" theme="argent" labelledBy="t" ref={ref}>
+        <h2 id="t">Argent Bank</h2>
+      </Room>,
+    )
+    expect(ref.current).toBe(document.getElementById('argent'))
+  })
 })
