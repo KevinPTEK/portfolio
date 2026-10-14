@@ -47,6 +47,22 @@ describe('Avatar', () => {
     expect(image).toHaveAttribute('loading', 'lazy')
   })
 
+  it('reçoit la classe de son parent (mix BEM), en plus de la sienne', () => {
+    render(
+      <Avatar src="/avatar.webp" alt="" size={104} className="flying-avatar" />,
+    )
+    expect(screen.getByRole('presentation')).toHaveClass(
+      'avatar',
+      'flying-avatar',
+    )
+  })
+
+  it('donne son image à ref (l’avatar volant la déplace)', () => {
+    const ref = { current: null }
+    render(<Avatar src="/avatar.webp" alt="" size={104} ref={ref} />)
+    expect(ref.current).toBe(screen.getByRole('presentation'))
+  })
+
   it('devient décorative avec un texte alternatif vide', () => {
     render(<Avatar src="/avatar.webp" alt="" size={56} />)
     // alt="" : l'image sort de l'arbre d'accessibilité (rôle presentation)

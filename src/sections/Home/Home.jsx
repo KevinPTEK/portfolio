@@ -26,8 +26,17 @@ export function Home() {
       <div className="home__layout">
         <div className="home__content">
           <div className="home__identity">
-            {/* alt vide : mon nom est écrit juste à côté */}
-            <Avatar src={avatar.src} srcSet={avatar.srcSet} alt="" size={104} />
+            {/* le départ de l'avatar volant (§ 7.9) — élément de la grille :
+                un bloc, sans règle de plus */}
+            <span data-avatar-slot="home">
+              {/* alt vide : mon nom est écrit juste à côté */}
+              <Avatar
+                src={avatar.src}
+                srcSet={avatar.srcSet}
+                alt=""
+                size={104}
+              />
+            </span>
             <h1 className="home__name" id="home-title">
               {profile.name}.
             </h1>

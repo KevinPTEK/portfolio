@@ -61,6 +61,16 @@ describe('App', () => {
     }
   })
 
+  // (au-dessus de la nav par son z-index : FlyingAvatar.styles.test.js)
+  it('place l’avatar volant après la nav et avant le contenu (ordre de la § 8)', () => {
+    render(<App />)
+    const flying = document.querySelector('.flying-avatar')
+    const following = (before, after) =>
+      before.compareDocumentPosition(after) & Node.DOCUMENT_POSITION_FOLLOWING
+    expect(following(banner(), flying)).toBeTruthy()
+    expect(following(flying, screen.getByRole('main'))).toBeTruthy()
+  })
+
   it('cache la nav au chargement et sur l’accueil', () => {
     render(<App />)
     // aucune pièce choisie avant le premier rapport de l'observateur

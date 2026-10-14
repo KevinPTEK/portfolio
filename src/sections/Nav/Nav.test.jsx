@@ -98,6 +98,14 @@ describe('Nav', () => {
     expect(brand.querySelector('img')).toHaveAttribute('alt', '')
   })
 
+  it('pose son portrait dans l’emplacement d’arrivée de l’avatar volant (§ 7.9)', () => {
+    render(<Nav />)
+    const brand = screen.getByRole('link', { name: /^Kevin Renou/ })
+    const slot = brand.querySelector('[data-avatar-slot="nav"]')
+    expect(slot).toHaveClass('nav__avatar')
+    expect(slot.querySelector('img')).toHaveAttribute('width', '56')
+  })
+
   it('ramène au menu géant par « Menu » (barre mobile)', () => {
     render(<Nav />)
     // la fenêtre de happy-dom fait 1 024 px de large, où le CSS masque ce lien

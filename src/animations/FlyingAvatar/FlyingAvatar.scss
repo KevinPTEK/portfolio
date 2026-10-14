@@ -1,0 +1,30 @@
+@use '../../styles/abstracts' as *;
+
+// L'avatar volant : posé en haut à gauche de l'écran, déplacé par transform
+// (le vol, § 7.9) ; la forme ronde vient de .avatar (mix), la taille de son
+// attribut width
+.flying-avatar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $z-avatar;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+// pendant le vol, les deux emplacements s'effacent : l'avatar volant les
+// recouvre. À l'écran seulement : à l'impression, la page ne défile pas,
+// chaque emplacement montre son portrait (sans dépendre de l'ordre des règles)
+@media not print {
+  [data-avatar='flying'] [data-avatar-slot] {
+    visibility: hidden;
+  }
+}
+
+// à l'impression, pas d'avatar volant (un élément fixe se répète sur chaque
+// page imprimée)
+@media print {
+  .flying-avatar {
+    display: none;
+  }
+}

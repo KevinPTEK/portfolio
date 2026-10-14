@@ -1,3 +1,4 @@
+import { FlyingAvatar } from './animations/FlyingAvatar/FlyingAvatar.jsx'
 import { useCurrentRoom } from './animations/useCurrentRoom.js'
 import { useScrollTo } from './animations/useScrollTo.js'
 import { SkipLink } from './components/SkipLink/SkipLink.jsx'
@@ -28,6 +29,8 @@ export function App() {
         currentSection={section}
         isHidden={room === null || room === 'home'}
       />
+      {/* décoratif, au-dessus de la nav (§ 7.9) */}
+      <FlyingAvatar />
       {/* tabIndex -1 : la cible du lien d'évitement reçoit vraiment le focus */}
       <main className="main" id="main" tabIndex={-1}>
         <Home />

@@ -1,0 +1,289 @@
+import { fireEvent, render } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { avatar } from '../../assets/images/avatar.js'
+import { preferReducedMotion } from '../../testing/motion.js'
+import { FlyingAvatar } from './FlyingAvatar.jsx'
+
+// Les deux emplacements, et l'avatar volant. happy-dom ne calcule aucune
+// position : chaque emplacement reçoit la sienne (mesurée dans Chrome, bureau
+// 1 440 × 900 : distance du vol = 405 px), l'écran sa hauteur
+function Page() {
+  return (
+    <>
+      <span data-avatar-slot="home" />
+      <span data-avatar-slot="nav" />
+      <FlyingAvatar />
+    </>
+  )
+}
+const HEIGHT = window.innerHeight
+// top : dans la page pour l'accueil (il défile avec elle), dans l'écran pour
+// la nav (elle est fixe)
+let slots
+const place = (slot, left, top, width) => {
+  slots[slot] = { left, top, width, height: width }
+}
+const image = () => document.querySelector('.flying-avatar')
+// la transformation attendue : position, et diamètre rapporté aux 104 px de départ
+const at = (x, y, size) => `translate(${x}px, ${y}px) scale(${size / 104})`
+
+// la page rechargée à mi-vol
+const reloadedAt = (y) => {
+  Object.defineProperty(window, 'scrollY', { value: y, configurable: true })
+}
+
+// La hauteur de l'écran, barre d'adresse affichée (documentElement.clientHeight)
+// et celle de la fenêtre (innerHeight), qui grandit quand la barre se replie
+const screenHeight = (height, window_ = height) => {
+  Object.defineProperty(document.documentElement, 'clientHeight', {
+    value: height,
+    configurable: true,
+  })
+  Object.defineProperty(window, 'innerHeight', {
+    value: window_,
+    configurable: true,
+  })
+}
+
+beforeEach(() => {
+  slots = {}
+  place('home', 40, 40, 104)
+  place('nav', 32, 32, 56)
+  vi.spyOn(
+    window.Element.prototype,
+    'getBoundingClientRect',
+  ).mockImplementation(function () {
+    const slot = this.dataset.avatarSlot
+    if (slot === 'home') {
+      return { ...slots.home, top: slots.home.top - window.scrollY }
+    }
+    return slots[slot] ?? { left: 0, top: 0, width: 0 }
+  })
+  screenHeight(900)
+  Object.defineProperty(window, 'scrollY', { value: 0, configurable: true })
+})
+afterEach(() => {
+  vi.restoreAllMocks()
+  vi.unstubAllGlobals()
+  delete document.documentElement.clientHeight // le getter de happy-dom revient
+  Object.defineProperty(window, 'innerHeight', {
+    value: HEIGHT,
+    configurable: true,
+  })
+  Object.defineProperty(window, 'scrollY', { value: 0, configurable: true })
+})
+
+describe('FlyingAvatar', () => {
+  it('un portrait décoratif, à la taille de départ', () => {
+    render(<Page />)
+    expect(image()).toHaveAttribute('alt', '')
+    expect(image()).toHaveAttribute('src', avatar.src)
+    expect(image()).toHaveAttribute('sizes', '104px')
+    expect(image()).toHaveAttribute('width', '104')
+    expect(image()).toHaveClass('avatar', 'flying-avatar')
+  })
+
+  it('pendant le vol, efface les deux emplacements (<html data-avatar>)', () => {
+    const { unmount } = render(<Page />)
+    expect(document.documentElement.dataset.avatar).toBe('flying')
+    unmount()
+    expect(document.documentElement.dataset.avatar).toBeUndefined()
+  })
+
+  it.each([
+    ['sans ScrollTimeline', () => {}],
+    [
+      'avec ScrollTimeline',
+      () => {
+        vi.stubGlobal('ScrollTimeline', class {})
+        vi.spyOn(window.Element.prototype, 'animate').mockReturnValue({
+          cancel() {},
+        })
+      },
+    ],
+  ])('%s, démonté : chaque écouteur « resize » posé est retiré', (_, setUp) => {
+    setUp()
+    const add = vi.spyOn(window, 'addEventListener')
+    const remove = vi.spyOn(window, 'removeEventListener')
+    const { unmount } = render(<Page />)
+    unmount()
+    const resize = (spy) =>
+      spy.mock.calls.filter(([type]) => type === 'resize').map(([, fn]) => fn)
+    expect(resize(add).length).toBeGreaterThan(0)
+    expect(resize(remove)).toEqual(expect.arrayContaining(resize(add)))
+  })
+
+  it('sous « réduire les animations » : pas de vol, les emplacements restent', () => {
+    preferReducedMotion()
+    const animate = vi.spyOn(window.Element.prototype, 'animate')
+    render(<Page />)
+    expect(image()).toBe(null)
+    expect(document.documentElement.dataset.avatar).toBeUndefined()
+    expect(animate).not.toHaveBeenCalled()
+  })
+})
+
+// Sans ScrollTimeline (Firefox avant sa version 161, happy-dom) : le vol est
+// calculé à chaque image où la page défile (faux requestAnimationFrame)
+describe('FlyingAvatar — sans ScrollTimeline, à chaque image', () => {
+  beforeEach(() => {
+    vi.useFakeTimers({
+      toFake: ['requestAnimationFrame', 'cancelAnimationFrame'],
+    })
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+  const scrollTo = (y) => {
+    Object.defineProperty(window, 'scrollY', { value: y, configurable: true })
+    fireEvent.scroll(window)
+    vi.advanceTimersByTime(16)
+  }
+
+  it('part de l’accueil, passe à mi-vol, se pose dans la nav', () => {
+    render(<Page />)
+    expect(image().style.transform).toBe(at(40, 40, 104))
+    scrollTo(202.5)
+    expect(image().style.transform).toBe(at(34, -16.625, 68))
+    scrollTo(405)
+    expect(image().style.transform).toBe(at(32, 32, 56))
+  })
+
+  it('rechargée à mi-vol : à mi-vol dès le premier affichage', () => {
+    reloadedAt(202.5)
+    render(<Page />)
+    expect(image().style.transform).toBe(at(34, -16.625, 68))
+  })
+
+  it('mesure les emplacements une fois, pas à chaque image', () => {
+    render(<Page />)
+    const reads = Element.prototype.getBoundingClientRect.mock.calls.length
+    scrollTo(100)
+    scrollTo(200)
+    scrollTo(300)
+    expect(Element.prototype.getBoundingClientRect.mock.calls).toHaveLength(
+      reads,
+    )
+  })
+
+  it('remesure au redimensionnement : se pose sur la nouvelle place', () => {
+    render(<Page />)
+    scrollTo(500)
+    place('nav', 20, 14, 28) // la nav devient la barre du haut
+    fireEvent(window, new Event('resize'))
+    vi.advanceTimersByTime(16)
+    expect(image().style.transform).toBe(at(20, 14, 28))
+  })
+
+  // revue : la distance du vol suivait innerHeight — l'avatar sautait de
+  // 20 px en plein vol quand la barre d'adresse mobile se repliait
+  it('la barre d’adresse se replie (la fenêtre grandit) : l’avatar ne saute pas', () => {
+    render(<Page />)
+    scrollTo(202.5)
+    screenHeight(900, 990)
+    fireEvent(window, new Event('resize'))
+    vi.advanceTimersByTime(16)
+    expect(image().style.transform).toBe(at(34, -16.625, 68))
+  })
+})
+
+// Avec ScrollTimeline (Chrome, Edge, Safari 26+) : le navigateur trace le vol
+// lui-même, au rythme du défilement — une animation, recréée seulement quand
+// les emplacements bougent
+describe('FlyingAvatar — avec ScrollTimeline, tracé par le navigateur', () => {
+  class FakeScrollTimeline {
+    constructor(options) {
+      this.options = options
+    }
+  }
+  let flights
+  beforeEach(() => {
+    vi.stubGlobal('ScrollTimeline', FakeScrollTimeline)
+    flights = []
+    vi.spyOn(window.Element.prototype, 'animate').mockImplementation(
+      (keyframes, options) => {
+        const flight = { keyframes, options, cancel: vi.fn() }
+        flights.push(flight)
+        return flight
+      },
+    )
+  })
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('le vol entier en images clés, du départ à l’arrivée', () => {
+    render(<Page />)
+    expect(flights).toHaveLength(1)
+    const { keyframes } = flights[0]
+    expect(keyframes).toHaveLength(49)
+    expect(keyframes[0]).toEqual({ offset: 0, transform: at(40, 40, 104) })
+    expect(keyframes[24]).toEqual({
+      offset: 0.5,
+      transform: at(34, -16.625, 68),
+    })
+    expect(keyframes[48]).toEqual({ offset: 1, transform: at(32, 32, 56) })
+    // sur l'image volante (revue : rien ne vérifiait la cible) ; rien d'écrit
+    // dans son style : c'est l'animation qui la place
+    expect(Element.prototype.animate.mock.contexts[0]).toBe(image())
+    expect(image().style.transform).toBe('')
+  })
+
+  it('rechargée à mi-vol : le vol part quand même du haut de la page', () => {
+    reloadedAt(202.5)
+    render(<Page />)
+    expect(flights[0].keyframes[0].transform).toBe(at(40, 40, 104))
+    expect(flights[0].keyframes[48].transform).toBe(at(32, 32, 56))
+  })
+
+  it('sur les 405 premiers pixels du défilement de la page, et tenu au-delà', () => {
+    render(<Page />)
+    const { options } = flights[0]
+    expect(options.timeline).toBeInstanceOf(FakeScrollTimeline)
+    expect(options.timeline.options).toEqual({
+      source: document.documentElement,
+    })
+    expect(options.rangeStart).toBe('0px')
+    expect(options.rangeEnd).toBe('405px')
+    expect(options.fill).toBe('both')
+  })
+
+  it('remesure au redimensionnement : un nouveau vol remplace l’ancien', () => {
+    render(<Page />)
+    place('nav', 20, 14, 28)
+    screenHeight(568)
+    fireEvent(window, new Event('resize'))
+    expect(flights[0].cancel).toHaveBeenCalled()
+    expect(flights).toHaveLength(2)
+    expect(flights[1].keyframes.at(-1).transform).toBe(at(20, 14, 28))
+    expect(flights[1].options.rangeEnd).toBe('260px')
+  })
+
+  it('la barre d’adresse se replie (la fenêtre grandit) : le vol reste le même', () => {
+    render(<Page />)
+    screenHeight(900, 990)
+    fireEvent(window, new Event('resize'))
+    expect(flights).toHaveLength(1)
+    expect(flights[0].cancel).not.toHaveBeenCalled()
+  })
+
+  it('démonté : le vol s’arrête, et plus rien ne le relance', () => {
+    const { unmount } = render(<Page />)
+    unmount()
+    expect(flights[0].cancel).toHaveBeenCalled()
+    place('nav', 20, 14, 28)
+    fireEvent(window, new Event('resize'))
+    expect(flights).toHaveLength(1)
+  })
+
+  // revue : une erreur dans ce décor ferait tomber toute la page (aucune
+  // barrière d'erreur) — un navigateur qui refuserait nos réglages
+  it('refusé par le navigateur : notre code fait voler l’avatar', () => {
+    Element.prototype.animate.mockImplementation(() => {
+      throw new TypeError('rangeEnd')
+    })
+    render(<Page />)
+    expect(image().style.transform).toBe(at(40, 40, 104))
+    expect(document.documentElement.dataset.avatar).toBe('flying')
+  })
+})

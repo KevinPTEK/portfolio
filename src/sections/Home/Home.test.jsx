@@ -50,6 +50,12 @@ describe('Home', () => {
     expect(avatar).toHaveAttribute('width', '104')
   })
 
+  it('pose mon portrait dans l’emplacement de départ de l’avatar volant (§ 7.9)', () => {
+    const { container } = render(<Home />)
+    const slot = container.querySelector('[data-avatar-slot="home"]')
+    expect(slot.querySelector('img')).toHaveAttribute('width', '104')
+  })
+
   it.each(socials)('mène à mon profil $name', ({ name, href }) => {
     render(<Home />)
     const link = screen.getByRole('link', { name: `${name} (nouvel onglet)` })

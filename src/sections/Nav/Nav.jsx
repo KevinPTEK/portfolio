@@ -24,8 +24,9 @@ export function Nav({ currentSection = null, isHidden = false }) {
     <header className={isHidden ? 'nav nav--hidden' : 'nav'}>
       <div className="nav__identity">
         <a className="nav__brand" href="#home">
-          {/* l'emplacement du portrait : 28 px en barre, 56 px en colonne */}
-          <span className="nav__avatar">
+          {/* l'emplacement du portrait : 28 px en barre, 56 px en colonne ;
+              l'arrivée de l'avatar volant (§ 7.9) */}
+          <span className="nav__avatar" data-avatar-slot="nav">
             {/* alt vide : mon nom est écrit juste à côté */}
             <Avatar src={avatar.src} srcSet={avatar.srcSet} alt="" size={56} />
           </span>
