@@ -116,10 +116,14 @@
 
 // La capture d'un site (ProjectCard, ProjectDetails, SiteCard) : écrite après
 // le texte dans le code (le titre ouvre la carte), remise en premier à l'écran ;
-// cadre 4:3 réservé avant son chargement (aucun saut de mise en page)
+// cadre 4:3 réservé avant son chargement (aucun saut de mise en page).
+// height: auto : Cover pose width/height (1 200 × 900), dont le navigateur
+// fait une hauteur de 900 px ; aspect-ratio ne joue que si la hauteur reste
+// automatique (sans lui, la capture gardait 900 px de haut — 16 oct.)
 @mixin cover-frame {
   order: -1;
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
