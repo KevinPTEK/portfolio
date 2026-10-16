@@ -39,3 +39,8 @@ export function stagger(staggerChildren = STAGGER, delayChildren = 0) {
     visible: { transition: { staggerChildren, delayChildren } },
   }
 }
+
+// L'entrée de l'accueil (charte, « Arrivée, suite ») : 150 ms après que l'intro
+// a rendu la main, le bloc identité puis les lignes du menu, à 120 ms d'écart.
+// Partagée par l'accueil et l'avatar volant, qui entre avec le bloc identité (§ 7.4)
+export const ENTRANCE = stagger(STAGGER, 0.15)

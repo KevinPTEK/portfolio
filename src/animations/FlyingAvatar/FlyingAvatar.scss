@@ -1,15 +1,25 @@
 @use '../../styles/abstracts' as *;
 
-// L'avatar volant : posé en haut à gauche de l'écran, déplacé par transform
-// (le vol, § 7.9) ; la forme ronde vient de .avatar (mix), la taille de son
-// attribut width
+// L'avatar volant : posé en haut à gauche de l'écran, au-dessus de la nav
 .flying-avatar {
   position: fixed;
   top: 0;
   left: 0;
   z-index: $z-avatar;
-  transform-origin: 0 0;
   pointer-events: none;
+}
+
+// son entrée avec l'accueil (Motion : flou → net, 14 px de montée, § 7.4) ;
+// nette quand même sans moteur, à l'impression, au focus
+.flying-avatar__entrance {
+  display: block; // un <span> : en ligne, il ne serait pas transformé
+  @include unblurred-without-motion;
+}
+
+// l'image vole par transform (§ 7.9) ; la forme ronde vient de .avatar (mix),
+// la taille de son attribut width
+.flying-avatar__image {
+  transform-origin: 0 0;
 }
 
 // pendant le vol, les deux emplacements s'effacent : l'avatar volant les

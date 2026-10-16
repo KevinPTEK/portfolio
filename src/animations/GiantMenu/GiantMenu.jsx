@@ -1,3 +1,5 @@
+import * as m from 'motion/react-m'
+import { unblur } from '../variants.js'
 import './GiantMenu.scss'
 
 /**
@@ -21,13 +23,15 @@ export function GiantMenu({ items = [] }) {
     // role="list" : sans puces, Safari ne l'annoncerait plus comme une liste (§ 10)
     <ol className="giant-menu" role="list">
       {items.map(({ label, href, number }) => (
-        <li key={href}>
+        // chaque ligne entre avec l'accueil (variant unblur, § 7.4) ; seul, le
+        // menu ne bouge pas
+        <m.li key={href} className="giant-menu__item" variants={unblur}>
           <a className="giant-menu__link" href={href}>
             {label}
             {/* l'espace donne le nom « À propos 01 » ; à l'écran, le numéro hors du flux l'efface */}
             <span className="giant-menu__number"> {number}</span>
           </a>
-        </li>
+        </m.li>
       ))}
     </ol>
   )

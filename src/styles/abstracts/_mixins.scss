@@ -16,6 +16,35 @@
   }
 }
 
+// Un élément qu'une animation d'entrée fait partir caché, flou ou décalé
+// (Motion écrit son état de départ dans l'attribut style) se montre quand même
+// dans trois cas : le moteur ne s'est pas chargé (<html data-motion="off">,
+// § 7.1), l'impression, et le focus clavier entré dans l'élément (son anneau
+// resterait invisible le temps de l'entrée). @content : ce qui le remet en
+// place, en !important — seul moyen de l'emporter sur un style écrit dans
+// l'attribut. Pour Reveal (§ 7.3), l'entrée de l'accueil et l'avatar volant (§ 7.4)
+@mixin shown-without-motion {
+  [data-motion='off'] & {
+    @content;
+  }
+
+  &:focus-within {
+    @content;
+  }
+
+  @media print {
+    @content;
+  }
+}
+
+// Le même filet pour l'entrée « flou → net » (variant unblur) : net, en place
+@mixin unblurred-without-motion {
+  @include shown-without-motion {
+    filter: none !important;
+    transform: none !important;
+  }
+}
+
 // Le passage d'une pièce à l'autre (§ 7.7) : le fond glisse en ligne droite,
 // le texte change d'un coup à mi-chemin. Animer les deux ensemble les ferait
 // passer par le même gris (1,09 : 1, calcul de la revue du 8 oct.).

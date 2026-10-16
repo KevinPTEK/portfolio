@@ -28,6 +28,12 @@ $dimmed: color-mix(in srgb, var(--ink) 75%, var(--bg));
   display: grid;
 }
 
+// chaque ligne entre floue et décalée avec l'accueil (unblur, § 7.4) : nette
+// quand même sans moteur, à l'impression, au focus clavier
+.giant-menu__item {
+  @include unblurred-without-motion;
+}
+
 // Une ligne : Playfair en grandes capitales ; au survol, le mot grandit (§ 7.5).
 // Taille : « COMPÉTENCES » mesure 7,2 fois la taille du texte, plus son numéro ;
 // à 320 px il n'a que 280 px de place, d'où 11,5vw sur mobile (37 px à 320,

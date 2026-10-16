@@ -1,4 +1,6 @@
 import { FlyingAvatar } from './animations/FlyingAvatar/FlyingAvatar.jsx'
+import { Preloader } from './animations/Preloader/Preloader.jsx'
+import { usePreloader } from './animations/Preloader/usePreloader.js'
 import { useCurrentRoom } from './animations/useCurrentRoom.js'
 import { useScrollTo } from './animations/useScrollTo.js'
 import { SkipLink } from './components/SkipLink/SkipLink.jsx'
@@ -17,12 +19,17 @@ const SECTION_IDS = menuItems.map(({ id }) => id)
 
 // Les pièces du site, dans l'ordre (§ 8)
 export function App() {
+  const intro = usePreloader()
+  // l'accueil et l'avatar volant entrent quand l'intro rend la main (§ 7.4)
+  const entered = intro.phase === 'ready' || intro.phase === 'done'
   const { room, section } = useCurrentRoom(SECTION_IDS)
   // le défilement animé vers les pièces, et les liens directs (§ 7.6)
   useScrollTo()
 
   return (
     <>
+      {/* l'intro : purement visuelle, au-dessus de tout (§ 7.4) */}
+      <Preloader phase={intro.phase} rushed={intro.rushed} />
       <SkipLink href="#main">Aller au contenu</SkipLink>
       {/* cachée au chargement et sur l'accueil : le menu géant y fait office de nav */}
       <Nav
@@ -30,10 +37,10 @@ export function App() {
         isHidden={room === null || room === 'home'}
       />
       {/* décoratif, au-dessus de la nav (§ 7.9) */}
-      <FlyingAvatar />
+      <FlyingAvatar entered={entered} />
       {/* tabIndex -1 : la cible du lien d'évitement reçoit vraiment le focus */}
       <main className="main" id="main" tabIndex={-1}>
-        <Home />
+        <Home entered={entered} />
         <About />
         <Work />
         <Skills />

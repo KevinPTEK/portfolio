@@ -1,7 +1,17 @@
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, describe, expect, it } from 'vitest'
+import { MotionGlobalConfig } from 'motion/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { App } from './App.jsx'
+import { MotionProvider } from './animations/MotionProvider.jsx'
+import { PLAYED_KEY } from './animations/Preloader/usePreloader.js'
 import { menuItems } from './data/menuItems.js'
 import {
   cross,
@@ -141,5 +151,90 @@ describe('App', () => {
     expect(
       main.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy()
+  })
+})
+
+// L'intro (§ 7.4) : au premier chargement de la session, le voile passe
+// devant tout ; l'accueil et l'avatar volant attendent qu'elle rende la main
+describe('App — l’intro', () => {
+  useFakeIntersectionObserver()
+  afterEach(() => {
+    MotionGlobalConfig.skipAnimations = false
+  })
+
+  it('le voile, décoratif, passe avant tout le reste', () => {
+    const { container } = render(<App />)
+    const veil = container.firstElementChild
+    expect(veil).toHaveClass('preloader')
+    expect(veil).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('pendant l’intro, l’accueil et l’avatar volant attendent', async () => {
+    MotionGlobalConfig.skipAnimations = true
+    render(
+      <MotionProvider>
+        <App />
+      </MotionProvider>,
+    )
+    // le moteur, chargé après le premier rendu (import) : attendu pour de
+    // bon — une attente au hasard laissait le test passer sans lui (revue)
+    await vi.dynamicImportSettled()
+    await act(async () => {})
+    // puis deux images : Motion démarre une animation à l'image suivante (sans
+    // elles, un accueil qui entrerait trop tôt n'aurait pas encore bougé)
+    await act(
+      () =>
+        new Promise((r) =>
+          requestAnimationFrame(() => requestAnimationFrame(r)),
+        ),
+    )
+    expect(document.querySelector('.home__identity').style.filter).toBe(
+      'blur(14px)',
+    )
+    expect(
+      document.querySelector('.flying-avatar__entrance').style.filter,
+    ).toBe('blur(14px)')
+  })
+
+  // à « ready » (2,9 s) et pas seulement à la fin : ils entrent sous la brume
+  // qui se lève (revue de la tâche 8 : rien ne le vérifiait)
+  it('à « ready », sous la brume, l’accueil et l’avatar volant entrent', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
+    MotionGlobalConfig.skipAnimations = true
+    const { container } = render(
+      <MotionProvider>
+        <App />
+      </MotionProvider>,
+    )
+    act(() => vi.advanceTimersByTime(2900))
+    vi.useRealTimers()
+    expect(container.querySelector('.preloader')).not.toBe(null)
+    await waitFor(() =>
+      expect(document.querySelector('.home__identity').style.filter).toBe(
+        'none',
+      ),
+    )
+    expect(
+      document.querySelector('.flying-avatar__entrance').style.filter,
+    ).toBe('none')
+  })
+
+  it('intro sautée (déjà jouée) : l’accueil et l’avatar volant entrent ensemble', async () => {
+    window.sessionStorage.setItem(PLAYED_KEY, '1')
+    MotionGlobalConfig.skipAnimations = true
+    const { container } = render(
+      <MotionProvider>
+        <App />
+      </MotionProvider>,
+    )
+    expect(container.querySelector('.preloader')).toBe(null)
+    await waitFor(() =>
+      expect(document.querySelector('.home__identity').style.filter).toBe(
+        'none',
+      ),
+    )
+    expect(
+      document.querySelector('.flying-avatar__entrance').style.filter,
+    ).toBe('none')
   })
 })

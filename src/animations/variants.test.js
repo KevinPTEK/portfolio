@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest'
 import {
   DURATION_SLOW,
   EASE_OUT,
+  ENTRANCE,
   STAGGER,
   rise,
   stagger,
@@ -60,6 +61,15 @@ describe('variants', () => {
     })
     expect(stagger(0.2, 0.15).visible.transition).toEqual({
       staggerChildren: 0.2,
+      delayChildren: 0.15,
+    })
+  })
+
+  // l'entrée de l'accueil (charte, « Arrivée, suite ») : partagée par l'accueil
+  // et l'avatar volant, qui entrent ensemble (§ 7.4)
+  it('ENTRANCE : 150 ms d’attente, puis 120 ms entre deux éléments', () => {
+    expect(ENTRANCE.visible.transition).toEqual({
+      staggerChildren: 0.12,
       delayChildren: 0.15,
     })
   })

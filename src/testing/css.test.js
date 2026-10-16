@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
-import { mediaBlocks, outsideMedia } from './css.js'
+import { mediaBlocks, outsideMedia, ruleBody } from './css.js'
 
 // L'outil des tests du CSS compilé : une accolade dans une chaîne ou un
 // commentaire ne doit ni couper un bloc @media, ni le faire tourner sans fin
@@ -51,5 +51,22 @@ describe('mediaBlocks', () => {
       '@media print {\n  /* } */\n  .b { color: red; }\n}\n.c { color: blue; }'
     expect(mediaBlocks(css)[0].body).toContain('.b { color: red; }')
     expect(outsideMedia(css)).toBe('\n.c { color: blue; }')
+  })
+})
+
+// Le contenu d'une règle, par son sélecteur (revue : la fonction était
+// recopiée dans deux tests)
+describe('ruleBody', () => {
+  const css =
+    '.a {\n  color: red;\n}\n[data-x=y] .b {\n  color: green;\n}\n@media print {\n  .a {\n    color: blue;\n  }\n}\n'
+
+  it('trouve la règle de premier niveau, sélecteur à crochets compris', () => {
+    expect(ruleBody(css, '.a')).toContain('color: red')
+    expect(ruleBody(css, '.a')).not.toContain('blue') // pas celle du @media
+    expect(ruleBody(css, '[data-x=y] .b')).toContain('color: green')
+  })
+
+  it('absente : une chaîne vide', () => {
+    expect(ruleBody(css, '.c')).toBe('')
   })
 })

@@ -19,6 +19,13 @@ describe('GiantMenu', () => {
     expect(list).toHaveAttribute('role', 'list')
   })
 
+  it('nomme chaque ligne (giant-menu__item : ses filets de l’entrée, § 7.4)', () => {
+    render(<GiantMenu items={items} />)
+    for (const line of screen.getAllByRole('listitem')) {
+      expect(line).toHaveClass('giant-menu__item')
+    }
+  })
+
   it.each(items)(
     'mène à $href, nommé par son libellé et son numéro',
     ({ label, href, number }) => {

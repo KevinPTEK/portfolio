@@ -102,4 +102,20 @@ describe('GiantMenu.scss', () => {
   it("n'a plus de calque", () => {
     expect(css).not.toMatch(/attr\(|data-label|giant-menu__word/)
   })
+
+  // chaque ligne entre floue et décalée (unblur, écrit dans l'attribut style,
+  // § 7.4) : nette et en place quand même sans moteur, à l'impression, au focus
+  it('lignes nettes sans moteur, à l’impression et au focus clavier', () => {
+    const settled =
+      /\{\s*filter: none !important;\s*transform: none !important;\s*\}/.source
+    expect(css).toMatch(
+      new RegExp(`\\[data-motion=off\\] \\.giant-menu__item ${settled}`),
+    )
+    expect(css).toMatch(
+      new RegExp(`\\.giant-menu__item:focus-within ${settled}`),
+    )
+    expect(bodies((query) => query === 'print')).toMatch(
+      new RegExp(`\\.giant-menu__item ${settled}`),
+    )
+  })
 })

@@ -1,0 +1,86 @@
+@use '../../styles/abstracts' as *;
+
+// Le voile de papier foncé de l'intro (charte § 3)
+$veil: #4e463d;
+
+// Le voile : tout l'écran (sauf la gouttière d'une barre de défilement
+// classique : ci-dessous), au-dessus de tout. Couleur unie tant que le
+// brouillard n'a pas peint sa première image (ou sans canvas)
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: $z-loader;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background-color: $veil;
+
+  // le grain du papier sur le voile, qui s'évapore avec lui
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: noise(160, 0.9, 2, 1);
+    mix-blend-mode: overlay; // le voile est son propre contexte (fixe, z-index)
+    opacity: 0.1;
+    transition: opacity 1.4s $ease-out;
+  }
+}
+
+// le brouillard a pris le relais : c'est lui qui peint le voile
+.preloader--fog {
+  background-color: transparent;
+}
+
+// le petit canvas étiré à l'écran ; un léger flou fond ses pixels (il déborde :
+// le flou n'éclaircit pas les bords) — garde-fou 1 du § 7.4
+.preloader__fog {
+  position: absolute;
+  inset: -32px;
+  width: calc(100% + 64px);
+  max-width: none; // le reset plafonne les canvas à 100 % : coupé à droite
+  height: calc(100% + 64px);
+  filter: blur(8px);
+}
+
+// ---------- L'intro pilote la page (<html data-intro>, posé par Preloader) ----------
+
+// pas de défilement avant « ready ». La place de la barre de défilement reste
+// réservée : sans elle, la page se décalerait de sa largeur à son retour
+// (barres classiques, Windows : un décalage compté dans le CLS — veille du
+// 15 oct.). Sur iPhone, Safari laisse défiler quand sa barre est repliée :
+// sans gravité, tout geste accélère l'intro et rend le défilement.
+// Un élément fixe ne couvre pas cette gouttière, peinte avec le fond de la
+// page : le fond prend la couleur du voile (revue : 15 px de kraft à droite)
+:root[data-intro='drawing'],
+:root[data-intro='opening'] {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+  background-color: $veil;
+}
+
+// à l'ouverture, le grain s'évapore ; à « ready », on clique à travers la brume
+[data-intro='opening'] .preloader::after,
+[data-intro='ready'] .preloader::after {
+  opacity: 0;
+}
+
+[data-intro='ready'] .preloader {
+  pointer-events: none;
+}
+
+// sans brouillard (pas de canvas) : un simple fondu du voile
+[data-intro='opening'] .preloader:not(.preloader--fog),
+[data-intro='ready'] .preloader:not(.preloader--fog) {
+  opacity: 0;
+  transition: opacity 1.6s $ease-out;
+}
+
+// à l'impression, la page sans le voile (imprimée pendant l'intro, elle n'en
+// montrait que lui — revue)
+@media print {
+  .preloader {
+    display: none;
+  }
+}

@@ -25,10 +25,28 @@ describe('FlyingAvatar.scss', () => {
     expect(rule).toContain('z-index: 40')
   })
 
-  it('réduit depuis son coin haut gauche, et laisse passer les clics', () => {
-    const rule = screen.match(/\.flying-avatar \{([^}]*)\}/)[1]
-    expect(rule).toContain('transform-origin: 0 0')
-    expect(rule).toContain('pointer-events: none')
+  it('laisse passer les clics ; l’image réduit depuis son coin haut gauche', () => {
+    expect(screen.match(/\.flying-avatar \{([^}]*)\}/)[1]).toContain(
+      'pointer-events: none',
+    )
+    expect(screen.match(/\.flying-avatar__image \{([^}]*)\}/)[1]).toContain(
+      'transform-origin: 0 0',
+    )
+  })
+
+  // l'entrée avec l'accueil (Motion écrit le flou et le décalage dans
+  // l'attribut style, § 7.4) : un bloc, pour être transformé ; nette quand
+  // même sans moteur, à l'impression, au focus
+  it('son entrée : un bloc, net sans moteur et à l’impression', () => {
+    expect(screen.match(/\.flying-avatar__entrance \{([^}]*)\}/)[1]).toContain(
+      'display: block',
+    )
+    const settled =
+      /\{\s*filter: none !important;\s*transform: none !important;\s*\}/.source
+    expect(css).toMatch(
+      new RegExp(`\\[data-motion=off\\] \\.flying-avatar__entrance ${settled}`),
+    )
+    expect(print).toMatch(new RegExp(`\\.flying-avatar__entrance ${settled}`))
   })
 
   // à l'écran seulement : à l'impression, chaque emplacement garde son

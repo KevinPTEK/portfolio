@@ -55,3 +55,12 @@ export function outsideMedia(css) {
     css,
   )
 }
+
+/**
+ * Le contenu de la règle d'un sélecteur, écrite en début de ligne (hors des
+ * @media, que Sass indente) ; une chaîne vide si elle n'existe pas
+ */
+export function ruleBody(css, selector) {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return css.match(new RegExp(`(?:^|\\n)${escaped} \\{([^}]*)\\}`))?.[1] ?? ''
+}

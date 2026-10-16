@@ -1,7 +1,10 @@
-import { render, screen, within } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { act, render, screen, waitFor, within } from '@testing-library/react'
+import { MotionGlobalConfig } from 'motion/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { MotionProvider } from '../../animations/MotionProvider.jsx'
 import menu from '../../data/menu.json'
 import socials from '../../data/socials.json'
+import { preferReducedMotion } from '../../testing/motion.js'
 import { Home } from './Home.jsx'
 
 // L'accueil : qui je suis (à gauche), le menu géant (à droite)
@@ -93,5 +96,79 @@ describe('Home', () => {
     expect(
       screen.getByText('Défiler').closest('[aria-hidden="true"]'),
     ).not.toBe(null)
+  })
+})
+
+// L'entrée de l'accueil (§ 7.4) : flou → net et 14 px de montée, jamais
+// d'opacité (le LCP attendrait la fin de l'intro). Elle attend que l'intro
+// rende la main (entered)
+describe('Home — l’entrée', () => {
+  it("pendant l'intro : bloc identité flou et 14 px plus bas, mais jamais transparent (LCP)", () => {
+    render(<Home entered={false} />)
+    const identity = document.querySelector('.home__identity')
+    expect(identity.style.filter).toBe('blur(14px)')
+    expect(identity.style.transform).toBe('translateY(14px)')
+    expect(identity.style.opacity).toBe('')
+    // les lignes du menu aussi, la dernière comprise
+    const lines = document.querySelectorAll('.giant-menu li')
+    expect(lines[0].style.filter).toBe('blur(14px)')
+    expect(lines[lines.length - 1].style.filter).toBe('blur(14px)')
+  })
+
+  it('sous « réduire les animations » : en place d’emblée', () => {
+    preferReducedMotion()
+    render(<Home entered={false} />)
+    expect(document.querySelector('.home__identity').style.filter).not.toBe(
+      'blur(14px)',
+    )
+  })
+
+  describe('moteur chargé', () => {
+    // les animations finissent tout de suite (réglage de Motion pour les tests)
+    beforeEach(() => {
+      MotionGlobalConfig.skipAnimations = true
+    })
+    afterEach(() => {
+      MotionGlobalConfig.skipAnimations = false
+    })
+
+    it('l’intro rend la main : l’accueil entre, et finit net', async () => {
+      render(
+        <MotionProvider>
+          <Home entered />
+        </MotionProvider>,
+      )
+      const identity = document.querySelector('.home__identity')
+      // net, plus aucun filtre (unblur : transitionEnd)
+      await waitFor(() => expect(identity.style.filter).toBe('none'))
+      expect(identity.style.transform).toBe('none')
+      const lines = document.querySelectorAll('.giant-menu li')
+      expect(lines[lines.length - 1].style.filter).toBe('none')
+    })
+
+    it('tant que l’intro joue, il attend, même moteur chargé', async () => {
+      const page = (entered) => (
+        <MotionProvider>
+          <Home entered={entered} />
+        </MotionProvider>
+      )
+      const { rerender } = render(page(false))
+      // le moteur, chargé après le premier rendu (import) : attendu pour de
+      // bon — une attente au hasard laissait le test passer sans lui (revue)
+      await vi.dynamicImportSettled()
+      await act(async () => {})
+      // puis deux images : Motion démarre une animation à l'image suivante
+      await act(
+        () =>
+          new Promise((r) =>
+            requestAnimationFrame(() => requestAnimationFrame(r)),
+          ),
+      )
+      const identity = document.querySelector('.home__identity')
+      expect(identity.style.filter).toBe('blur(14px)')
+      // contre-épreuve : le même accueil, la main rendue, entre bien
+      rerender(page(true))
+      await waitFor(() => expect(identity.style.filter).toBe('none'))
+    })
   })
 })

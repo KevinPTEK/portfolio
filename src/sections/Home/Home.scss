@@ -10,6 +10,8 @@ $padding-top: $space-6; // 32 px
 $padding-top-desktop: $space-6 + $space-2; // 40 px
 $padding-left-desktop: $space-6 + $space-2; // 40 px
 $padding-bottom: $space-5; // 24 px
+// la mise au point de l'accueil sous l'intro : 2,8 s, sur la courbe de la maquette
+$focus-in: 2.8s cubic-bezier(0.25, 0.7, 0.2, 1);
 
 .home {
   grid-template-columns: minmax(0, 1fr);
@@ -26,6 +28,10 @@ $padding-bottom: $space-5; // 24 px
   grid-template-rows: 1fr auto;
   gap: $space-7;
   min-height: calc(100svh - #{$padding-top + $padding-bottom});
+  // la mise au point sous la brume de l'intro (fin du fichier)
+  transition:
+    transform $focus-in,
+    filter $focus-in;
 
   @include up(desktop) {
     min-height: calc(100svh - #{$padding-top-desktop + $padding-bottom});
@@ -52,6 +58,9 @@ $padding-bottom: $space-5; // 24 px
   justify-items: start; // le portrait garde ses 104 px
   align-self: start;
   gap: $space-1;
+  // il entre flou et décalé (unblur, § 7.4) : net quand même sans moteur, à
+  // l'impression, au focus clavier
+  @include unblurred-without-motion;
 }
 
 .home__name {
@@ -99,4 +108,17 @@ $padding-bottom: $space-5; // 24 px
 // la flèche → tournée vers le bas
 .home__scroll-icon {
   transform: rotate(90deg);
+}
+
+// Sous la brume de l'intro, l'accueil fait sa mise au point : léger zoom
+// arrière, flou → net (<html data-intro>, § 7.4). Garde-fou 1 : c'est le flou
+// de la plus grande surface — le premier retiré si la mesure l'exige
+[data-intro='drawing'] .home__layout {
+  transform: scale(1.05);
+  filter: blur(10px);
+}
+
+// le visiteur a fait un geste : la mise au point se presse aussi
+[data-intro-rushed] .home__layout {
+  transition-duration: 0.5s;
 }
