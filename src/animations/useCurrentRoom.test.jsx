@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { act, render, screen } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   FakeIntersectionObserver as FakeObserver,
   cross,
@@ -126,5 +126,63 @@ describe('useCurrentRoom', () => {
     unmount()
     expect(FakeObserver.last.disconnected).toBe(true)
     expect(document.body.dataset.theme).toBeUndefined()
+  })
+})
+
+// L'arrivée sur la page (rechargement, lien direct) : la nav prend les
+// couleurs de la première pièce d'emblée, sans fondu depuis le kraft de
+// l'accueil (choix du 16 oct.). arriving : vrai jusqu'à deux images après
+// que la première pièce est connue (le temps que ses couleurs soient posées)
+function Arrival() {
+  const { arriving } = useCurrentRoom(SECTIONS)
+  return <p data-testid="arriving">{String(arriving)}</p>
+}
+const arriving = () => screen.getByTestId('arriving').textContent
+
+describe('useCurrentRoom — l’arrivée', () => {
+  useFakeIntersectionObserver()
+  beforeEach(() => {
+    vi.useFakeTimers({
+      toFake: ['requestAnimationFrame', 'cancelAnimationFrame'],
+    })
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+  const frame = () => act(() => vi.advanceTimersByTime(16))
+  function renderArrival() {
+    render(
+      <>
+        <section className="room" id="home" data-theme="paper-light" />
+        <section className="room" id="argent" data-theme="argent" />
+        <Arrival />
+      </>,
+    )
+  }
+
+  it('la page arrive tant qu’aucune pièce n’est connue', () => {
+    renderArrival()
+    frame()
+    frame()
+    expect(arriving()).toBe('true')
+  })
+
+  it('arrivée finie deux images après la première pièce', () => {
+    renderArrival()
+    cross({ argent: true })
+    frame()
+    expect(arriving()).toBe('true')
+    frame()
+    expect(arriving()).toBe('false')
+  })
+
+  it('les pièces suivantes ne la relancent pas', () => {
+    renderArrival()
+    cross({ argent: true })
+    frame()
+    frame()
+    cross({ argent: false, home: true })
+    frame()
+    expect(arriving()).toBe('false')
   })
 })

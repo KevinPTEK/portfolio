@@ -15,11 +15,16 @@ const MIDDLE_LINE = '-50% 0px -50% 0px'
  * ne prévient qu'au passage de la ligne, sans calcul à chaque image (§ 7.7).
  *
  * @param {string[]} sectionIds - les id des cibles du menu (menu.json)
- * @returns {{ room: string | null, section: string | null }}
- *   l'id de la pièce courante et celui de sa section (null hors du menu)
+ * @returns {{ room: string | null, section: string | null, arriving: boolean }}
+ *   l'id de la pièce courante et celui de sa section (null hors du menu) ;
+ *   arriving : la page vient d'arriver — vrai jusqu'à deux images après que
+ *   la première pièce est connue (la nav prend alors ses couleurs d'emblée,
+ *   sans fondu depuis le kraft de l'accueil : choix du 16 oct.)
  */
 export function useCurrentRoom(sectionIds) {
   const [current, setCurrent] = useState({ room: null, section: null })
+  const [arriving, setArriving] = useState(true)
+  const known = current.room !== null
 
   // Effect Event (React 19.2) : lit toujours la dernière liste de sections,
   // sans relancer l'observateur quand elle change — il ne dépend que des
@@ -60,5 +65,19 @@ export function useCurrentRoom(sectionIds) {
     }
   }, [])
 
-  return current
+  // deux images après la première pièce : ses couleurs sont posées, la page
+  // a fini d'arriver
+  useEffect(() => {
+    if (!known || !arriving) return
+    let second = 0
+    const first = requestAnimationFrame(() => {
+      second = requestAnimationFrame(() => setArriving(false))
+    })
+    return () => {
+      cancelAnimationFrame(first)
+      cancelAnimationFrame(second)
+    }
+  }, [known, arriving])
+
+  return { ...current, arriving }
 }

@@ -30,9 +30,10 @@ const rule = (source, selector) => {
   return found[1]
 }
 
-// Le fond glisse en ligne droite, le texte change d'un coup à mi-chemin
-const THEME_FADE =
-  '--bg 0.7s linear, --line 0.7s linear, --surface 0.7s linear, --ink 0s linear 0.35s, --ink-2 0s linear 0.35s, --accent 0s linear 0.35s'
+// Le fond glisse en S (il traverse vite les teintes moyennes, où aucun
+// texte ne contraste : choix du 16 oct.), le texte change d'un coup à mi-chemin
+const S = 'cubic-bezier(0.65, 0, 0.35, 1)'
+const THEME_FADE = `--bg 0.7s ${S}, --line 0.7s ${S}, --surface 0.7s ${S}, --ink 0s linear 0.35s, --ink-2 0s linear 0.35s, --accent 0s linear 0.35s`
 
 describe('Nav.scss — le rideau', () => {
   it('fermé : invisible (hors de la tabulation), rogné du bas jusqu’en haut', () => {
@@ -116,6 +117,24 @@ describe('Nav.scss — la cascade', () => {
 describe('Nav.scss — le document', () => {
   it('ne fond pas ses couleurs : la règle html de la nav ne pose que la marge de défilement', () => {
     expect(rule(plain, 'html')).not.toContain('transition')
+  })
+})
+
+// L'arrivée sur la page (rechargement, lien direct vers une pièce sombre) :
+// la nav s'ouvrait en kraft puis fondait vers le sombre, en repassant par le
+// creux de contraste — à l'arrivée, ses couleurs ne fondent pas (16 oct.) ;
+// le rideau, ou le fondu sous « réduire les animations », joue quand même
+describe('Nav.scss — l’arrivée', () => {
+  it('le rideau, sans fondu des couleurs', () => {
+    expect(rule(plain, '.nav--arriving')).toMatch(
+      /^\s*transition: clip-path 0\.7s cubic-bezier\(0\.7, 0, 0\.2, 1\), visibility 0\.7s;\s*$/,
+    )
+  })
+
+  it('sous « réduire les animations » : le fondu de la nav, sans celui des couleurs', () => {
+    expect(rule(reduced, '.nav--arriving')).toMatch(
+      /^\s*transition: opacity 0\.2s linear, visibility 0\.2s;\s*$/,
+    )
   })
 })
 

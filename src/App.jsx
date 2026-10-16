@@ -22,7 +22,7 @@ export function App() {
   const intro = usePreloader()
   // l'accueil et l'avatar volant entrent quand l'intro rend la main (§ 7.4)
   const entered = intro.phase === 'ready' || intro.phase === 'done'
-  const { room, section } = useCurrentRoom(SECTION_IDS)
+  const { room, section, arriving } = useCurrentRoom(SECTION_IDS)
   // le défilement animé vers les pièces, et les liens directs (§ 7.6)
   useScrollTo()
 
@@ -34,6 +34,7 @@ export function App() {
       {/* cachée au chargement et sur l'accueil : le menu géant y fait office de nav */}
       <Nav
         currentSection={section}
+        isArriving={arriving}
         isHidden={room === null || room === 'home'}
       />
       {/* décoratif, au-dessus de la nav (§ 7.9) */}

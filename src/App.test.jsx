@@ -81,6 +81,21 @@ describe('App', () => {
     expect(following(flying, screen.getByRole('main'))).toBeTruthy()
   })
 
+  // l'arrivée (rechargement, lien direct) : la nav prend les couleurs de la
+  // première pièce d'emblée, puis fond normalement d'une pièce à l'autre
+  it('à l’arrivée, la nav prend ses couleurs d’emblée, puis fond normalement', async () => {
+    render(<App />)
+    expect(banner()).toHaveClass('nav--arriving')
+    cross({ argent: true })
+    await act(
+      () =>
+        new Promise((r) =>
+          requestAnimationFrame(() => requestAnimationFrame(r)),
+        ),
+    )
+    expect(banner()).not.toHaveClass('nav--arriving')
+  })
+
   it('cache la nav au chargement et sur l’accueil', () => {
     render(<App />)
     // aucune pièce choisie avant le premier rapport de l'observateur

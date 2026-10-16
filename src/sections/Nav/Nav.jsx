@@ -16,12 +16,26 @@ import './Nav.scss'
  * @param {object} props
  * @param {string | null} [props.currentSection] - id de la section affichée
  *   (« work »…) : son lien est marqué aria-current="location"
+ * @param {boolean} [props.isArriving=false] - la page vient d'arriver : les
+ *   couleurs de la pièce d'emblée, sans fondu (useCurrentRoom)
  * @param {boolean} [props.isHidden=false] - masquée (accueil) : invisible et
  *   hors de la tabulation (une classe, pas l'attribut HTML hidden)
  */
-export function Nav({ currentSection = null, isHidden = false }) {
+export function Nav({
+  currentSection = null,
+  isArriving = false,
+  isHidden = false,
+}) {
+  const className = [
+    'nav',
+    isHidden && 'nav--hidden',
+    isArriving && 'nav--arriving',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <header className={isHidden ? 'nav nav--hidden' : 'nav'}>
+    <header className={className}>
       <div className="nav__identity">
         <a className="nav__brand" href="#home">
           {/* l'emplacement du portrait : 28 px en barre, 56 px en colonne ;

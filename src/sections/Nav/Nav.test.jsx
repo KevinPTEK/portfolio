@@ -71,6 +71,17 @@ describe('Nav', () => {
     ).toBe(expected)
   })
 
+  // l'arrivée sur la page : les couleurs de la pièce d'emblée (16 oct.)
+  it.each([
+    [true, true],
+    [false, false],
+  ])('arrivée : %s → classe nav--arriving : %s', (arriving, expected) => {
+    render(<Nav isHidden isArriving={arriving} />)
+    const banner = screen.getByRole('banner', { hidden: true })
+    expect(banner.classList.contains('nav--arriving')).toBe(expected)
+    expect(banner).toHaveClass('nav', 'nav--hidden') // les deux modificateurs ensemble
+  })
+
   it('a quatre enfants, dans l’ordre de la cascade (Nav.scss les vise par leur rang)', () => {
     // identité (immobile : l'avatar volant s'y pose, § 7.9), pièces,
     // « Menu », © — un enfant ajouté ou déplacé décalerait la cascade

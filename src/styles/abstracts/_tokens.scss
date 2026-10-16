@@ -49,4 +49,8 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 $duration-fast: 0.2s; // survols
 $duration-base: 0.6s; // entrée de la modale
 $duration-theme: 0.7s; // changement de pièce
+// le fond qui change de pièce : en S, il traverse vite les teintes moyennes,
+// où aucun texte ne contraste (≈ 0,13 s sous 3 : 1 au lieu de ≈ 0,3 en ligne
+// droite — mesuré le 11 oct., choisi le 16 oct.)
+$ease-theme: cubic-bezier(0.65, 0, 0.35, 1);
 $duration-slow: 0.9s; // apparitions au défilement

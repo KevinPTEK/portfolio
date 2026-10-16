@@ -13,6 +13,14 @@ $cascade: 0.5s;
 // le rideau est alors ouvert à 19 % : le contenu monte pendant qu'il se dévoile
 $cascade-start: 0.25s;
 $cascade-step: 0.07s;
+// les transitions de la nav hors couleurs : le rideau, ou sous « réduire les
+// animations » un fondu de toute la nav — avec le fondu des couleurs
+// (theme-fade), ou seules à l'arrivée sur la page (.nav--arriving)
+$curtain-transitions: (clip-path $curtain $curtain-ease, visibility $curtain);
+$reduced-transitions: (
+  opacity $duration-fast linear,
+  visibility $duration-fast
+);
 
 // Jamais de focus caché sous la barre (WCAG 2.4.11 ; échec F110 du W3C) :
 // un élément atteint au clavier — ou une pièce atteinte par un lien — défile
@@ -48,17 +56,14 @@ html {
   // le rideau ouvert : une forme, pour que le navigateur sache l'animer depuis
   // le rideau fermé (depuis « none », clip-path sauterait d'un coup)
   clip-path: inset(0);
-  @include theme-fade(clip-path $curtain $curtain-ease, visibility $curtain);
+  @include theme-fade($curtain-transitions...);
 
   @include reduced-motion {
     // ni rideau ni cascade : un fondu de toute la nav ; les couleurs fondent
     // quand même (une couleur n'est pas un mouvement, § 10). On remplace ici
     // au lieu d'écrire le mouvement dans motion-allowed : rideau et couleurs
     // tiennent dans une seule déclaration transition
-    @include theme-fade(
-      opacity $duration-fast linear,
-      visibility $duration-fast
-    );
+    @include theme-fade($reduced-transitions...);
   }
 
   // bureau : une colonne de toute la hauteur, bordée d'un filet
@@ -86,6 +91,19 @@ html {
   @include reduced-motion {
     clip-path: none;
     opacity: 0;
+  }
+}
+
+// À l'arrivée sur la page (rechargement, lien direct vers une pièce) : les
+// couleurs de la pièce d'emblée. Sans elle, la nav s'ouvrait en kraft (le
+// thème de l'accueil, par défaut) puis fondait vers le sombre, en repassant
+// par le creux de contraste (choix du 16 oct.). Le rideau joue quand même.
+// App la pose jusqu'à deux images après la première pièce (useCurrentRoom)
+.nav--arriving {
+  transition: $curtain-transitions;
+
+  @include reduced-motion {
+    transition: $reduced-transitions;
   }
 }
 
