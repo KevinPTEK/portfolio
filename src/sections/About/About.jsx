@@ -34,8 +34,6 @@ export function About() {
             title="Bonjour, moi c'est Kevin."
             accent="Kevin."
           />
-          {/* Brouillon de la maquette, à vérifier par Kevin (9 oct.) :
-              l'intitulé de la formation, « Douze projets », les loisirs */}
           <p className="about__paragraph">
             <span className="about__highlight">
               Développeur front-end en fin de formation «&nbsp;Intégrateur

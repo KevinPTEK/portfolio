@@ -34,7 +34,6 @@ export function Contact() {
           }
         />
       </Reveal>
-      {/* Brouillon de la maquette : l'adresse est à vérifier par Kevin (9 oct.) */}
       <Reveal
         as="a"
         className="contact__email"
