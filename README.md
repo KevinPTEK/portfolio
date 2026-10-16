@@ -80,10 +80,10 @@ Le site a été conçu avant d'être codé : charte graphique, maquette interact
 
 - [x] Initialisation : Vite, React, Sass, Motion, Vitest
 - [x] Design system Sass et métadonnées SEO
-- [ ] Composants d'interface, testés
-- [ ] Sections et données : site complet, responsive et accessible
-- [ ] Animations
-- [ ] Contenus définitifs et images optimisées
+- [x] Composants d'interface, testés
+- [x] Sections et données : site complet, responsive et accessible
+- [x] Animations
+- [x] Contenus définitifs et images optimisées
 - [ ] Mesures (Lighthouse, EcoIndex, clavier, VoiceOver) et déploiement
 
 ---
