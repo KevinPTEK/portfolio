@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { coverVariants } from '../components/Cover/coverSrcSet.js'
 import projects from './projects.json'
 import sites from './sites.json'
 
@@ -31,12 +32,23 @@ const isWebp = (file) => {
   )
 }
 
+// une capture, et ses versions plus petites (Cover, étape 5) : chacune doit
+// peser moins que l'originale, sinon elle ne sert à rien
+const cover = (src) => [
+  { src, budget: 120 * KB },
+  ...coverVariants(src).map((variant) => ({
+    src: variant.src,
+    budget: 120 * KB,
+    original: src,
+  })),
+]
+
 const images = [
   ...projects.flatMap((project) => [
-    { src: project.cover.src, budget: 120 * KB },
+    ...cover(project.cover.src),
     { src: project.cover.blur, budget: 4 * KB },
   ]),
-  ...sites.map((site) => ({ src: site.cover.src, budget: 120 * KB })),
+  ...sites.flatMap((site) => cover(site.cover.src)),
 ]
 
 describe.each(images)('$src', ({ src, budget }) => {
@@ -55,6 +67,16 @@ describe.each(images)('$src', ({ src, budget }) => {
     expect(statSync(file).size).toBeLessThanOrEqual(budget)
   })
 })
+
+describe.each(images.filter(({ original }) => original))(
+  '$src',
+  ({ src, original }) => {
+    it('pèse moins que l’originale', () => {
+      const size = (path) => statSync(join(IMAGES_DIR, basename(path))).size
+      expect(size(src)).toBeLessThan(size(original))
+    })
+  },
+)
 
 it('public/images ne contient aucune image que les données ne citent pas', () => {
   // remplacer une capture = changer son nom (§ 5.1) : l'ancienne ne doit pas rester

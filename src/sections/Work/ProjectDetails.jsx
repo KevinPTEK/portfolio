@@ -1,9 +1,14 @@
 import { Button } from '../../components/Button/Button.jsx'
+import { Cover } from '../../components/Cover/Cover.jsx'
 import { SectionHeader } from '../../components/SectionHeader/SectionHeader.jsx'
 import { TagList } from '../../components/TagList/TagList.jsx'
 import { VisuallyHidden } from '../../components/VisuallyHidden/VisuallyHidden.jsx'
 import { pad } from '../../utils/pad.js'
 import './ProjectDetails.scss'
+
+// La largeur de la capture dans la modale, pour le navigateur qui ne la
+// mesure pas lui-même (Safari) — mesurée le 16 oct., arrondie vers le haut
+const COVER_SIZES = '(min-width: 1024px) 481px, calc(100vw - 34px)'
 
 /**
  * Le détail d'un projet, dans la modale : sa capture, sa place (« 01 / 03 »),
@@ -101,11 +106,10 @@ export function ProjectDetails({
       </div>
 
       {/* après le texte dans le code (le titre ouvre le détail), en premier à l'écran */}
-      <img
+      <Cover
+        cover={cover}
+        sizes={COVER_SIZES}
         className="project-details__cover"
-        src={cover.src}
-        alt={cover.alt}
-        loading="lazy"
       />
     </div>
   )

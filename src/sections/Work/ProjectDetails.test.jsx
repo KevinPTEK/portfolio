@@ -1,6 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
+import { coverSrcSet } from '../../components/Cover/coverSrcSet.js'
 import { ProjectDetails } from './ProjectDetails.jsx'
 
 // Exemple d'usage : le détail de Nina Carducci (avec site), 3e de 3
@@ -140,6 +141,11 @@ describe('ProjectDetails', () => {
     const cover = screen.getByRole('img', { name: nina.cover.alt })
     expect(cover).toHaveAttribute('src', nina.cover.src)
     // la modale est montée dès le départ : sans lazy, sa capture se chargerait tout de suite
+    expect(cover).toHaveAttribute('srcset', coverSrcSet(nina.cover.src))
+    expect(cover).toHaveAttribute(
+      'sizes',
+      'auto, (min-width: 1024px) 481px, calc(100vw - 34px)',
+    )
     expect(cover).toHaveAttribute('loading', 'lazy')
   })
 

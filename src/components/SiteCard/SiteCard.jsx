@@ -1,7 +1,12 @@
 import { Button } from '../Button/Button.jsx'
+import { Cover } from '../Cover/Cover.jsx'
 import { TagList } from '../TagList/TagList.jsx'
 import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden.jsx'
 import './SiteCard.scss'
+
+// La largeur de la capture selon l'écran, pour le navigateur qui ne la
+// mesure pas lui-même (Safari) — mesurée le 16 oct., arrondie vers le haut
+const COVER_SIZES = '(min-width: 640px) 360px, calc(100vw - 40px)'
 
 /**
  * Carte d'un site vitrine (pièce « Autres réalisations ») : sa capture, son nom,
@@ -43,12 +48,7 @@ export function SiteCard({ site }) {
         </div>
       </div>
       {/* après le texte dans le code (le titre ouvre la carte), en premier à l'écran */}
-      <img
-        className="site-card__cover"
-        src={cover.src}
-        alt={cover.alt}
-        loading="lazy"
-      />
+      <Cover cover={cover} sizes={COVER_SIZES} className="site-card__cover" />
     </div>
   )
 }

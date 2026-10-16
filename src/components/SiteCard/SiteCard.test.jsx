@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { coverSrcSet } from '../Cover/coverSrcSet.js'
 import { SiteCard } from './SiteCard.jsx'
 
 // Exemples d'usage : un site au code privé (le cas de Tourn&Marou), puis un
@@ -90,6 +91,11 @@ describe('SiteCard', () => {
       const cover = screen.getByRole('img', { name: site.cover.alt })
       expect(cover).toHaveAttribute('src', site.cover.src)
       expect(cover).toHaveAttribute('loading', 'lazy')
+      expect(cover).toHaveAttribute('srcset', coverSrcSet(site.cover.src))
+      expect(cover).toHaveAttribute(
+        'sizes',
+        'auto, (min-width: 640px) 360px, calc(100vw - 40px)',
+      )
     },
   )
 

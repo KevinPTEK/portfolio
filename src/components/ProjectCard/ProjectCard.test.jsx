@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
+import { coverSrcSet } from '../Cover/coverSrcSet.js'
 import { ProjectCard } from './ProjectCard.jsx'
 
 // Exemple d'usage : la pièce de Kasa, deuxième de trois
@@ -91,6 +92,16 @@ describe('ProjectCard', () => {
     const cover = screen.getByRole('img', { name: "Page d'accueil de Kasa" })
     expect(cover).toHaveAttribute('src', '/images/kasa-cover.webp')
     expect(cover).toHaveAttribute('loading', 'lazy')
+    // ses trois largeurs (Cover) ; à défaut de mesure (Safari), la largeur de
+    // la carte selon l'écran (mesurée le 16 oct.)
+    expect(cover).toHaveAttribute(
+      'srcset',
+      coverSrcSet('/images/kasa-cover.webp'),
+    )
+    expect(cover).toHaveAttribute(
+      'sizes',
+      'auto, (min-width: 1440px) 624px, (min-width: 1024px) 40vw, (min-width: 640px) 45vw, calc(100vw - 40px)',
+    )
   })
 
   it('place le titre avant la capture dans le code', () => {

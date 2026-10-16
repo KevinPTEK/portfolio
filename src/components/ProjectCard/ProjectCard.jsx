@@ -1,9 +1,15 @@
 import { Button } from '../Button/Button.jsx'
+import { Cover } from '../Cover/Cover.jsx'
 import { SectionHeader } from '../SectionHeader/SectionHeader.jsx'
 import { TagList } from '../TagList/TagList.jsx'
 import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden.jsx'
 import { pad } from '../../utils/pad.js'
 import './ProjectCard.scss'
+
+// La largeur de la capture selon l'écran, pour le navigateur qui ne la
+// mesure pas lui-même (Safari) — mesurée le 16 oct., arrondie vers le haut
+const COVER_SIZES =
+  '(min-width: 1440px) 624px, (min-width: 1024px) 40vw, (min-width: 640px) 45vw, calc(100vw - 40px)'
 
 /**
  * Contenu de la pièce d'un projet : sa capture, sa position (« 01 / 03 »),
@@ -49,11 +55,10 @@ export function ProjectCard({ project, titleId, index, total, onOpen }) {
         </div>
       </div>
       {/* après le texte dans le code (le titre ouvre la pièce), en premier à l'écran */}
-      <img
+      <Cover
+        cover={cover}
+        sizes={COVER_SIZES}
         className="project-card__cover"
-        src={cover.src}
-        alt={cover.alt}
-        loading="lazy"
       />
     </div>
   )
