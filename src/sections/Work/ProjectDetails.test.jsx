@@ -142,9 +142,11 @@ describe('ProjectDetails', () => {
     expect(cover).toHaveAttribute('src', nina.cover.src)
     // la modale est montée dès le départ : sans lazy, sa capture se chargerait tout de suite
     expect(cover).toHaveAttribute('srcset', coverSrcSet(nina.cover.src))
+    // sans auto : la modale fermée (display: none), Chrome remesurerait la
+    // capture à 100vw et rechargerait l'originale (revue de l'étape 5)
     expect(cover).toHaveAttribute(
       'sizes',
-      'auto, (min-width: 1024px) 481px, calc(100vw - 34px)',
+      '(min-width: 1024px) 481px, calc(100vw - 34px)',
     )
     expect(cover).toHaveAttribute('loading', 'lazy')
   })

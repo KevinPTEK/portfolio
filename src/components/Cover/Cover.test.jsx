@@ -19,8 +19,9 @@ describe('Cover', () => {
   })
 
   // le navigateur choisit la largeur : il mesure lui-même la place
-  // (sizes="auto", images différées : Chrome, Firefox) ; sinon (Safari), il
-  // lit la liste donnée par le parent, qui connaît sa mise en page
+  // (sizes="auto", images différées) ; s'il ne connaît pas encore auto
+  // (Safari avant 27, Firefox avant 150), il lit la liste donnée par le
+  // parent, qui connaît sa mise en page
   it('propose ses trois largeurs ; la place mesurée, sinon celle du parent', () => {
     render(
       <Cover
@@ -34,6 +35,22 @@ describe('Cover', () => {
       'sizes',
       'auto, (min-width: 640px) 50vw, 100vw',
     )
+  })
+
+  // revue : cachée avec sa modale (display: none), une image « auto » est
+  // remesurée par Chrome à 100vw — l'originale de 1 200 px re-téléchargée à
+  // chaque fermeture, sur un écran ×1. La liste, elle, ne dépend pas de
+  // l'affichage
+  it('autoSizes={false} : la liste du parent seule, sans mesure', () => {
+    render(
+      <Cover
+        cover={cover}
+        sizes="(min-width: 1024px) 481px, 100vw"
+        autoSizes={false}
+        className="project-details__cover"
+      />,
+    )
+    expect(image()).toHaveAttribute('sizes', '(min-width: 1024px) 481px, 100vw')
   })
 
   it('réserve sa place (4 : 3) et se charge en différé', () => {

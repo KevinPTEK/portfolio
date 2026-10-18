@@ -6,8 +6,10 @@ import { VisuallyHidden } from '../../components/VisuallyHidden/VisuallyHidden.j
 import { pad } from '../../utils/pad.js'
 import './ProjectDetails.scss'
 
-// La largeur de la capture dans la modale, pour le navigateur qui ne la
-// mesure pas lui-même (Safari) — mesurée le 16 oct., arrondie vers le haut
+// La largeur de la capture dans la modale — mesurée le 16 oct. ; le
+// navigateur en tire toujours le bon fichier (écarts relevés par les revues
+// du 18 oct. : spec § 6). C'est la seule qu'il lit, sans auto (voir plus
+// bas). À remesurer si la mise en page change
 const COVER_SIZES = '(min-width: 1024px) 481px, calc(100vw - 34px)'
 
 /**
@@ -105,10 +107,12 @@ export function ProjectDetails({
         </div>
       </div>
 
-      {/* après le texte dans le code (le titre ouvre le détail), en premier à l'écran */}
+      {/* après le texte dans le code (le titre ouvre le détail), en premier à l'écran ;
+          sans auto : la modale fermée cache la capture, Chrome la remesurerait à 100vw */}
       <Cover
         cover={cover}
         sizes={COVER_SIZES}
+        autoSizes={false}
         className="project-details__cover"
       />
     </div>

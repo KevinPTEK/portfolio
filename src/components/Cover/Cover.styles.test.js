@@ -18,9 +18,11 @@ const frames = [
 describe.each(frames)('%s', (file, selector) => {
   const rule = ruleBody(compileScss(join(import.meta.dirname, file)), selector)
 
+  // (^|\s) : la propriété elle-même — toContain('height: auto') acceptait
+  // aussi min-height: auto, et le défaut revenait sans un rouge (revue)
   it('toute la largeur, la hauteur calculée au format 4 : 3', () => {
-    expect(rule).toContain('width: 100%')
-    expect(rule).toContain('height: auto')
+    expect(rule).toMatch(/(^|\s)width: 100%/)
+    expect(rule).toMatch(/(^|\s)height: auto/)
     expect(rule).toContain('aspect-ratio: 4/3') // Sass écrit 4/3
   })
 })

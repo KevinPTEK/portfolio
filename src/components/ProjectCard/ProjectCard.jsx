@@ -7,7 +7,9 @@ import { pad } from '../../utils/pad.js'
 import './ProjectCard.scss'
 
 // La largeur de la capture selon l'écran, pour le navigateur qui ne la
-// mesure pas lui-même (Safari) — mesurée le 16 oct., arrondie vers le haut
+// mesure pas lui-même (Safari avant 27, Firefox avant 150) — mesurée le
+// 16 oct. ; approchée (écarts relevés par les revues du 18 oct. : spec § 6).
+// À remesurer si la mise en page change
 const COVER_SIZES =
   '(min-width: 1440px) 624px, (min-width: 1024px) 40vw, (min-width: 640px) 45vw, calc(100vw - 40px)'
 

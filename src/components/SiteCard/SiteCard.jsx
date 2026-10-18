@@ -5,7 +5,9 @@ import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden.jsx'
 import './SiteCard.scss'
 
 // La largeur de la capture selon l'écran, pour le navigateur qui ne la
-// mesure pas lui-même (Safari) — mesurée le 16 oct., arrondie vers le haut
+// mesure pas lui-même (Safari avant 27, Firefox avant 150) — mesurée le
+// 16 oct. ; approchée, la grille faisant varier la carte (écarts relevés par
+// les revues du 18 oct. : spec § 6). À remesurer si la mise en page change
 const COVER_SIZES = '(min-width: 640px) 360px, calc(100vw - 40px)'
 
 /**
