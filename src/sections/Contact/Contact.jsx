@@ -11,7 +11,8 @@ import './Contact.scss'
 
 /**
  * « Contact » : mon adresse e-mail en grand, écrite en toutes lettres (sans
- * logiciel de messagerie, on peut la copier), mes profils et mon CV. Kraft,
+ * logiciel de messagerie, on peut la copier), mes profils et mon CV (quand le
+ * PDF existe : profile.cv). Kraft,
  * comme l'accueil : la visite se referme sur le papier du départ.
  */
 export function Contact() {

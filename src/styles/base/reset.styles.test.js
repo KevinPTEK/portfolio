@@ -4,8 +4,11 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { compileScss, ruleBody } from '../../testing/css.js'
 
-// Le reset : ce qu'il garantit à toutes les images du site
-const css = compileScss(join(import.meta.dirname, '_reset.scss'))
+// Le reset : ce qu'il garantit à toutes les images du site. On compile
+// l'entrée main.scss et non _reset.scss, comme readThemes : un @forward
+// 'reset' oublié dans base/_index.scss laissait ce test vert (revue de
+// l'étape 5), alors que les captures reprenaient 900 px de haut
+const css = compileScss(join(import.meta.dirname, '../main.scss'))
 
 describe('_reset.scss', () => {
   // une <img width height> réduite par max-width garde ses proportions : sans

@@ -7,9 +7,10 @@ import { pad } from '../../utils/pad.js'
 import './ProjectDetails.scss'
 
 // La largeur de la capture dans la modale — mesurée le 16 oct. ; le
-// navigateur en tire toujours le bon fichier (écarts relevés par les revues
-// du 18 oct. : spec § 6). C'est la seule qu'il lit, sans auto (voir plus
-// bas). À remesurer si la mise en page change
+// navigateur en tire le bon fichier, sauf parfois le fichier au-dessus sous
+// des barres de défilement classiques (écarts relevés par les revues du
+// 18 oct. : spec § 6). C'est la seule qu'il lit, sans auto (voir plus bas).
+// À remesurer si la mise en page change
 const COVER_SIZES = '(min-width: 1024px) 481px, calc(100vw - 34px)'
 
 /**

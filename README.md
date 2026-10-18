@@ -55,7 +55,7 @@ Chaque projet ouvre une fiche : le contexte, les problèmes rencontrés, ce que 
 ## Accessibilité et sobriété
 
 - **Accessibilité — objectif WCAG 2.1 AA** (équivalent RGAA 4) : HTML sémantique, navigation complète au clavier, focus visible, contrastes vérifiés pièce par pièce, `prefers-reduced-motion` respecté (pas d'intro, mouvements coupés, défilement instantané ; seuls de simples fondus restent).
-- **Green code** : site statique, JavaScript limité et chargé à la demande (budget : 100 Ko compressés pour le premier affichage), animations surtout sur `transform` et `opacity`, intro jouée une fois par visite, polices auto-hébergées, images WebP en trois tailles chargées en différé, aucun traqueur.
+- **Green code** : site statique, JavaScript limité et chargé à la demande (budget : 100 Ko compressés pour le premier affichage), animations surtout sur `transform` et `opacity`, intro jouée une fois par onglet, polices auto-hébergées, images WebP en trois tailles chargées en différé, aucun traqueur.
 - Les mesures Lighthouse et EcoIndex seront publiées ici à la livraison.
 
 ## Démarrer
@@ -99,9 +99,17 @@ public/
 
 Règle de dépendance : `sections/` importe `components/`, `animations/` et `data/` — jamais l'inverse. C'est ce qui garde les composants réutilisables.
 
+## Ajouter un projet
+
+1. **Ses données** : une entrée dans `src/data/projects.json` (pour un site vitrine : `sites.json`). Les règles — champs remplis, liens en `https://`, titre et accent — sont vérifiées par `projects.test.js` et `sites.test.js`.
+2. **Ses captures**, en WebP au format 4:3, dans `public/images/` : l'originale de 1 200 × 900 px, ses versions de 600 et 900 px de large (`…-600.webp`, `…-900.webp`) et, pour un projet phare, une version floutée (`…-blur.webp`, 4 Ko au plus). `images.test.js` échoue s'il en manque une, si une image dépasse son poids, ou si une capture n'a pas la largeur et la hauteur annoncées. Les miennes sont réduites et encodées dans Chrome ; le test lit les dimensions dans l'en-tête que Chrome écrit (VP8X), et dit clairement s'il ne sait pas lire celui d'un autre outil.
+3. **Ses couleurs**, pour un projet phare qui a les siennes : un thème dans `src/styles/abstracts/_themes.scss` (son nom est vérifié par `projects.test.js`).
+
+Puis `pnpm test:run` : tout est vérifié d'un coup.
+
 ## Démarche
 
-Le site a été conçu avant d'être codé : charte graphique, maquette interactive, puis spécification technique (stack, composants, accessibilité, budget de performance). Chaque morceau suit le même cycle : un test qui échoue, le code qui le fait passer, une revue, puis des mesures dans un vrai navigateur. Les tests cherchent les éléments comme le ferait un utilisateur, par leur rôle et leur nom accessible : un test qui passe est aussi un contrôle d'accessibilité. Des « mutants » (des valeurs volontairement faussées) vérifient que les tests attrapent bien les erreurs.
+Le site a été conçu avant d'être codé : charte graphique, maquette interactive, puis spécification technique (stack, composants, accessibilité, budget de performance) — des documents de travail hors de ce dépôt, présentés en soutenance. Chaque morceau suit le même cycle : un test qui échoue, le code qui le fait passer, une revue, puis des mesures dans un vrai navigateur. Les tests cherchent les éléments comme le ferait un utilisateur, par leur rôle et leur nom accessible : un test qui passe est aussi un contrôle d'accessibilité. Des « mutants » (des valeurs volontairement faussées) vérifient que les tests attrapent bien les erreurs.
 
 ## Avancement
 
