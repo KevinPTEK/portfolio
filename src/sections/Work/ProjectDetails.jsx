@@ -49,7 +49,10 @@ export function ProjectDetails({
   } = project
 
   return (
-    <div className="project-details">
+    // un article : la fiche se lit seule, et son <header> (SectionHeader) en
+    // devient l'en-tête — sans lui, dans le <dialog>, Chrome l'annonçait
+    // « bannière », comme l'en-tête du site
+    <article className="project-details">
       <div className="project-details__body">
         <SectionHeader
           titleId={titleId}
@@ -116,6 +119,6 @@ export function ProjectDetails({
         autoSizes={false}
         className="project-details__cover"
       />
-    </div>
+    </article>
   )
 }

@@ -99,6 +99,14 @@ describe('GiantMenu.scss', () => {
     )
   })
 
+  // WCAG 1.4.12 (espacement du texte forcé : lettres + 0,12 em) :
+  // « COMPÉTENCES » ne tenait plus à 320-414 px, la page défilait de 47 px à
+  // l'horizontale. Coupé à la française (« COMPÉ-TENCES », lang="fr"),
+  // seulement s'il ne tient plus : l'affichage normal ne change pas (mesuré)
+  it('coupe un mot trop long à la française, avec un tiret', () => {
+    expect(plain).toMatch(/\.giant-menu__link \{[^}]*hyphens: auto;/)
+  })
+
   it("n'a plus de calque", () => {
     expect(css).not.toMatch(/attr\(|data-label|giant-menu__word/)
   })

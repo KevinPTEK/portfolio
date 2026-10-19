@@ -136,6 +136,17 @@ describe('ProjectDetails', () => {
     expect(handleNext).toHaveBeenCalledTimes(1)
   })
 
+  // revue générale (19 oct.) : dans le <dialog>, le <header> du titre n'était
+  // rangé dans aucune section — Chrome l'annonçait « bannière », comme
+  // l'en-tête du site. Un <article> le range (HTML-AAM : en-tête de section).
+  // Testing Library ignore cette règle de portée (il voit une bannière même
+  // dans un article) : l'absence de bannière se vérifie dans Chrome
+  it('est un article, qui contient son titre', () => {
+    renderDetails()
+    const title = screen.getByRole('heading', { level: 2 })
+    expect(screen.getByRole('article')).toContainElement(title)
+  })
+
   it('montre la capture avec son texte alternatif', () => {
     renderDetails()
     const cover = screen.getByRole('img', { name: nina.cover.alt })

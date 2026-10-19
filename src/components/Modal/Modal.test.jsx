@@ -118,4 +118,15 @@ describe('Modal', () => {
     rerender(<ProjectModal open />)
     expect(screen.getByRole('dialog')).toBeInTheDocument()
   })
+
+  // revue générale (19 oct.) : rouverte sur un autre projet, la modale gardait
+  // le défilement du précédent — son titre et sa capture hors de l'écran
+  it('se rouvre en haut de son contenu', () => {
+    const { rerender } = render(<ProjectModal />)
+    const content = screen.getByRole('dialog').firstElementChild
+    content.scrollTop = 400
+    rerender(<ProjectModal open={false} />)
+    rerender(<ProjectModal open />)
+    expect(content.scrollTop).toBe(0)
+  })
 })

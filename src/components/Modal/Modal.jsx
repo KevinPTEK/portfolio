@@ -23,6 +23,7 @@ import './Modal.scss'
  */
 export function Modal({ open, onClose, labelledBy, theme, children }) {
   const dialogRef = useRef(null)
+  const contentRef = useRef(null)
   const closeRef = useRef(null)
   // le geste a-t-il commencé sur le fond ? (une sélection de texte peut finir dessus)
   const pressedOnBackdrop = useRef(false)
@@ -32,6 +33,9 @@ export function Modal({ open, onClose, labelledBy, theme, children }) {
     const dialog = dialogRef.current
     if (open && !dialog.open) {
       dialog.showModal()
+      // un contenu s'ouvre par son début : fermée puis rouverte, la zone qui
+      // défile gardait sa position (le titre hors de l'écran)
+      contentRef.current.scrollTop = 0
       // le focus va au ✕, pas à la zone qui défile (que Chrome rend focalisable)
       closeRef.current.focus()
     }
@@ -65,7 +69,7 @@ export function Modal({ open, onClose, labelledBy, theme, children }) {
       onPointerDown={handlePointerDown}
       onClick={handleClick}
     >
-      <div className="modal__content">
+      <div ref={contentRef} className="modal__content">
         {/* premier dans le code : il reçoit le focus à l'ouverture ; placé dans
             la zone qui défile, les flèches du clavier la font défiler */}
         <button

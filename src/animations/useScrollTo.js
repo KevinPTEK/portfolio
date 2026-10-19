@@ -96,8 +96,30 @@ export function useScrollTo() {
   useLayoutEffect(() => {
     const target = targetOf(window.location.hash)
     if (!target || !isArrival()) return
-    window.scrollTo(0, scrollTargetTop(target))
+    const jump = () => window.scrollTo(0, scrollTargetTop(target))
+    jump()
     focusTarget(target)
+
+    // Les polices arrivent souvent après ce saut : sur mobile, les textes
+    // au-dessus de la pièce changent de hauteur, et elle finissait jusqu'à
+    // 103 px plus haut (revue générale, mesuré à 375 px). On resaute une fois
+    // les polices là — sauf si le visiteur a repris la main entre-temps
+    let tookOver = false
+    let unmounted = false
+    const takeOver = () => (tookOver = true)
+    const stopListening = () =>
+      GESTURES.forEach((type) => window.removeEventListener(type, takeOver))
+    GESTURES.forEach((type) =>
+      window.addEventListener(type, takeOver, { passive: true }),
+    )
+    document.fonts?.ready.then(() => {
+      stopListening()
+      if (!tookOver && !unmounted) jump()
+    })
+    return () => {
+      unmounted = true
+      stopListening()
+    }
   }, [])
 
   useEffect(() => {

@@ -311,6 +311,72 @@ describe('useScrollTo', () => {
     expect(document.getElementById('skills')).toHaveFocus()
   })
 
+  // revue générale (19 oct.) : sur mobile, les polices arrivent souvent après
+  // le saut — les textes au-dessus de la pièce changent de hauteur, et elle
+  // finissait jusqu'à 103 px plus haut (mesuré à 375 px). On resaute une fois
+  // les polices là, si le visiteur n'a pas repris la main
+  describe('lien direct, polices arrivées après le saut', () => {
+    // les polices : une promesse qu'on tient à la main
+    let fontsLoaded
+    beforeEach(() => {
+      let loaded
+      const ready = new Promise((resolve) => (loaded = resolve))
+      Object.defineProperty(document, 'fonts', {
+        value: { ready },
+        configurable: true,
+      })
+      fontsLoaded = async () => {
+        loaded()
+        await ready
+        await Promise.resolve() // la suite du .then
+      }
+      window.history.replaceState(null, '', '/#skills')
+    })
+    afterEach(() => delete document.fonts)
+
+    const arrive = () => {
+      const rect = vi
+        .spyOn(Element.prototype, 'getBoundingClientRect')
+        .mockReturnValue({ top: 0 })
+      const page = render(<Page />)
+      rect.mockReturnValue({ top: 40 }) // la pièce a descendu de 40 px
+      return page
+    }
+
+    it('resaute à la nouvelle place de la pièce, une seule fois', async () => {
+      arrive()
+      await fontsLoaded()
+      expect(scrollTo.mock.calls).toEqual([
+        [0, 100],
+        [0, 140],
+      ])
+    })
+
+    it.each(['wheel', 'touchStart', 'keyDown', 'pointerDown', 'popState'])(
+      'un geste avant (%s) : pas de second saut, le visiteur a la main',
+      async (gesture) => {
+        arrive()
+        fireEvent[gesture](window)
+        await fontsLoaded()
+        expect(scrollTo).toHaveBeenCalledTimes(1)
+      },
+    )
+
+    it('les polices arrivées, n’écoute plus les gestes', async () => {
+      const remove = vi.spyOn(window, 'removeEventListener')
+      arrive()
+      expect(remove).not.toHaveBeenCalledWith('wheel', expect.any(Function))
+      await fontsLoaded()
+      expect(remove).toHaveBeenCalledWith('wheel', expect.any(Function))
+    })
+
+    it('démonté avant les polices : pas de second saut', async () => {
+      arrive().unmount()
+      await fontsLoaded()
+      expect(scrollTo).toHaveBeenCalledTimes(1)
+    })
+  })
+
   it.each(['reload', 'back_forward'])(
     'rechargement ou Retour (%s) : le navigateur restaure la position, on ne saute pas',
     (type) => {
