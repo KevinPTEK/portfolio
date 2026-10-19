@@ -10,6 +10,16 @@ const GESTURES = ['wheel', 'touchstart', 'keydown', 'pointerdown', 'popstate']
 // tout lien interne, sauf le lien d'évitement : il reste immédiat (§ 7.6)
 const INTERNAL_LINK = 'a[href^="#"]:not(.skip-link)'
 
+// écoute ces évènements sur window (passifs : ils ne retardent jamais le
+// défilement) ; renvoie de quoi arrêter d'écouter
+function listen(types, handler) {
+  types.forEach((type) =>
+    window.addEventListener(type, handler, { passive: true }),
+  )
+  return () =>
+    types.forEach((type) => window.removeEventListener(type, handler))
+}
+
 /**
  * Durée du trajet : 0,5 s + 0,18 ms par pixel, 1,4 s au plus (charte)
  *
@@ -100,21 +110,22 @@ export function useScrollTo() {
     jump()
     focusTarget(target)
 
-    // Les polices arrivent souvent après ce saut : sur mobile, les textes
-    // au-dessus de la pièce changent de hauteur, et elle finissait jusqu'à
-    // 103 px plus haut (revue générale, mesuré à 375 px). On resaute une fois
-    // les polices là — sauf si le visiteur a repris la main entre-temps
-    let tookOver = false
+    // Les polices arrivent souvent après ce saut (qui, en mesurant la page,
+    // lance leur chargement). Sur mobile, les textes au-dessus de la pièce
+    // changent alors de hauteur : elle finissait jusqu'à 103 px plus haut sans
+    // ancrage du défilement (Safari), 44 px avec (Chrome, pièce collée) —
+    // revue générale, mesuré à 375 px. On resaute une fois les polices là,
+    // sauf si le visiteur a repris la main : un geste, ou un clic (un lecteur
+    // d'écran active un lien sans pointerdown — revue du 19 oct.)
+    if (!document.fonts) return
+    let visitorMoved = false
     let unmounted = false
-    const takeOver = () => (tookOver = true)
-    const stopListening = () =>
-      GESTURES.forEach((type) => window.removeEventListener(type, takeOver))
-    GESTURES.forEach((type) =>
-      window.addEventListener(type, takeOver, { passive: true }),
-    )
-    document.fonts?.ready.then(() => {
+    const stopListening = listen([...GESTURES, 'click'], () => {
+      visitorMoved = true
+    })
+    document.fonts.ready.then(() => {
       stopListening()
-      if (!tookOver && !unmounted) jump()
+      if (!visitorMoved && !unmounted) jump()
     })
     return () => {
       unmounted = true
@@ -157,13 +168,11 @@ export function useScrollTo() {
       function release(gesture) {
         if (gesture?.repeat) return
         animation.stop()
-        GESTURES.forEach((type) => window.removeEventListener(type, release))
+        stopListening()
         // un trajet plus récent garde son propre « stop »
         if (stop === release) stop = null
       }
-      GESTURES.forEach((type) =>
-        window.addEventListener(type, release, { passive: true }),
-      )
+      const stopListening = listen(GESTURES, release)
       animation.then(release)
       stop = release
     }

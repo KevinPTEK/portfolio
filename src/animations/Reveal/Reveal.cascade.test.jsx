@@ -17,13 +17,24 @@ import { Reveal, RevealItem } from './Reveal.jsx'
 // finissaient dans la même image — et laissait passer 80 comme 200 ms. Motion
 // confie le fondu au moteur d'animation du navigateur (element.animate), avec
 // un délai et une durée par carte : le test lit ces consignes, sans chronomètre
-// (le vrai temps se mesure dans Chrome : check-reveal.mjs)
+// (relevées aussi dans Chrome, sur le build : 0, 120, 240 ms pour les cartes
+// des compétences, 900 ms chacune — revue du 19 oct.)
 describe('Reveal stagger, moteur chargé', () => {
   useFakeIntersectionObserver()
-  afterEach(() => vi.restoreAllMocks())
+  let animate
+  afterEach(() => {
+    // le test s'arrête en pleine animation : au démontage, Motion l'annule et
+    // happy-dom rejette sa promesse finished sans la marquer « traitée » (un
+    // navigateur le fait) — deux « Unhandled Rejection » faisaient sortir la
+    // suite en erreur, tests verts (revue du 19 oct.). On les absorbe ici
+    animate.mock.results.forEach(({ value }) =>
+      value?.finished?.catch(() => {}),
+    )
+    vi.restoreAllMocks()
+  })
 
   it('ses cartes partent l’une après l’autre, à STAGGER d’écart', async () => {
-    const animate = vi.spyOn(Element.prototype, 'animate')
+    animate = vi.spyOn(Element.prototype, 'animate')
     render(
       <MotionProvider>
         <Reveal as="ul" stagger role="list">
@@ -47,7 +58,10 @@ describe('Reveal stagger, moteur chargé', () => {
         ([keyframes], call) =>
           animate.mock.contexts[call] === item && 'opacity' in keyframes,
       )?.[1]
-    await waitFor(() => expect(fadeOf(b)).toBeDefined())
+    await waitFor(() => {
+      expect(fadeOf(a)).toBeDefined()
+      expect(fadeOf(b)).toBeDefined()
+    })
 
     expect(fadeOf(a).delay).toBeCloseTo(0) // Motion écrit -0 : le même zéro
     expect(fadeOf(b).delay - fadeOf(a).delay).toBeCloseTo(STAGGER * 1000)

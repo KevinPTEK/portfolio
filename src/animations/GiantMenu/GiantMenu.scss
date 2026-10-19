@@ -56,7 +56,9 @@ $dimmed: color-mix(in srgb, var(--ink) 75%, var(--bg));
   // espacement du texte forcé (WCAG 1.4.12 : lettres + 0,12 em) : « COMPÉTENCES »
   // ne tenait plus à 320-414 px (47 px de défilement horizontal). Coupé à la
   // française, « COMPÉ-TENCES » (lang="fr"), seulement s'il ne tient plus :
-  // l'affichage normal ne change pas, de 320 à 1 440 px (mesuré, 19 oct.)
+  // l'affichage normal ne change pas, de 320 à 1 440 px (mesuré dans Chrome,
+  // 19 oct.). Firefox 158 ne coupe pas un mot dont le texte source commence
+  // par une majuscule (« Compétences », menu.json) : il garde le défilement
   hyphens: auto;
   text-decoration: none; // liste de liens, reconnaissable à sa place (§ 10)
   color: var(--ink);

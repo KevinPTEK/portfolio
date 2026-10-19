@@ -352,7 +352,16 @@ describe('useScrollTo', () => {
       ])
     })
 
-    it.each(['wheel', 'touchStart', 'keyDown', 'pointerDown', 'popState'])(
+    // un clic aussi : un lecteur d'écran active un lien sans pointerdown, et
+    // le second saut le ramenait à la pièce du lien direct (revue du 19 oct.)
+    it.each([
+      'wheel',
+      'touchStart',
+      'keyDown',
+      'pointerDown',
+      'popState',
+      'click',
+    ])(
       'un geste avant (%s) : pas de second saut, le visiteur a la main',
       async (gesture) => {
         arrive()
@@ -369,6 +378,16 @@ describe('useScrollTo', () => {
       await fontsLoaded()
       expect(remove).toHaveBeenCalledWith('wheel', expect.any(Function))
     })
+
+    it.each(['reload', 'back_forward'])(
+      'rechargement ou Retour (%s) : aucun saut, même les polices arrivées',
+      async (type) => {
+        vi.spyOn(performance, 'getEntriesByType').mockReturnValue([{ type }])
+        arrive()
+        await fontsLoaded()
+        expect(scrollTo).not.toHaveBeenCalled()
+      },
+    )
 
     it('démonté avant les polices : pas de second saut', async () => {
       arrive().unmount()
