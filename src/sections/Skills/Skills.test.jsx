@@ -90,7 +90,10 @@ describe('Skills', () => {
 
   it('annonce chaque preuve par « Vu dans »', () => {
     render(<Skills />)
-    for (const link of room().querySelectorAll('.skills__proof a')) {
+    const links = room().querySelectorAll('.skills__proof a.skills__link')
+    // sans lien trouvé, la boucle ne vérifierait rien
+    expect(links.length).toBeGreaterThan(0)
+    for (const link of links) {
       expect(link.parentElement.textContent).toBe(`Vu dans ${link.textContent}`)
     }
   })

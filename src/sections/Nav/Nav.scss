@@ -228,7 +228,7 @@ html {
     font-size: $font-size-ui;
   }
 
-  @media (hover: hover) {
+  @include hover-capable {
     &:hover {
       color: var(--ink);
     }
@@ -252,7 +252,7 @@ html {
       background-color: var(--accent);
 
       // contraste forcé : un fond retiré ferait disparaître le point
-      @media (forced-colors: active) {
+      @include forced-colors {
         background-color: CanvasText;
       }
     }

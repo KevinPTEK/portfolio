@@ -74,6 +74,26 @@ describe('LivingBackground (CSS compilé)', () => {
     },
   )
 
+  // valeurs choisies pour le contraste et mesurées sur le vrai rendu
+  // (décisions de Kevin, 8 oct., § 10) ; revue générale (19 oct.) : aucun
+  // test ne les tenait — la vignette de la charte (0,18) ou la lueur de la
+  // maquette revenaient sans un rouge
+  it('garde la vignette, le voile et la lueur réglés pour le contraste', () => {
+    expect(declarations('.living-background--kraft')['--paper-vignette']).toBe(
+      'rgba(120, 90, 50, 0.12)',
+    )
+    expect(declarations('.living-background--cool')['--paper-vignette']).toBe(
+      'rgba(50, 66, 96, 0.1)',
+    )
+    const cover = declarations('.living-background--cover::after')
+    expect(cover['background-color']).toBe(
+      'color-mix(in srgb, var(--bg) 82%, transparent)',
+    )
+    expect(cover['background-image']).toContain(
+      'color-mix(in srgb, var(--accent) 15%, transparent)',
+    )
+  })
+
   it('donne une fusion à chaque calque du papier', () => {
     // une liste plus courte se répète : chaque calque prendrait le mode du voisin
     const paper = declarations('.living-background--paper')

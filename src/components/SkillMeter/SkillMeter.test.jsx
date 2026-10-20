@@ -19,6 +19,23 @@ describe('SkillMeter', () => {
     expect(meter.children).toHaveLength(5)
   })
 
+  // revue générale (19 oct.) : seul le nombre de points était testé — un
+  // niveau décalé d'un cran ou tous les points pleins passaient. C'est le cœur
+  // de « le niveau de novice dit clairement » (guide OpenClassrooms)
+  it.each([
+    [2, 3, [true, true, false]],
+    [4, 5, [true, true, true, true, false]],
+  ])('remplit les %i premiers points sur %i', (level, max, expected) => {
+    render(<SkillMeter name="React" level={level} max={max} />)
+    const meter = screen.getByRole('img', {
+      name: `niveau ${level} sur ${max}`,
+    })
+    const filled = [...meter.children].map((dot) =>
+      dot.classList.contains('skill-meter__dot--filled'),
+    )
+    expect(filled).toEqual(expected)
+  })
+
   it('affiche le nom de la compétence', () => {
     render(<SkillMeter name="React" level={2} />)
     expect(screen.getByText('React')).toBeInTheDocument()

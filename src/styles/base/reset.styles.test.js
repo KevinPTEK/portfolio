@@ -21,4 +21,11 @@ describe('_reset.scss', () => {
     )
     expect(ruleBody(css, 'img')).toMatch(/(^|\s)height: auto/)
   })
+
+  // la modale native : le navigateur la centre par margin: auto, que
+  // « * { margin: 0 } » effacerait. Revue générale (19 oct.) : sans cette
+  // règle, la modale se collait en haut à gauche, tests verts
+  it('laisse le navigateur centrer la modale native', () => {
+    expect(ruleBody(css, 'dialog')).toMatch(/(^|\s)margin: auto/)
+  })
 })

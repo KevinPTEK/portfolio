@@ -3,8 +3,8 @@ import './LivingBackground.scss'
 /**
  * Le fond d'une pièce, derrière son contenu : du papier (pièces personnelles)
  * ou la capture floutée d'un projet, voilée de la couleur de la pièce.
- * Décoratif : caché aux lecteurs d'écran. Immobile à l'étape 3 ; la capture
- * respirera à l'étape 4 (§ 7.8).
+ * Décoratif : caché aux lecteurs d'écran. Immobile : la respiration de la
+ * capture a été abandonnée le 10 oct. (§ 7.8 ; WCAG 2.2.2, plus de 5 s).
  * À passer à la prop `background` de Room.
  *
  * @param {object} props

@@ -108,6 +108,21 @@ describe('GiantMenu.scss', () => {
     expect(plain).toMatch(/\.giant-menu__link \{[^}]*hyphens: auto;/)
   })
 
+  // WCAG 1.4.4 : le zoom réduit la largeur de la page, la règle mobile
+  // s'applique alors partout, et le texte ne grandit plus que de la plus
+  // grande taille à la plus petite. Pour atteindre 200 % au zoom de 500 %,
+  // la plus grande ne dépasse pas 2,5 fois la plus petite (37 → 92 px).
+  // Revue générale (19 oct.) : 92 → 110 px ou 37 → 30 px passaient
+  it('garde sa plus grande taille sous 2,5 fois la plus petite', () => {
+    const sizes = [
+      ...css.matchAll(
+        /\.giant-menu__link \{[^}]*font-size: clamp\(([\d.]+)px, [^,]+, ([\d.]+)px\)/g,
+      ),
+    ].flatMap(([, low, high]) => [Number(low), Number(high)])
+    expect(sizes).toHaveLength(4) // mobile, puis tablette et au-delà
+    expect(Math.max(...sizes) / Math.min(...sizes)).toBeLessThanOrEqual(2.5)
+  })
+
   it("n'a plus de calque", () => {
     expect(css).not.toMatch(/attr\(|data-label|giant-menu__word/)
   })

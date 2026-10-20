@@ -36,11 +36,12 @@
   margin-top: $space-1;
   font-size: $font-size-small;
   color: var(--ink-2);
+}
 
-  // lien dans le texte : souligné (§ 10), au texte principal
-  a {
-    color: var(--ink);
+// lien dans le texte : souligné (§ 10), au texte principal. Une classe plutôt
+// qu'un sélecteur de balise, comme about__paragraph (revue générale)
+.skills__link {
+  color: var(--ink);
 
-    @include focus-ring;
-  }
+  @include focus-ring;
 }

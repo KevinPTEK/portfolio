@@ -16,6 +16,23 @@
   }
 }
 
+// Le survol n'existe qu'avec une souris (ou un stylet) : au doigt, un effet
+// de survol resterait « collé » après le toucher
+@mixin hover-capable {
+  @media (hover: hover) {
+    @content;
+  }
+}
+
+// Contraste forcé (Windows) : le navigateur remplace les couleurs et retire
+// les fonds — une forme faite d'un fond (un point, une jauge) disparaîtrait ;
+// on impose alors une couleur système (CanvasText…)
+@mixin forced-colors {
+  @media (forced-colors: active) {
+    @content;
+  }
+}
+
 // Un élément qu'une animation d'entrée fait partir caché, flou ou décalé
 // (Motion écrit son état de départ dans l'attribut style) se montre quand même
 // dans trois cas : le moteur ne s'est pas chargé (<html data-motion="off">,

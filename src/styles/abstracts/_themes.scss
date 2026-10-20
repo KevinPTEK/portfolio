@@ -9,7 +9,7 @@ $default-theme: paper-light;
 
 $themes: (
   // les deux papiers des pièces personnelles
-  // kraft : ink-2 et accent assombris le 8 oct. (#6e4e2e, #ae4715) — le bas du
+  // kraft : ink-2 et accent assombris le 8 oct. (auparavant #6e4e2e, #ae4715) — le bas du
   // papier (#e3c49c) et son grain sont plus sombres que bg : mesurés sur le vrai
   // fond, ink-2 tombait à 3,3 (sans les 2 % de pixels les plus sombres) et
   // l'accent à 2,5 (pixel le plus sombre) (§ 10). Sur fond uni : 11,9 / 7,9 / 5,5
@@ -22,7 +22,7 @@ $themes: (
       line: rgba(0, 0, 0, 0.14),
       surface: rgba(255, 255, 255, 0.55),
     ),
-  // papier froid : ink-2 assombri le 9 oct. (#5a6474) — même cause que le
+  // papier froid : ink-2 assombri le 9 oct. (auparavant #5a6474) — même cause que le
   // kraft : sur le vrai papier (bas #dce4f0, grain), il tombait à 3,1 au
   // 2e centile (§ 10). Sur fond uni : 14,4 / 8,0 / 5,4
   paper-cool: (

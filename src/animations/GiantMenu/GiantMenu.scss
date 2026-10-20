@@ -83,7 +83,7 @@ $dimmed: color-mix(in srgb, var(--ink) 75%, var(--bg));
   }
 
   // le survol n'existe qu'avec une souris : pas d'effet « collé » au doigt
-  @media (hover: hover) {
+  @include hover-capable {
     &:hover {
       @include highlighted;
     }
@@ -99,7 +99,7 @@ $dimmed: color-mix(in srgb, var(--ink) 75%, var(--bg));
 // Avec une souris, survol et focus clavier comptent ensemble : deux règles
 // séparées estompaient chacune le mot que l'autre mettait en avant (souris
 // sur un mot, Tab sur un autre — revue du 11 oct.)
-@media (hover: hover) {
+@include hover-capable {
   .giant-menu:has(.giant-menu__link:is(:hover, :focus-visible))
     .giant-menu__link:not(:hover, :focus-visible) {
     color: $dimmed;

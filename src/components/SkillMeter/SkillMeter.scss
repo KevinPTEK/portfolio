@@ -35,7 +35,7 @@
   background-color: var(--accent);
 
   // en contraste forcé, le navigateur remplace les fonds : on impose la couleur du texte
-  @media (forced-colors: active) {
+  @include forced-colors {
     background-color: CanvasText;
   }
 }

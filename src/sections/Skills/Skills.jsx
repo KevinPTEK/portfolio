@@ -56,7 +56,10 @@ export function Skills() {
                     <SkillMeter name={name} detail={detail} level={level} />
                     {work && (
                       <p className="skills__proof">
-                        Vu dans <a href={work.href}>{work.name}</a>
+                        Vu dans{' '}
+                        <a className="skills__link" href={work.href}>
+                          {work.name}
+                        </a>
                       </p>
                     )}
                   </li>

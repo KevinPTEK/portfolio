@@ -16,7 +16,7 @@
   @include focus-ring;
 
   // le survol n'existe qu'avec une souris : pas d'effet « collé » au doigt
-  @media (hover: hover) {
+  @include hover-capable {
     &:hover {
       color: var(--ink);
     }
