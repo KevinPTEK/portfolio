@@ -123,4 +123,4 @@ Le site a été conçu avant d'être codé : charte graphique, maquette interact
 
 ---
 
-Projet 12 du parcours **Intégrateur web** d'OpenClassrooms · [Kevin Renou sur GitHub](https://github.com/KevinPTEK)
+Projet 12 du parcours **Développeur web** d'OpenClassrooms · [Kevin Renou sur GitHub](https://github.com/KevinPTEK)

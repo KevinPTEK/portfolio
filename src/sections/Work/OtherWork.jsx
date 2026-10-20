@@ -14,6 +14,13 @@ import './OtherWork.scss'
  * (décisions de Kevin, 7 oct.).
  */
 export function OtherWork() {
+  // l'introduction suit le nombre de sites : un seul aujourd'hui (Tourn&Marou),
+  // et un site ajouté aux données la remet au pluriel
+  const lead =
+    sites.length > 1
+      ? 'Des sites vitrines intégrés pour des clients, en ligne.'
+      : 'Un site vitrine intégré pour un client, en ligne.'
+
   return (
     <Room
       id="other-work"
@@ -28,7 +35,7 @@ export function OtherWork() {
           label="Et aussi"
           title="Autres réalisations."
           accent="réalisations."
-          lead="Des sites vitrines intégrés pour des clients, en ligne."
+          lead={lead}
           compact
         />
       </Reveal>

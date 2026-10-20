@@ -36,8 +36,8 @@ export function About() {
           />
           <p className="about__paragraph">
             <span className="about__highlight">
-              Développeur front-end en fin de formation «&nbsp;Intégrateur
-              web&nbsp;» chez OpenClassrooms.
+              Développeur front-end React à Lyon, en fin de formation
+              «&nbsp;Développeur web&nbsp;» chez OpenClassrooms.
             </span>{' '}
             Douze projets plus tard, je sais construire une interface de la
             maquette au déploiement.

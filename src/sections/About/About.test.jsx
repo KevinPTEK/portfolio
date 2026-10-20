@@ -39,6 +39,16 @@ describe('About', () => {
     expect(container.textContent).not.toMatch(UNPROTECTED_SPACE)
   })
 
+  // le terme de recherche visé (§ 14 : « Kevin Renou développeur front-end
+  // Lyon ») et React, dans le texte visible ; la formation porte son vrai nom
+  // (décisions de Kevin, 20 oct.)
+  it('dit le métier, React, Lyon et la formation dès la première phrase', () => {
+    render(<About />)
+    const first = room().querySelector('.about__highlight').textContent
+    expect(first).toMatch(/^Développeur front-end React à Lyon,/)
+    expect(first).toContain('«\u00a0Développeur web\u00a0» chez OpenClassrooms')
+  })
+
   it('pose mon portrait, décoratif, sur son reflet pré-flouté', () => {
     render(<About />)
     const reflection = room().querySelector('.about__reflection')

@@ -8,8 +8,9 @@ import { OtherWork } from './OtherWork.jsx'
 // Tourn&Marou, un ordre inversé ou un 2e site oublié passeraient inaperçus.
 // Les vraies données sont rendues par le test de Work (la pièce en fait
 // partie) et vérifiées par sites.test.js.
-vi.mock('../../data/sites.json', () => ({
-  default: [
+// (hoisted : un test peut retirer le 2e site, pour l'introduction au singulier)
+const data = vi.hoisted(() => ({
+  sites: [
     {
       id: 'atelier',
       name: 'Atelier Lune',
@@ -28,6 +29,7 @@ vi.mock('../../data/sites.json', () => ({
     },
   ],
 }))
+vi.mock('../../data/sites.json', () => ({ default: data.sites }))
 
 describe('OtherWork', () => {
   it('est une pièce kraft, nommée par son titre', () => {
@@ -60,6 +62,21 @@ describe('OtherWork', () => {
         'Des sites vitrines intégrés pour des clients, en ligne.',
       ),
     ).toBeInTheDocument()
+  })
+
+  // l'introduction suit le nombre de sites (un seul aujourd'hui, Tourn&Marou :
+  // « des sites… pour des clients » était faux — revue du 19 oct.) ; un site
+  // ajouté aux données la remet au pluriel
+  it('introduit un seul site au singulier', () => {
+    const removed = data.sites.splice(1)
+    try {
+      render(<OtherWork />)
+      expect(
+        screen.getByText('Un site vitrine intégré pour un client, en ligne.'),
+      ).toBeInTheDocument()
+    } finally {
+      data.sites.push(...removed)
+    }
   })
 
   it("donne une carte à chaque site, dans l'ordre de sites.json", () => {
