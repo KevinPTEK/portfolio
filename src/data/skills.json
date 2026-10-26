@@ -38,7 +38,7 @@
     "items": [
       {
         "name": "Git & GitHub",
-        "level": 2
+        "level": 3
       },
       {
         "name": "Vite",
@@ -65,7 +65,7 @@
       {
         "name": "Accessibilité",
         "detail": "WCAG, clavier, ARIA",
-        "level": 2,
+        "level": 3,
         "proof": "nina"
       },
       {
@@ -77,7 +77,7 @@
       {
         "name": "Tests & débogage",
         "detail": "Jest, DevTools",
-        "level": 1,
+        "level": 2,
         "proof": "events"
       }
     ]
