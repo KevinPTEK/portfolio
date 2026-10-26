@@ -4,7 +4,7 @@ Portfolio de **développeur front-end React**, conçu et codé de zéro : une se
 
 ## Liens
 
-- **Site en ligne** : [tournetmarou.netlify.app]
+- **Site en ligne** : (https://kevinrenou.netlify.app)
 - **Code du portfolio** : ce dépôt, [github.com/KevinPTEK/portfolio](https://github.com/KevinPTEK/portfolio).
 - **Me retrouver** : [GitHub](https://github.com/KevinPTEK) · [LinkedIn](https://www.linkedin.com/in/kevin-renou).
 
