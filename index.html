@@ -4,12 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Référencement : écrit en dur, lisible sans JavaScript (§ 14) -->
+    <!-- Référencement : écrit en dur, lisible sans JavaScript -->
     <title>Kevin Renou — Développeur front-end React</title>
     <meta
       name="description"
       content="Kevin Renou, développeur front-end React à Lyon. Des interfaces accessibles et sobres : découvrez mes projets, mes compétences et contactez-moi."
     />
+    <!-- Adresse écrite en dur : la changer aussi dans og:url, og:image, le JSON-LD, robots.txt et sitemap.xml -->
+    <link rel="canonical" href="https://kevinrenou.netlify.app/" />
 
     <!-- Icônes : ICO pour les anciens navigateurs, SVG pour les autres, PNG pour l'écran d'accueil iOS -->
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -17,8 +19,9 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#EFD8B8" />
 
-    <!-- Aperçus de partage (LinkedIn, réseaux) : l'image et l'URL arriveront au déploiement -->
+    <!-- Aperçus de partage (LinkedIn, réseaux) : adresses absolues, les robots ne résolvent pas les chemins relatifs -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kevinrenou.netlify.app/" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:site_name" content="Kevin Renou" />
     <meta
@@ -29,6 +32,17 @@
       property="og:description"
       content="Kevin Renou, développeur front-end React à Lyon. Des interfaces accessibles et sobres : découvrez mes projets, mes compétences et contactez-moi."
     />
+    <!-- les dimensions permettent d'afficher l'image dès le premier partage -->
+    <meta
+      property="og:image"
+      content="https://kevinrenou.netlify.app/og-image.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Sceau KR et nom de Kevin Renou, développeur front-end React à Lyon"
+    />
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Données structurées : cette page présente une personne (Google, ProfilePage) -->
@@ -36,6 +50,7 @@
       {
         "@context": "https://schema.org",
         "@type": "ProfilePage",
+        "url": "https://kevinrenou.netlify.app/",
         "mainEntity": {
           "@type": "Person",
           "name": "Kevin Renou",
