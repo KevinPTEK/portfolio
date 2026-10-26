@@ -39,14 +39,13 @@ describe('variants', () => {
     })
   })
 
-  it('unblur : flou de 14 px et montée de 14 px, sans opacité (LCP, § 7.4)', () => {
+  it('unblur : flou de 14 px et montée de 14 px, sans opacité (LCP)', () => {
     expect(unblur.hidden).toEqual({ filter: 'blur(14px)', y: 14 })
     expect(unblur.visible).toEqual({
       filter: 'blur(0px)',
       y: 0,
       transition: { duration: 1.1, ease: EASE_OUT },
-      // net, plus aucun filtre : un filter resté posé, même nul, change le
-      // repère des éléments position: fixed qu'il contient (revue)
+      // un filter resté posé, même nul, change le repère des éléments fixes
       transitionEnd: { filter: 'none' },
     })
   })
@@ -65,8 +64,7 @@ describe('variants', () => {
     })
   })
 
-  // l'entrée de l'accueil (charte, « Arrivée, suite ») : partagée par l'accueil
-  // et l'avatar volant, qui entrent ensemble (§ 7.4)
+  // l'entrée de l'accueil, partagée avec l'avatar volant
   it('ENTRANCE : 150 ms d’attente, puis 120 ms entre deux éléments', () => {
     expect(ENTRANCE.visible.transition).toEqual({
       staggerChildren: 0.12,

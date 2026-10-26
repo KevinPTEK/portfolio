@@ -1,10 +1,7 @@
-// Un bruit fractal en niveaux de gris : un petit SVG (feTurbulence) en image de
-// fond, calculé une fois par tuile puis répété — sa largeur donne la taille de
-// la tuile. Le filtre est calculé sur la tuile exacte (x, y, width, height) :
-// par défaut il déborde de 10 % de chaque côté, le bruit se raccorde alors sur
-// 1,2 tuile et chaque répétition laisse une couture (revue du 8 oct.).
-// Un calque de fond n'a pas d'opacité propre : elle est cuite dans le SVG
-// (opacity du rectangle). # et % s'écrivent %23 et %25 dans une adresse data:
+// Un bruit fractal en niveaux de gris : un petit SVG (feTurbulence) en tuile
+// répétée. Le filtre couvre la tuile exacte (x, y, width, height), sinon chaque
+// répétition laisse une couture. L'opacité est cuite dans le SVG ; # et %
+// s'écrivent %23 et %25 dans une adresse data:
 @function noise($size, $frequency, $octaves, $opacity) {
   @return url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='#{$size}' height='#{$size}'><filter id='n' x='0' y='0' width='1' height='1'><feTurbulence type='fractalNoise' baseFrequency='#{$frequency}' numOctaves='#{$octaves}' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='#{$opacity}'/></svg>");
 }

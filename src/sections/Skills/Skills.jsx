@@ -9,17 +9,15 @@ import sites from '../../data/sites.json'
 import skills from '../../data/skills.json'
 import './Skills.scss'
 
-// la preuve d'une compétence : un projet (sa pièce) ou un site (la pièce
-// « Autres réalisations », où il a sa carte)
+// la preuve d'une compétence : un projet, ou un site (« Autres réalisations »)
 const evidence = new Map([
   ...projects.map(({ id, name }) => [id, { name, href: `#${id}` }]),
   ...sites.map(({ id, name }) => [id, { name, href: '#other-work' }]),
 ])
 
 /**
- * « Compétences » : une carte par famille, une ligne par compétence — son
- * niveau (●●○, la légende en donne l'étalon) et, s'il y en a un, le projet
- * qui la montre (veille : une compétence se prouve par un projet). Papier froid.
+ * « Compétences » : une carte par famille ; chaque compétence avec son niveau
+ * et, s'il y en a un, le projet qui la montre.
  */
 export function Skills() {
   return (
@@ -36,14 +34,13 @@ export function Skills() {
           label={sectionLabel('skills')}
           title="Compétences, honnêtement."
           accent="honnêtement."
-          // les mots du nom des points (« niveau 3 sur 3 ») : un lecteur d'écran
-          // n'a pas à faire le rapprochement (revue du 9 oct.)
+          // les mots du nom des points (« niveau 3 sur 3 »), pour les lecteurs d'écran
           lead={
             "Trois points (niveau 3 sur 3)\u00a0: à l'aise en autonomie. Deux (niveau 2)\u00a0: opérationnel avec de la pratique. Un (niveau 1)\u00a0: les bases, en cours d'approfondissement."
           }
         />
       </Reveal>
-      {/* role="list" : sans puces, Safari ne l'annoncerait plus comme une liste (§ 10) */}
+      {/* role="list" : sans puces, Safari ne l'annoncerait plus comme une liste */}
       <Reveal as="ul" stagger className="skills__groups" role="list">
         {skills.map(({ group, items }) => (
           <RevealItem as="li" key={group} className="skills__group">

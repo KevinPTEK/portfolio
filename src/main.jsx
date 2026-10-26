@@ -9,7 +9,6 @@ import { MotionProvider } from './animations/MotionProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* le cadre des animations : « réduire les animations », moteur chargé après coup (§ 7.1) */}
     <MotionProvider>
       <App />
     </MotionProvider>

@@ -6,9 +6,8 @@ import { preferReducedMotion } from '../../testing/motion.js'
 import { MotionProvider } from '../MotionProvider.jsx'
 import { FlyingAvatar } from './FlyingAvatar.jsx'
 
-// Les deux emplacements, et l'avatar volant. happy-dom ne calcule aucune
-// mise en page : chaque emplacement reçoit sa place (mesurée dans Chrome,
-// bureau 1 440 × 900 : distance du vol = 405 px), l'écran sa hauteur
+// Les deux emplacements et l'avatar volant. happy-dom ne calcule aucune mise
+// en page : chaque emplacement reçoit sa place, l'écran sa hauteur
 function Page({ entered }) {
   return (
     <>
@@ -21,9 +20,8 @@ function Page({ entered }) {
   )
 }
 const HEIGHT = window.innerHeight
-// La place dans la mise en page (offsetLeft, offsetTop, offsetWidth) : dans la
-// page pour l'accueil (il défile avec elle), dans l'écran pour la nav (fixe) ;
-// parent : l'offsetParent, et border sa bordure (clientLeft, clientTop)
+// la place dans la mise en page (offset*) ; parent : l'offsetParent, border :
+// sa bordure (clientLeft, clientTop)
 let boxes
 let reads // les accesseurs espionnés : combien de lectures de la mise en page
 const place = (slot, left, top, width) => {
@@ -49,8 +47,8 @@ const reloadedAt = (y) => {
   Object.defineProperty(window, 'scrollY', { value: y, configurable: true })
 }
 
-// La hauteur de l'écran, barre d'adresse affichée (documentElement.clientHeight)
-// et celle de la fenêtre (innerHeight), qui grandit quand la barre se replie
+// la hauteur de l'écran (clientHeight) et celle de la fenêtre (innerHeight),
+// qui grandit quand la barre d'adresse se replie
 const screenHeight = (height, window_ = height) => {
   Object.defineProperty(document.documentElement, 'clientHeight', {
     value: height,
@@ -108,9 +106,8 @@ describe('FlyingAvatar', () => {
     expect(image()).toHaveClass('avatar', 'flying-avatar__image')
   })
 
-  // revue de la tâche 8 : à son montage, l'intro a agrandi l'accueil (1,05) et
-  // décalé son bloc identité (14 px) — getBoundingClientRect mesurait un
-  // départ faux. La mise en page (offset*) ignore les transformations
+  // pendant l'intro, l'accueil est transformé : la mise en page (offset*)
+  // ignore les transformations, getBoundingClientRect non
   it('mesure la place dans la mise en page, parents et bordures compris', () => {
     place('home', 10, 8, 104) // dans son cadre…
     boxes.frame = { left: 28, top: 30, border: 2 } // …placé dans la page
@@ -119,8 +116,8 @@ describe('FlyingAvatar', () => {
     expect(image().style.transform).toBe(at(40, 40, 104))
   })
 
-  // il entre avec le bloc identité de l'accueil (§ 7.4, comme la maquette) :
-  // flou et 14 px plus bas tant que l'intro joue, jamais transparent
+  // il entre avec le bloc identité : flou et 14 px plus bas tant que l'intro
+  // joue, jamais transparent
   it('pendant l’intro : flou et 14 px plus bas, comme le bloc identité', () => {
     render(<Page entered={false} />)
     expect(entrance().style.filter).toBe('blur(14px)')
@@ -212,8 +209,7 @@ describe('FlyingAvatar', () => {
   })
 })
 
-// Sans ScrollTimeline (Firefox avant sa version 161, happy-dom) : le vol est
-// calculé à chaque image où la page défile (faux requestAnimationFrame)
+// Sans ScrollTimeline (Firefox, happy-dom) : le vol est calculé à chaque image
 describe('FlyingAvatar — sans ScrollTimeline, à chaque image', () => {
   beforeEach(() => {
     vi.useFakeTimers({
@@ -262,8 +258,6 @@ describe('FlyingAvatar — sans ScrollTimeline, à chaque image', () => {
     expect(image().style.transform).toBe(at(20, 14, 28))
   })
 
-  // revue : la distance du vol suivait innerHeight — l'avatar sautait de
-  // 20 px en plein vol quand la barre d'adresse mobile se repliait
   it('la barre d’adresse se replie (la fenêtre grandit) : l’avatar ne saute pas', () => {
     render(<Page />)
     scrollTo(202.5)
@@ -274,9 +268,8 @@ describe('FlyingAvatar — sans ScrollTimeline, à chaque image', () => {
   })
 })
 
-// Avec ScrollTimeline (Chrome, Edge, Safari 26+) : le navigateur trace le vol
-// lui-même, au rythme du défilement — une animation, recréée seulement quand
-// les emplacements bougent
+// Avec ScrollTimeline : le navigateur trace le vol ; l'animation n'est
+// recréée que quand les emplacements bougent
 describe('FlyingAvatar — avec ScrollTimeline, tracé par le navigateur', () => {
   class FakeScrollTimeline {
     constructor(options) {
@@ -316,8 +309,7 @@ describe('FlyingAvatar — avec ScrollTimeline, tracé par le navigateur', () =>
       transform: at(34, -16.625, 68),
     })
     expect(keyframes[48]).toEqual({ offset: 1, transform: at(32, 32, 56) })
-    // sur l'image volante (revue : rien ne vérifiait la cible) ; rien d'écrit
-    // dans son style : c'est l'animation qui la place
+    // sur l'image volante ; rien d'écrit dans son style : l'animation la place
     expect(Element.prototype.animate.mock.contexts[0]).toBe(image())
     expect(image().style.transform).toBe('')
   })
@@ -369,11 +361,8 @@ describe('FlyingAvatar — avec ScrollTimeline, tracé par le navigateur', () =>
     expect(flights).toHaveLength(1)
   })
 
-  // revue : une erreur dans ce décor ferait tomber toute la page (aucune
-  // barrière d'erreur) — un navigateur qui refuserait nos réglages
-  // revue de branche : un navigateur qui connaît ScrollTimeline mais ignore
-  // la plage (une option inconnue est ignorée sans erreur) ferait courir le
-  // vol sur toute la page — on relit la plage retenue
+  // réglages refusés, ou plage ignorée sans erreur (le vol courrait sur toute
+  // la page) : notre code prend le relais, sans faire tomber la page
   it.each([
     ['ignorée (« normal »)', 'normal'],
     ['inconnue (pas de rangeEnd)', undefined],

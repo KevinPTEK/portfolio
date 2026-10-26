@@ -1,14 +1,12 @@
-// Les mouvements partagés (§ 7.2). La courbe et la durée des apparitions
-// recopient les jetons Sass de _tokens.scss — JavaScript ne lit pas le Sass ;
-// variants.test.js vérifie que les deux copies restent d'accord. Les autres
-// valeurs (1,1 s, 120 ms) viennent de la charte et n'ont pas de jeton.
+// Les mouvements partagés. La courbe et la durée des apparitions recopient
+// les jetons de _tokens.scss (variants.test.js vérifie qu'ils restent d'accord).
 
 export const EASE_OUT = [0.2, 0.8, 0.2, 1] // $ease-out
 export const DURATION_SLOW = 0.9 // $duration-slow : apparitions au défilement
-export const STAGGER = 0.12 // 120 ms entre deux lignes (charte, « Arrivée, suite »)
+export const STAGGER = 0.12 // entre deux lignes
 
-// fondu + montée de 24 px (Reveal, § 7.3) ; sous « réduire les animations »,
-// Motion retire la montée et garde le fondu (§ 7.1)
+// fondu + montée de 24 px ; sous « réduire les animations », Motion garde le
+// fondu seul
 export const rise = {
   hidden: { opacity: 0, y: 24 },
   visible: {
@@ -18,16 +16,15 @@ export const rise = {
   },
 }
 
-// flou → net et montée de 14 px, SANS opacité : l'accueil doit être peint dès
-// la première image, sinon le LCP attendrait la fin de l'intro (§ 7.4)
+// flou → net et montée de 14 px, sans opacité : l'accueil est peint dès la
+// première image (LCP)
 export const unblur = {
   hidden: { filter: 'blur(14px)', y: 14 },
   visible: {
     filter: 'blur(0px)',
     y: 0,
     transition: { duration: 1.1, ease: EASE_OUT },
-    // net, plus aucun filtre : un filter resté posé, même nul, change le
-    // repère des éléments position: fixed qu'il contient
+    // un filter resté posé, même nul, change le repère des éléments fixes
     transitionEnd: { filter: 'none' },
   },
 }
@@ -40,7 +37,6 @@ export function stagger(staggerChildren = STAGGER, delayChildren = 0) {
   }
 }
 
-// L'entrée de l'accueil (charte, « Arrivée, suite ») : 150 ms après que l'intro
-// a rendu la main, le bloc identité puis les lignes du menu, à 120 ms d'écart.
-// Partagée par l'accueil et l'avatar volant, qui entre avec le bloc identité (§ 7.4)
+// L'entrée de l'accueil, 150 ms après l'intro : le bloc identité (et l'avatar
+// volant), puis les lignes du menu
 export const ENTRANCE = stagger(STAGGER, 0.15)

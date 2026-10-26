@@ -7,15 +7,11 @@ import sites from '../../data/sites.json'
 import './OtherWork.scss'
 
 /**
- * « Autres réalisations » : après les projets phares, les sites vitrines en
- * grille de cartes (§ 5.1 bis). Ajouter un site à sites.json ajoute une carte.
- * Sur le papier kraft, avec un titre compact : les projets phares restent
- * les seules pièces en couleur, la pièce secondaire le reste à l'œil
- * (décisions de Kevin, 7 oct.).
+ * « Autres réalisations » : les sites vitrines en grille de cartes (une par
+ * site de sites.json). Sur le kraft : seuls les projets phares sont en couleur.
  */
 export function OtherWork() {
-  // l'introduction suit le nombre de sites : un seul aujourd'hui (Tourn&Marou),
-  // et un site ajouté aux données la remet au pluriel
+  // l'introduction suit le nombre de sites
   const lead =
     sites.length > 1
       ? 'Des sites vitrines intégrés pour des clients, en ligne.'
@@ -39,7 +35,7 @@ export function OtherWork() {
           compact
         />
       </Reveal>
-      {/* role="list" : sans puces, Safari ne l'annoncerait plus comme une liste (§ 10) */}
+      {/* role="list" : sans puces, Safari ne l'annoncerait plus comme une liste */}
       <Reveal as="ul" stagger className="other-work__list" role="list">
         {sites.map((site) => (
           <RevealItem as="li" key={site.id} className="other-work__item">

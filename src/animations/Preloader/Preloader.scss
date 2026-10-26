@@ -1,11 +1,9 @@
 @use '../../styles/abstracts' as *;
 
-// Le voile de papier foncé de l'intro (charte § 3)
+// le voile de papier foncé de l'intro
 $veil: #4e463d;
 
-// Le voile : tout l'écran (sauf la gouttière d'une barre de défilement
-// classique : ci-dessous), au-dessus de tout. Couleur unie tant que le
-// brouillard n'a pas peint sa première image (ou sans canvas)
+// Le voile, au-dessus de tout ; uni tant que le brouillard n'a pas peint
 .preloader {
   position: fixed;
   inset: 0;
@@ -33,26 +31,20 @@ $veil: #4e463d;
   background-color: transparent;
 }
 
-// le petit canvas étiré à l'écran ; un léger flou fond ses pixels (il déborde :
-// le flou n'éclaircit pas les bords) — garde-fou 1 du § 7.4
+// le petit canvas étiré à l'écran ; un léger flou fond ses pixels (il déborde
+// pour que le flou n'éclaircisse pas les bords)
 .preloader__fog {
   position: absolute;
   inset: -32px;
   width: calc(100% + 64px);
-  max-width: none; // le reset plafonne les canvas à 100 % : coupé à droite
+  max-width: none; // le reset plafonne les canvas à 100 %
   height: calc(100% + 64px);
   filter: blur(8px);
 }
 
-// ---------- L'intro pilote la page (<html data-intro>, posé par Preloader) ----------
-
-// pas de défilement avant « ready ». La place de la barre de défilement reste
-// réservée : sans elle, la page se décalerait de sa largeur à son retour
-// (barres classiques, Windows : un décalage compté dans le CLS — veille du
-// 15 oct.). Sur iPhone, Safari laisse défiler quand sa barre est repliée :
-// sans gravité, tout geste accélère l'intro et rend le défilement.
-// Un élément fixe ne couvre pas cette gouttière, peinte avec le fond de la
-// page : le fond prend la couleur du voile (revue : 15 px de kraft à droite)
+// L'intro pilote la page (<html data-intro>). Pas de défilement avant
+// « ready » ; la place de la barre de défilement reste réservée (sinon la page
+// se décale à son retour), peinte de la couleur du voile
 :root[data-intro='drawing'],
 :root[data-intro='opening'] {
   overflow: hidden;
@@ -77,8 +69,7 @@ $veil: #4e463d;
   transition: opacity 1.6s $ease-out;
 }
 
-// à l'impression, la page sans le voile (imprimée pendant l'intro, elle n'en
-// montrait que lui — revue)
+// à l'impression, la page sans le voile
 @media print {
   .preloader {
     display: none;

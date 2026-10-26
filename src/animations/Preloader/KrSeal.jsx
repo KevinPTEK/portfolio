@@ -3,16 +3,12 @@ import { STROKES, ring, seal, stroke } from './seal.js'
 import './KrSeal.scss'
 
 /**
- * Le sceau « KR » de l'intro (§ 7.4) : un cercle et six traits qui se
- * dessinent (pathLength de 0 à 1), puis qui se dissolvent à l'ouverture —
- * ou s'effacent vite si le visiteur a fait un geste.
+ * Le sceau « KR » : un cercle et six traits qui se dessinent, puis se
+ * dissolvent à l'ouverture (ou s'effacent vite après un geste).
  *
  * @param {object} props
  * @param {'drawing' | 'opening' | 'ready'} props.phase
  * @param {boolean} props.rushed
- *
- * @example
- * <KrSeal phase="drawing" rushed={false} />
  */
 export function KrSeal({ phase, rushed }) {
   let state = 'dissolved'

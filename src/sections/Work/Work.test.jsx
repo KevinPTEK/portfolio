@@ -5,9 +5,8 @@ import projects from '../../data/projects.json'
 import { preferReducedMotion } from '../../testing/motion.js'
 import { Work } from './Work.jsx'
 
-// Les travaux : une pièce par projet de projects.json, et la modale de détail.
-// happy-dom ouvre et ferme bien un <dialog>, mais ne gère ni Échap ni le focus
-// initial : ceux-là se vérifient dans le navigateur (§ 9).
+// Les travaux et la modale. happy-dom ne gère ni Échap ni le focus initial
+// d'un <dialog> : ceux-là se vérifient dans le navigateur.
 
 function openProject(user, name) {
   return user.click(
@@ -61,7 +60,7 @@ describe('Work', () => {
   })
 
   it('garde la modale montée, fermée, avant toute ouverture', () => {
-    // démontée pendant qu'elle est ouverte, elle ne préviendrait pas le parent (§ 9)
+    // démontée pendant qu'elle est ouverte, elle ne préviendrait pas le parent
     render(<Work />)
     const dialog = document.querySelector('dialog')
     expect(dialog).not.toBe(null)
@@ -121,9 +120,8 @@ describe('Work', () => {
   })
 
   it('à la fermeture, rend le focus au bouton du projet affiché', async () => {
-    // Safari ne donne pas le focus à un bouton cliqué : le navigateur ne peut
-    // pas le rendre seul (§ 9). Après « Projet suivant », c'est le bouton du
-    // projet affiché, pas celui du départ.
+    // Safari ne donne pas le focus à un bouton cliqué ; après « Projet
+    // suivant », c'est le bouton du projet affiché
     const user = userEvent.setup()
     render(<Work />)
     const [first, second] = projects
@@ -139,7 +137,7 @@ describe('Work', () => {
   })
 
   it('fermée, la modale garde le projet affiché (pas de saut de contenu)', async () => {
-    // une sortie animée (étape 4) montrerait sinon le 1er projet en se fermant
+    // sinon une sortie animée montrerait le 1er projet en se fermant
     const user = userEvent.setup()
     render(<Work />)
     const [, second] = projects
@@ -152,10 +150,9 @@ describe('Work', () => {
   })
 })
 
-// Le passage entre projets (§ 7.10) : chaque projet écrit son arrivée, de 0
-// à 1, en --arrival sur lui-même et en --covered sur le précédent. happy-dom
-// ne calcule aucune position : on place les repères à la main, puis on fait
-// défiler (une image de faux requestAnimationFrame)
+// Le passage entre projets : --arrival sur le projet, --covered sur le
+// précédent. happy-dom ne calcule aucune position : on place les repères à la
+// main, puis une image de faux requestAnimationFrame
 describe('Work — le passage entre projets', () => {
   const HEIGHT = window.innerHeight
   beforeEach(() => {
@@ -239,7 +236,7 @@ describe('Work — le passage entre projets', () => {
       () => window.happyDOM.setViewport({ width: 375, height: 812 }),
     ],
   ])('n’écrit rien %s : aucune règle n’y lit les variables', (_, setup) => {
-    // les écrire recalculait le style des pièces pour rien (revue)
+    // les écrire recalculerait le style des pièces pour rien
     setup()
     render(<Work />)
     scrollToMarkers(-2000, 600, 1600)

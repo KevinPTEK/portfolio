@@ -1,14 +1,11 @@
 @use '../../styles/abstracts' as *;
 
-// Une bande au kraft de « Contact », sous la pièce : © à gauche, « Haut de
-// page » à droite. Ses propres couleurs (data-theme) : elle reste lisible
-// quelle que soit la pièce courante du <body>.
+// Ses propres couleurs (data-theme) : lisible quelle que soit la pièce courante
 .footer {
   position: relative; // repère du fond
   isolation: isolate; // le fond en z-index -1 reste dans le pied de page
   display: grid;
-  // plafonné et centré comme le contenu des pièces (Room) : à 2 560 px, il
-  // reste aligné sur lui (revue)
+  // plafonné et centré comme le contenu des pièces
   grid-template-columns: minmax(0, $content-max-width);
   justify-content: center;
   padding: $space-5 $gutter;
@@ -33,13 +30,12 @@
   @include label;
 }
 
-// en encre principale : 4,54 : 1 seulement en ink-2 sur le grain (mesuré),
-// une marge trop mince ; le lien se distingue en plus de la signature
+// en encre principale : ink-2 manquait de contraste sur le grain
 .footer__top {
   display: inline-flex;
   align-items: center;
   gap: $space-1;
-  min-height: 24px; // cible de 24 px au moins (WCAG 2.5.8)
+  min-height: 24px; // WCAG 2.5.8
   text-decoration: none;
 
   @include label;

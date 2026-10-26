@@ -5,10 +5,7 @@ import profile from './data/profile.json'
 import socials from './data/socials.json'
 
 // Le index.html écrit à la main : ce que lisent les robots et les aperçus de
-// partage, sans exécuter le JavaScript (§ 14). Revue générale (19 oct.) : il
-// n'était testé nulle part — des données structurées invalides (une virgule
-// en trop), une icône vers un fichier absent, lang="en" ou un profil LinkedIn
-// différent de socials.json passaient tous les tests
+// partage, sans exécuter le JavaScript
 const ROOT = join(import.meta.dirname, '..')
 const page = new DOMParser().parseFromString(
   readFileSync(join(ROOT, 'index.html'), 'utf8'),

@@ -1,8 +1,7 @@
 @use '../../styles/abstracts' as *;
 
-// Une pilule pleine en haut à gauche, au-dessus de tout, le temps du focus ;
-// le reste du temps, masquée à l'écran mais atteignable au clavier (un
-// display: none ou un visibility: hidden la retireraient de la tabulation)
+// Visible le temps du focus ; masquée sinon, mais atteignable au clavier
+// (display: none la retirerait de la tabulation)
 .skip-link {
   position: fixed;
   top: $space-3;

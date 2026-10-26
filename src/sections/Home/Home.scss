@@ -1,16 +1,14 @@
 @use '../../styles/abstracts' as *;
 
-// Les marges de l'accueil (mix sur .room) : pas de nav visible, donc ni les
-// 88 px du haut ni le décalage de gauche des autres pièces (maquette).
-// Et toute la largeur : le menu se cale contre le bord droit, même sur grand
-// écran (le plafond de 1 200 px des autres pièces le centrerait).
-// Même spécificité que .room : ces règles l'emportent parce que Home.jsx importe
-// Room avant ./Home.scss — garder cet ordre des imports.
+// Les marges de l'accueil, sans nav visible, et toute la largeur (le menu se
+// cale contre le bord droit). Même spécificité que .room : ces règles
+// l'emportent parce que Home.jsx importe Room avant ./Home.scss — garder cet
+// ordre des imports.
 $padding-top: $space-6; // 32 px
 $padding-top-desktop: $space-6 + $space-2; // 40 px
 $padding-left-desktop: $space-6 + $space-2; // 40 px
 $padding-bottom: $space-5; // 24 px
-// la mise au point de l'accueil sous l'intro : 2,8 s, sur la courbe de la maquette
+// la mise au point de l'accueil sous l'intro
 $focus-in: 2.8s cubic-bezier(0.25, 0.7, 0.2, 1);
 
 .home {
@@ -22,13 +20,12 @@ $focus-in: 2.8s cubic-bezier(0.25, 0.7, 0.2, 1);
   }
 }
 
-// Le contenu en haut, la rangée « © 2026 · Défiler » en bas de l'écran
+// le contenu en haut, « © 2026 · Défiler » en bas de l'écran
 .home__layout {
   display: grid;
   grid-template-rows: 1fr auto;
   gap: $space-7;
   min-height: calc(100svh - #{$padding-top + $padding-bottom});
-  // la mise au point sous la brume de l'intro (fin du fichier)
   transition:
     transform $focus-in,
     filter $focus-in;
@@ -38,8 +35,7 @@ $focus-in: 2.8s cubic-bezier(0.25, 0.7, 0.2, 1);
   }
 }
 
-// Identité puis menu ; en bureau, côte à côte sur toute la hauteur :
-// l'identité en haut à gauche, le menu centré (charte, § 5)
+// en bureau, l'identité en haut à gauche, le menu centré en hauteur
 .home__content {
   display: grid;
   align-content: start;
@@ -52,19 +48,17 @@ $focus-in: 2.8s cubic-bezier(0.25, 0.7, 0.2, 1);
   }
 }
 
-// Portrait, nom, métier, profils : collés en haut à gauche
 .home__identity {
   display: grid;
   justify-items: start; // le portrait garde ses 104 px
   align-self: start;
   gap: $space-1;
-  // il entre flou et décalé (unblur, § 7.4) : net quand même sans moteur, à
-  // l'impression, au focus clavier
+  // net sans moteur, à l'impression et au focus clavier
   @include unblurred-without-motion;
 }
 
 .home__name {
-  margin-top: $space-3; // un peu d'air sous le portrait
+  margin-top: $space-3;
   font-size: clamp(28px, 3.4vw, 44px);
   font-weight: 600;
   line-height: 1.1;
@@ -80,9 +74,8 @@ $focus-in: 2.8s cubic-bezier(0.25, 0.7, 0.2, 1);
   margin-top: $space-5;
 }
 
-// Le menu géant, calé contre le bord droit en bureau
 .home__menu {
-  // cible du lien « Menu » de la barre mobile (§ 7.6)
+  // cible du lien « Menu » de la barre mobile
   @include focus-target;
 
   @include up(desktop) {
@@ -90,7 +83,6 @@ $focus-in: 2.8s cubic-bezier(0.25, 0.7, 0.2, 1);
   }
 }
 
-// La rangée du bas : « © 2026 » à gauche, « Défiler » à droite
 .home__footer {
   @include label;
 
@@ -110,9 +102,8 @@ $focus-in: 2.8s cubic-bezier(0.25, 0.7, 0.2, 1);
   transform: rotate(90deg);
 }
 
-// Sous la brume de l'intro, l'accueil fait sa mise au point : léger zoom
-// arrière, flou → net (<html data-intro>, § 7.4). Garde-fou 1 : c'est le flou
-// de la plus grande surface — le premier retiré si la mesure l'exige
+// sous la brume de l'intro, l'accueil fait sa mise au point (zoom arrière,
+// flou → net)
 [data-intro='drawing'] .home__layout {
   transform: scale(1.05);
   filter: blur(10px);

@@ -1,18 +1,11 @@
-// Couleurs des pièces, --bg (fond), --ink (texte), --ink-2 (texte secondaire), --accent et --line (filets)
-// --surface : le fond translucide d'une carte posée dans la pièce (blanc à 55 % sur papier,
-// comme les cartes de la maquette ; 6 % sur les projets). Contrastes sur la carte calculés
-// sur un fond uni (ink / ink-2 / accent) : kraft 14,2 / 9,4 / 6,6, froid 15,7 / 8,7 / 5,8 (9 oct. ; 5,6 avant),
-// argent 15,6 / 8,2 / 7,1, events 12,2 / 6,6 / 5,1, nina 13,7 / 8,6 / 6,3
+// Les couleurs des pièces : --bg, --ink, --ink-2 (texte secondaire), --accent,
+// --line (filets) et --surface (le fond translucide d'une carte)
 
 // thème appliqué avant tout JavaScript : le kraft de l'accueil
 $default-theme: paper-light;
 
 $themes: (
-  // les deux papiers des pièces personnelles
-  // kraft : ink-2 et accent assombris le 8 oct. (auparavant #6e4e2e, #ae4715) — le bas du
-  // papier (#e3c49c) et son grain sont plus sombres que bg : mesurés sur le vrai
-  // fond, ink-2 tombait à 3,3 (sans les 2 % de pixels les plus sombres) et
-  // l'accent à 2,5 (pixel le plus sombre) (§ 10). Sur fond uni : 11,9 / 7,9 / 5,5
+  // kraft : ink-2 et accent assombris pour le bas du papier, plus sombre que bg
   paper-light: (
       scheme: light,
       bg: #efd8b8,
@@ -22,9 +15,7 @@ $themes: (
       line: rgba(0, 0, 0, 0.14),
       surface: rgba(255, 255, 255, 0.55),
     ),
-  // papier froid : ink-2 assombri le 9 oct. (auparavant #5a6474) — même cause que le
-  // kraft : sur le vrai papier (bas #dce4f0, grain), il tombait à 3,1 au
-  // 2e centile (§ 10). Sur fond uni : 14,4 / 8,0 / 5,4
+  // papier froid : ink-2 assombri, pour la même raison
   paper-cool: (
       scheme: light,
       bg: #e9eef5,
@@ -35,8 +26,7 @@ $themes: (
       surface: rgba(255, 255, 255, 0.55),
     ),
 
-  // Thème des projets (contrastes sur le fond : ink, ink-2, accent)
-  // Argent Bank : 17,4 / 9,2 / 8,0
+  // les projets, aux couleurs de chacun
   argent: (
       scheme: dark,
       bg: #12002b,
@@ -46,8 +36,8 @@ $themes: (
       line: rgba(255, 255, 255, 0.16),
       surface: rgba(255, 255, 255, 0.06),
     ),
-  // 724events : 14,5 / 7,8 / 6,1 — l'accent est le violet clair de sa palette ;
-  // le violet de la marque (#5b32ff) ne donnerait que 2,5 sur ce fond
+  // 724events : le violet clair de sa palette (celui de la marque manque de
+  // contraste sur ce fond)
   events: (
       scheme: dark,
       bg: #0d2530,
@@ -57,7 +47,7 @@ $themes: (
       line: rgba(255, 255, 255, 0.16),
       surface: rgba(255, 255, 255, 0.06),
     ),
-  // Nina Carducci : 16,1 / 10,1 / 7,4 — un brun chaud et l'orange de son site
+  // Nina Carducci : un brun chaud et l'orange de son site
   nina: (
       scheme: dark,
       bg: #24170f,

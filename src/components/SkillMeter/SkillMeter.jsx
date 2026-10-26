@@ -9,9 +9,6 @@ import './SkillMeter.scss'
  * @param {string} [props.detail] - précision sous le nom (« Hooks, Router »)
  * @param {number} props.level - niveau, de 1 à max
  * @param {number} [props.max=3] - nombre de points
- *
- * @example
- * <SkillMeter name="React" detail="Hooks, Router" level={2} />
  */
 export function SkillMeter({ name, detail, level, max = 3 }) {
   // [true, true, false] pour un niveau 2 sur 3

@@ -8,25 +8,16 @@ import { MotionProvider } from '../MotionProvider.jsx'
 import { DURATION_SLOW, STAGGER } from '../variants.js'
 import { Reveal, RevealItem } from './Reveal.jsx'
 
-// La cascade, moteur chargé : chaque carte met DURATION_SLOW (0,9 s) à
-// arriver, la suivante part STAGGER (120 ms) plus tard. Dans son propre
-// fichier : Motion garde ses observateurs d'un test à l'autre dans un même
-// fichier, le faux ne serait pas recréé (Reveal.test.jsx a déjà le sien).
-// Revue générale (19 oct.) : la version en vrai temps (un sondage toutes les
-// 4 ms) échouait au hasard quand la machine était chargée — les deux cartes
-// finissaient dans la même image — et laissait passer 80 comme 200 ms. Motion
-// confie le fondu au moteur d'animation du navigateur (element.animate), avec
-// un délai et une durée par carte : le test lit ces consignes, sans chronomètre
-// (relevées aussi dans Chrome, sur le build : 0, 120, 240 ms pour les cartes
-// des compétences, 900 ms chacune — revue du 19 oct.)
+// La cascade, moteur chargé. Motion confie le fondu au moteur d'animation
+// (element.animate), avec un délai et une durée par carte : le test lit ces
+// consignes plutôt que de chronométrer. Dans son propre fichier : Motion garde
+// ses observateurs d'un test à l'autre.
 describe('Reveal stagger, moteur chargé', () => {
   useFakeIntersectionObserver()
   let animate
   afterEach(() => {
-    // le test s'arrête en pleine animation : au démontage, Motion l'annule et
-    // happy-dom rejette sa promesse finished sans la marquer « traitée » (un
-    // navigateur le fait) — deux « Unhandled Rejection » faisaient sortir la
-    // suite en erreur, tests verts (revue du 19 oct.). On les absorbe ici
+    // le test s'arrête en pleine animation : au démontage, happy-dom rejette
+    // sa promesse finished sans la marquer traitée (un navigateur le fait)
     animate.mock.results.forEach(({ value }) =>
       value?.finished?.catch(() => {}),
     )

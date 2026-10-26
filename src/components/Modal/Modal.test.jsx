@@ -119,9 +119,6 @@ describe('Modal', () => {
     expect(screen.getByRole('dialog')).toBeInTheDocument()
   })
 
-  // revue générale (19 oct.) : fermée puis rouverte (sur un autre projet ou
-  // le même), la modale gardait son défilement — titre et capture hors de
-  // l'écran
   it('se rouvre en haut de son contenu', () => {
     const { rerender } = render(<ProjectModal />)
     const content = screen.getByRole('dialog').firstElementChild
@@ -131,9 +128,8 @@ describe('Modal', () => {
     expect(content.scrollTop).toBe(0)
   })
 
-  // un <dialog> fermé ne s'affiche pas : Chrome ignore une remise à 0 faite
-  // avant showModal() ou à la fermeture (mesuré, revue du 19 oct.), ce que
-  // happy-dom ne modélise pas. On vérifie donc le moment de l'écriture
+  // Chrome ignore une remise à 0 dans un <dialog> fermé (happy-dom non) : on
+  // vérifie le moment de l'écriture
   it('remet le défilement à 0 une fois ouverte, pas avant', () => {
     const { rerender } = render(<ProjectModal />)
     const dialog = screen.getByRole('dialog')

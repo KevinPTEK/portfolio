@@ -12,9 +12,8 @@ body {
   background-color: var(--bg);
   -webkit-font-smoothing: antialiased; // macOS uniquement
   -moz-osx-font-smoothing: grayscale; // Firefox sur macOS
-  // pas de fondu ici : il se joue sur la nav (§ 7.7). Pièces et pied de page
-  // posent leurs propres couleurs : celles du <body> ne se voient pas, sauf
-  // sur le lien d'évitement, qui n'apparaît qu'au focus
+  // pas de fondu ici : il se joue sur la nav (les pièces posent leurs
+  // propres couleurs)
 }
 
 // Les titres n'ont pas de style par défaut

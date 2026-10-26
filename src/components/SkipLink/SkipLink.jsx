@@ -1,18 +1,12 @@
 import './SkipLink.scss'
 
 /**
- * Lien d'évitement : premier élément focalisable de la page, il mène droit
- * au contenu sans traverser la nav (WCAG 2.4.1). Invisible jusqu'au focus
- * clavier, puis bien visible (WebAIM). À placer tout en haut, hors de tout
- * repère (GOV.UK).
+ * Lien d'évitement (WCAG 2.4.1) : premier élément focalisable, il mène droit
+ * au contenu. Visible au focus clavier seulement. À placer tout en haut.
  *
  * @param {object} props
  * @param {string} props.href - la cible : « #main »
- * @param {import('react').ReactNode} props.children - le texte : où l'on va
- *   (« Aller au contenu »), pas ce que l'on saute
- *
- * @example
- * <SkipLink href="#main">Aller au contenu</SkipLink>
+ * @param {import('react').ReactNode} props.children - où l'on va (« Aller au contenu »)
  */
 export function SkipLink({ href, children }) {
   return (

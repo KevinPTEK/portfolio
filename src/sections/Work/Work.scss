@@ -1,8 +1,7 @@
 @use '../../styles/abstracts' as *;
 
-// Le passage entre projets (§ 7.10) : useProjectStack écrit --covered (de
-// combien la pièce est recouverte par la suivante) et --arrival (de combien
-// elle est arrivée par-dessus la précédente), de 0 à 1
+// Le passage entre projets : useProjectStack écrit --covered (recouverte par
+// la suivante) et --arrival (arrivée par-dessus la précédente), de 0 à 1
 $recede-scale: 0.07; // le projet recouvert rétrécit de 7 %…
 $recede-shade: 0.55; // …un voile noir monte jusqu'à 55 %…
 $recede-radius: 18px; // …et ses coins s'arrondissent
@@ -12,10 +11,8 @@ $card-shadow: 0.55; // …dont l'ombre s'efface à l'arrivée
 $arriving-radius: calc(#{$card-radius} * (1 - var(--arrival, 1)));
 $receding-radius: calc(#{$recede-radius} * var(--covered, 0));
 
-// Des nombres typés : sur une pièce seule, un recalcul de style passe de 0,69
-// à 0,37 ms (mesuré par la revue) ; sur un passage entier, pas de différence
-// mesurable (13 oct.). Hérités : le voile (::after) lit --covered de sa pièce. Les var(…, repli) restent pour un navigateur sans
-// @property
+// des nombres typés (recalcul de style plus rapide), hérités par le voile
+// (::after) ; les var(…, repli) servent aux navigateurs sans @property
 @property --covered {
   syntax: '<number>';
   inherits: true;
@@ -28,26 +25,20 @@ $receding-radius: calc(#{$recede-radius} * var(--covered, 0));
   initial-value: 1;
 }
 
-// Les projets empilés : chaque pièce reste collée en haut de l'écran et la
-// suivante glisse par-dessus. Seulement quand la pièce tient dans l'écran :
-// une pièce plus haute resterait collée pendant que la suivante la recouvre,
-// et son bas (le bouton « Voir le projet ») ne serait jamais visible.
-// Mesuré à 700 px de haut, de 640 à 1 600 px de large : 617 px au plus (644 au-delà
-// de 1 440, quand le contenu atteint son plafond de 1 200 px).
-// Sur mobile, ou au zoom (l'écran devient « petit »), les pièces se suivent.
-// Un résumé ou un titre plus long : refaire la mesure.
-// Même spécificité que .room : ces règles l'emportent parce que Work.jsx
-// importe ProjectRoom (qui importe Room) avant ./Work.scss — garder cet ordre
-// des imports.
+// Les projets empilés : chaque pièce reste collée en haut et la suivante
+// glisse par-dessus. Seulement quand la pièce tient dans l'écran (700 px de
+// haut : à remesurer si un résumé ou un titre s'allonge) ; sinon son bouton
+// ne serait jamais visible. Même spécificité que .room : ces règles
+// l'emportent parce que Work.jsx importe ProjectRoom (donc Room) avant
+// ./Work.scss — garder cet ordre des imports.
 .work__project {
   @include up(tablet) {
     @media (min-height: 700px) {
       position: sticky;
       top: 0;
 
-      // seulement quand l'empilement existe (ici), et sans « réduire les animations »
       @include motion-allowed {
-        overflow: clip; // les coins arrondis rognent le fond (la pièce tient dans l'écran)
+        overflow: clip; // les coins arrondis rognent le fond
         transform-origin: 50% 0;
         transform: scale(calc(1 - #{$recede-scale} * var(--covered, 0)));
         // en haut, le plus grand des deux arrondis ; en bas, celui du recul
@@ -69,14 +60,10 @@ $receding-radius: calc(#{$recede-radius} * var(--covered, 0));
         }
       }
 
-      // Focus clavier dans la pièce (Maj+Tab depuis la pièce suivante) : collée,
-      // elle resterait sous la suivante et son bouton serait entièrement caché
-      // (WCAG 2.4.11). Elle se décolle et reprend sa place dans le flux, où rien
-      // ne la recouvre ; le navigateur défile jusqu'au bouton. :focus-visible et
-      // non :focus-within : après un clic de souris, l'empilement reste intact.
+      // focus clavier dans une pièce recouverte : elle se décolle, sinon son
+      // bouton resterait caché (WCAG 2.4.11) ; pas après un clic de souris
       &:has(:focus-visible) {
         position: relative;
-        // décollée pour le clavier : ni rétrécie ni voilée (WCAG 2.4.11)
         transform: none;
 
         &::after {
@@ -87,13 +74,11 @@ $receding-radius: calc(#{$recede-radius} * var(--covered, 0));
   }
 }
 
-// Cible du lien « Travaux » (§ 7.6) : le conteneur des projets
+// cible du lien « Travaux »
 .work {
   @include focus-target;
 
-  // autour de la pièce qui recule : du noir, dans la continuité du voile. Sans
-  // lui, on voyait le fond du <body>, qui prend sans fondu le thème de la
-  // pièce courante : ses bords changeaient de couleur en plein passage (revue)
+  // autour de la pièce qui recule : du noir, dans la continuité du voile
   @include up(tablet) {
     @media (min-height: 700px) {
       @include motion-allowed {
@@ -108,10 +93,8 @@ $receding-radius: calc(#{$recede-radius} * var(--covered, 0));
   height: 0;
 }
 
-// À l'impression, la page n'est pas faite pour défiler : ni recul ni carte.
-// (Les requêtes de l'empilement testent la taille de la page imprimée, qui
-// les satisfait : sans ce bloc, l'effet s'imprimait aux valeurs du dernier
-// défilement — revue)
+// à l'impression, ni recul ni carte (la page imprimée satisfait les requêtes
+// de l'empilement)
 @media print {
   .work__project {
     transform: none;

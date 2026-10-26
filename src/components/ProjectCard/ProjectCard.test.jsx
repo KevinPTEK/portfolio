@@ -92,9 +92,7 @@ describe('ProjectCard', () => {
     const cover = screen.getByRole('img', { name: "Page d'accueil de Kasa" })
     expect(cover).toHaveAttribute('src', '/images/kasa-cover.webp')
     expect(cover).toHaveAttribute('loading', 'lazy')
-    // ses trois largeurs (Cover) ; à défaut de mesure (Safari avant 27,
-    // Firefox avant 150), la largeur de la carte selon l'écran (mesurée le
-    // 16 oct.)
+    // ses trois largeurs ; à défaut de mesure, la largeur de la carte
     expect(cover).toHaveAttribute(
       'srcset',
       coverSrcSet('/images/kasa-cover.webp'),

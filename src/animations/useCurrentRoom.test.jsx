@@ -8,8 +8,7 @@ import {
 import { useCurrentRoom } from './useCurrentRoom.js'
 
 // happy-dom ne calcule aucune position : le faux IntersectionObserver dit
-// « cette pièce croise la ligne du milieu ». Le vrai comportement
-// (empilement, défilement) se vérifie dans le navigateur (§ 7.7).
+// « cette pièce croise la ligne du milieu ».
 
 const SECTIONS = ['work', 'contact']
 
@@ -129,10 +128,8 @@ describe('useCurrentRoom', () => {
   })
 })
 
-// L'arrivée sur la page (rechargement, lien direct) : la nav prend les
-// couleurs de la première pièce d'emblée, sans fondu depuis le kraft de
-// l'accueil (choix du 16 oct.). arriving : vrai jusqu'à deux images après
-// que la première pièce est connue (le temps que ses couleurs soient posées)
+// L'arrivée sur la page : arriving reste vrai jusqu'à deux images après la
+// première pièce connue
 function Arrival() {
   const { arriving } = useCurrentRoom(SECTIONS)
   return <p data-testid="arriving">{String(arriving)}</p>

@@ -1,3 +1,2 @@
-// Le moteur d'animation de Motion, dans un fichier à part : LazyMotion le
-// charge après le premier affichage (§ 7.1)
+// Le moteur de Motion, à part : LazyMotion le charge après le premier affichage
 export { domAnimation as default } from 'motion/react'

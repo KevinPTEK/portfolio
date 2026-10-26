@@ -6,10 +6,8 @@ import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden.jsx'
 import { pad } from '../../utils/pad.js'
 import './ProjectCard.scss'
 
-// La largeur de la capture selon l'écran, pour le navigateur qui ne la
-// mesure pas lui-même (Safari avant 27, Firefox avant 150) — mesurée le
-// 16 oct. ; approchée (écarts relevés par les revues du 18 oct. : spec § 6).
-// À remesurer si la mise en page change
+// la largeur de la capture, pour le navigateur qui ne la mesure pas
+// (approchée ; à remesurer si la mise en page change)
 const COVER_SIZES =
   '(min-width: 1440px) 624px, (min-width: 1024px) 40vw, (min-width: 640px) 45vw, calc(100vw - 40px)'
 
@@ -25,14 +23,11 @@ const COVER_SIZES =
  *   summary: string,
  *   tags: string[],
  *   cover: { src: string, alt: string },
- * }} props.project - un projet de projects.json (§ 5.1) : les champs lus ici
+ * }} props.project - un projet de projects.json
  * @param {string} props.titleId - id du titre, à donner à la prop labelledBy de Room
  * @param {number} props.index - place du projet dans la liste, à partir de 0
  * @param {number} props.total - nombre de projets
  * @param {(project: object) => void} props.onOpen - ouvre la modale de ce projet
- *
- * @example
- * <ProjectCard project={argent} titleId="argent-title" index={0} total={3} onOpen={openProject} />
  */
 export function ProjectCard({ project, titleId, index, total, onOpen }) {
   const { name, title, accentWord, summary, tags, cover } = project

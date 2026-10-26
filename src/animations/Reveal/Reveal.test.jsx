@@ -24,8 +24,7 @@ describe('Reveal', () => {
   })
 
   it('embarque ses filets de sécurité (Reveal.scss importé par le composant)', () => {
-    // Reveal.styles.test.js compile le SCSS à part : sans l'import, il
-    // resterait vert et le build partirait sans les filets (revue)
+    // sans cet import, le build partirait sans les filets de secours
     const sheet = document.head.querySelector(
       'style[data-vite-dev-id$="Reveal.scss"]',
     )

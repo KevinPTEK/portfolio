@@ -12,7 +12,7 @@ $font-size-small: 12px; // liens de nav, numéros, mentions
 $font-size-ui: 14px; // boutons, interface
 $font-size-body: 16px; // texte courant
 $font-size-lead: 18px; // texte d'introduction des sections
-$font-size-card-title: 28px; // nom d'une carte (sites), en Playfair : fixe, il grossit entièrement au zoom
+$font-size-card-title: 28px; // nom d'une carte (sites)
 
 $tracking-label: 0.12em; // interlettrage des étiquettes
 
@@ -40,17 +40,16 @@ $content-max-width: 1200px; // plafond du contenu sur grand écran
 
 // ---------- Superposition ----------
 $z-nav: 30;
-$z-avatar: 40; // l'avatar fil rouge passe au-dessus de la nav
-$z-skip-link: 50; // le lien d'évitement, au focus, passe au-dessus de tout le site
-$z-loader: 60; // le pré-chargeur couvre tout
+$z-avatar: 40;
+$z-skip-link: 50;
+$z-loader: 60;
 
 // ---------- Mouvement (mêmes valeurs dans animations/variants.js) ----------
 $ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
 $duration-fast: 0.2s; // survols
 $duration-base: 0.6s; // entrée de la modale
 $duration-theme: 0.7s; // changement de pièce
-// le fond qui change de pièce : en S, il traverse vite les teintes moyennes,
-// où aucun texte ne contraste (≈ 0,13 s sous 3 : 1 au lieu de ≈ 0,3 en ligne
-// droite — mesuré le 11 oct., choisi le 16 oct.)
+// en S : le fond qui change de pièce traverse vite les teintes moyennes, où
+// aucun texte ne contraste
 $ease-theme: cubic-bezier(0.65, 0, 0.35, 1);
 $duration-slow: 0.9s; // apparitions au défilement

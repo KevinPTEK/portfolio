@@ -28,8 +28,8 @@ describe('useMediaQuery', () => {
     ).toBe(false)
   })
 
-  // Un faux matchMedia fidèle au navigateur : un objet neuf à chaque appel,
-  // ses propres écouteurs, et seul l'évènement « change » compte (revue)
+  // un faux matchMedia fidèle au navigateur : un objet neuf à chaque appel,
+  // ses propres écouteurs, et seul l'évènement « change » compte
   function fakeMatchMedia(state) {
     const lists = []
     let added = 0 // écouteurs « change » ajoutés depuis le début

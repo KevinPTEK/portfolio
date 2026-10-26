@@ -1,8 +1,7 @@
 @use '../../styles/abstracts' as *;
 
-// L'adresse en grand, en Playfair, soulignée à l'accent (charte § 5).
-// 56 / 24 < 2,5 : elle atteint 200 % au zoom (§ 10). Une adresse n'a pas
-// d'espace : à 320 px, elle se coupe où il faut plutôt que de déborder.
+// L'adresse en grand (56 / 24 < 2,5 : elle double au zoom). Sans espace, elle
+// se coupe n'importe où à 320 px plutôt que de déborder
 .contact__email {
   display: inline-block;
   margin-top: $space-7;

@@ -7,8 +7,6 @@ import socials from '../../data/socials.json'
 import { preferReducedMotion } from '../../testing/motion.js'
 import { Home } from './Home.jsx'
 
-// L'accueil : qui je suis (à gauche), le menu géant (à droite)
-
 describe('Home', () => {
   it('est la pièce « home », nommée par mon nom en titre de niveau 1', () => {
     render(<Home />)
@@ -53,7 +51,7 @@ describe('Home', () => {
     expect(avatar).toHaveAttribute('width', '104')
   })
 
-  it('pose mon portrait dans l’emplacement de départ de l’avatar volant (§ 7.9)', () => {
+  it('pose mon portrait dans l’emplacement de départ de l’avatar volant', () => {
     const { container } = render(<Home />)
     const slot = container.querySelector('[data-avatar-slot="home"]')
     expect(slot.querySelector('img')).toHaveAttribute('width', '104')
@@ -99,9 +97,8 @@ describe('Home', () => {
   })
 })
 
-// L'entrée de l'accueil (§ 7.4) : flou → net et 14 px de montée, jamais
-// d'opacité (le LCP attendrait la fin de l'intro). Elle attend que l'intro
-// rende la main (entered)
+// L'entrée de l'accueil : flou → net, jamais d'opacité (LCP), quand l'intro
+// rend la main
 describe('Home — l’entrée', () => {
   it("pendant l'intro : bloc identité flou et 14 px plus bas, mais jamais transparent (LCP)", () => {
     render(<Home entered={false} />)
@@ -153,8 +150,7 @@ describe('Home — l’entrée', () => {
         </MotionProvider>
       )
       const { rerender } = render(page(false))
-      // le moteur, chargé après le premier rendu (import) : attendu pour de
-      // bon — une attente au hasard laissait le test passer sans lui (revue)
+      // le moteur, chargé après le premier rendu
       await vi.dynamicImportSettled()
       await act(async () => {})
       // puis deux images : Motion démarre une animation à l'image suivante

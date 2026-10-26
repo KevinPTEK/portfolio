@@ -8,20 +8,11 @@ import './SectionHeader.scss'
  * @param {string} props.titleId - id du titre, à donner à la prop labelledBy de Room
  * @param {string} props.label - étiquette au-dessus du titre (« 03 — Compétences »)
  * @param {string} props.title - titre complet (« Compétences, honnêtement. »)
- * @param {string} props.accent - fin du titre mise en accent, en italique
- *   (« honnêtement. ») ; l'espace éventuel vient du titre : « 724events. » → « events. »
+ * @param {string} props.accent - fin du titre mise en accent (« honnêtement. »)
  * @param {string} [props.lead] - introduction sous le titre
  * @param {boolean} [props.compact=false] - plus petit : la pièce d'un projet partage la place avec sa capture
  * @param {import('react').RefObject<HTMLHeadingElement>} [props.titleRef] - pour placer le focus
- *   sur le titre par le code (tabIndex -1 : hors du parcours au clavier)
- *
- * @example
- * <SectionHeader
- *   titleId="skills-title"
- *   label="03 — Compétences"
- *   title="Compétences, honnêtement."
- *   accent="honnêtement."
- * />
+ *   sur le titre par le code
  */
 export function SectionHeader({
   titleId,
@@ -32,8 +23,7 @@ export function SectionHeader({
   compact = false,
   titleRef,
 }) {
-  // L'accent est la fin du titre : on coupe le titre juste avant lui.
-  // Sinon (faute dans les données), le titre s'affiche entier, sans accent.
+  // un accent qui ne finit pas le titre (faute dans les données) est ignoré
   const hasAccent = Boolean(accent) && title.endsWith(accent)
   const start = hasAccent ? title.slice(0, title.length - accent.length) : title
 

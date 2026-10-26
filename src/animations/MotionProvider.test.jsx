@@ -5,8 +5,7 @@ import { useContext } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { MotionProvider } from './MotionProvider.jsx'
 
-// Le cadre de toutes les animations (§ 7.1) : retirer un de ses réglages ne
-// casserait rien de visible dans les tests des pièces — d'où ces tests-ci
+// Retirer un de ces réglages ne casserait rien dans les tests des pièces
 describe('MotionProvider', () => {
   afterEach(() => {
     vi.restoreAllMocks()

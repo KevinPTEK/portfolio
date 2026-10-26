@@ -6,20 +6,16 @@ import { VisuallyHidden } from '../../components/VisuallyHidden/VisuallyHidden.j
 import { pad } from '../../utils/pad.js'
 import './ProjectDetails.scss'
 
-// La largeur de la capture dans la modale — mesurée le 16 oct. ; le
-// navigateur en tire le bon fichier, sauf parfois le fichier au-dessus sous
-// des barres de défilement classiques (écarts relevés par les revues du
-// 18 oct. : spec § 6). C'est la seule qu'il lit, sans auto (voir plus bas).
-// À remesurer si la mise en page change
+// la largeur de la capture dans la modale, seule lue par le navigateur (sans
+// auto, plus bas) ; à remesurer si la mise en page change
 const COVER_SIZES = '(min-width: 1024px) 481px, calc(100vw - 34px)'
 
 /**
- * Le détail d'un projet, dans la modale : sa capture, sa place (« 01 / 03 »),
- * son titre, le contexte, les problèmes rencontrés, ce que j'en ai appris,
- * ses technologies, puis les liens et « Projet suivant ».
+ * Le détail d'un projet, dans la modale : capture, titre, contexte,
+ * problèmes, apprentissages, technologies, liens et « Projet suivant ».
  *
  * @param {object} props
- * @param {object} props.project - un projet de projects.json (§ 5.1)
+ * @param {object} props.project - un projet de projects.json
  * @param {number} props.index - sa place, à partir de 0
  * @param {number} props.total - nombre de projets
  * @param {string} props.titleId - id du titre, à donner à labelledBy de la modale
@@ -49,9 +45,7 @@ export function ProjectDetails({
   } = project
 
   return (
-    // un article : la fiche se lit seule, et son <header> (SectionHeader) en
-    // devient l'en-tête — sans lui, dans le <dialog>, Chrome l'annonçait
-    // « bannière », comme l'en-tête du site
+    // un article : son <header> en est l'en-tête, pas la bannière du site
     <article className="project-details">
       <div className="project-details__body">
         <SectionHeader
@@ -92,7 +86,7 @@ export function ProjectDetails({
         </div>
 
         <div className="project-details__links">
-          {/* le site d'abord quand il existe ; sinon, le code devient le lien principal */}
+          {/* le site d'abord quand il existe, sinon le code */}
           {links.site && (
             <Button href={links.site} variant="primary" external>
               Voir le site<VisuallyHidden> {name}</VisuallyHidden>
@@ -111,8 +105,8 @@ export function ProjectDetails({
         </div>
       </div>
 
-      {/* après le texte dans le code (le titre ouvre le détail), en premier à l'écran ;
-          sans auto : la modale fermée cache la capture, Chrome la remesurerait à 100vw */}
+      {/* après le texte dans le code, en premier à l'écran ; sans auto : fermée,
+          la modale cache la capture, que Chrome remesurerait à 100vw */}
       <Cover
         cover={cover}
         sizes={COVER_SIZES}

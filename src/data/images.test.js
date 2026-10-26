@@ -8,25 +8,21 @@ import {
 import projects from './projects.json'
 import sites from './sites.json'
 
-// Les données donnent des adresses vers public/images (servi à la racine du site).
-// Une image absente ne casse ni le build ni les autres tests : elle laisse un cadre vide.
-// Budgets de la spec (§ 11) : capture ≤ 120 Ko, version floutée ≤ 4 Ko.
+// Les images de public/images citées par les données : une image absente ne
+// casse rien d'autre, elle laisse un cadre vide. Budgets : capture ≤ 120 Ko,
+// version floutée ≤ 4 Ko.
 
 // 1 Ko = 1 000 octets, comme les « kB » des DevTools et de Lighthouse
 const KB = 1000
 
-// le dossier public/images du dépôt (on remonte de src/data à la racine).
-// Pas de new URL(…, import.meta.url) : dans les tests, URL est celle de happy-dom,
-// qui donne une adresse http://localhost:3000/… que node:fs ne sait pas lire.
+// pas de new URL(…, import.meta.url) : sous happy-dom, node:fs ne la lit pas
 const IMAGES_DIR = join(import.meta.dirname, '../../public/images')
 
-// readdirSync rend les noms tels qu'ils sont écrits sur le disque. existsSync, lui,
-// répond oui à « Nina-Cover.webp » pour « nina-cover.webp » : le disque du Mac ne
-// distingue pas les majuscules, alors que le serveur Linux de Netlify répondrait 404.
+// readdirSync rend les noms exacts : le disque du Mac ignore les majuscules,
+// pas le serveur de Netlify (existsSync dirait oui à tort)
 const names = readdirSync(IMAGES_DIR)
 
-// un fichier WebP commence par « RIFF », 4 octets de taille, puis « WEBP » :
-// un fichier vide, un PNG renommé ou une page d'erreur enregistrée en .webp échouent
+// un WebP commence par « RIFF », 4 octets de taille, puis « WEBP »
 const isWebp = (file) => {
   const start = readFileSync(file).subarray(0, 12)
   return (
@@ -35,10 +31,8 @@ const isWebp = (file) => {
   )
 }
 
-// la largeur et la hauteur, lues dans l'en-tête. Nos WebP (encodés par Chrome :
-// bake-covers.mjs) sont tous « étendus » : après « RIFF…WEBP », un bloc VP8X où
-// chacune est rangée moins 1, sur 3 octets (aux octets 24 et 27). Un WebP d'un
-// autre outil (cwebp : bloc VP8 ou VP8L) les range ailleurs : on le dit
+// largeur et hauteur, lues dans le bloc VP8X (celui qu'écrit Chrome) : moins
+// 1, sur 3 octets, aux octets 24 et 27 ; un autre bloc est signalé
 const webpSize = (file) => {
   const header = readFileSync(file).subarray(0, 30)
   const chunk = header.toString('latin1', 12, 16)
@@ -51,9 +45,8 @@ const webpSize = (file) => {
   }
 }
 
-// une capture, et ses versions plus petites (Cover, étape 5) : chacune doit
-// peser moins que l'originale, sinon elle ne sert à rien ; chacune a la
-// largeur que le srcset annonce, au format 4 : 3
+// une capture et ses versions plus petites : plus légères que l'originale,
+// à la largeur que le srcset annonce, au format 4 : 3
 const cover = (src) => [
   { src, budget: 120 * KB, ...COVER_ORIGINAL },
   ...coverVariants(src).map((variant) => ({
@@ -100,10 +93,7 @@ describe.each(images.filter(({ original }) => original))(
   },
 )
 
-// le srcset annonce 600w, 900w, 1200w, et width / height réservent du 4 : 3 :
-// une version mal fabriquée (la 600 enregistrée sous le nom de la 900)
-// mentirait au navigateur sans rien casser — image floue sur un téléphone, ou
-// octets en trop (revue de l'étape 5)
+// une version mal fabriquée mentirait au srcset sans rien casser
 describe.each(images.filter(({ width }) => width))(
   '$src',
   ({ src, width, height }) => {
@@ -117,9 +107,8 @@ describe.each(images.filter(({ width }) => width))(
 )
 
 it('public/images ne contient aucune image que les données ne citent pas', () => {
-  // remplacer une capture = changer son nom (§ 5.1) : l'ancienne ne doit pas rester
-  // et partir en ligne à chaque déploiement. Les fichiers cachés (.DS_Store du Finder)
-  // sont ignorés.
+  // remplacer une capture = changer son nom : l'ancienne ne doit pas rester
+  // (fichiers cachés ignorés)
   const cited = images.map(({ src }) => basename(src))
   const orphans = names.filter(
     (name) => !name.startsWith('.') && !cited.includes(name),

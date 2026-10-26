@@ -19,7 +19,7 @@ describe('easeInOutQuint', () => {
   })
 })
 
-// Quadratique, plus douce que la quintique (le brouillard de l'intro, § 7.4)
+// Quadratique, plus douce que la quintique (le brouillard de l'intro)
 describe('easeInOutQuad', () => {
   it.each([
     [0, 0],
@@ -35,8 +35,7 @@ describe('easeInOutQuad', () => {
   })
 })
 
-// La courbe du vol de l'avatar (§ 7.9) : rapide au départ, elle freine à
-// l'arrivée — l'avatar quitte tôt le portrait qui défile (choix de Kevin)
+// La courbe du vol de l'avatar : rapide au départ, elle freine à l'arrivée
 describe('easeOutQuad', () => {
   it.each([
     [0, 0],

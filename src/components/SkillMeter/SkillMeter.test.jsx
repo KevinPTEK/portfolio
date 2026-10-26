@@ -19,9 +19,7 @@ describe('SkillMeter', () => {
     expect(meter.children).toHaveLength(5)
   })
 
-  // revue générale (19 oct.) : seul le nombre de points était testé — un
-  // niveau décalé d'un cran ou tous les points pleins passaient. C'est le cœur
-  // de « le niveau de novice dit clairement » (guide OpenClassrooms)
+  // le cœur du « niveau de novice dit clairement » (guide OpenClassrooms)
   it.each([
     [2, 3, [true, true, false]],
     [4, 5, [true, true, true, true, false]],

@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { COVER_WIDTHS, coverSrcSet, coverVariants } from './coverSrcSet.js'
 
-// La convention des captures de projet (§ 5.1) : l'originale fait 1 200 px de
-// large ; à côté d'elle, des versions plus petites, nommées par leur largeur
+// L'originale fait 1 200 px de large ; ses versions sont nommées par leur largeur
 describe('coverSrcSet', () => {
   it('les largeurs plus petites que l’originale : 600 et 900 px', () => {
     expect(COVER_WIDTHS).toEqual([600, 900])

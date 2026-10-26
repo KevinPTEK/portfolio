@@ -3,28 +3,23 @@ import { unblur } from '../variants.js'
 import './GiantMenu.scss'
 
 /**
- * Menu typographique géant : une pièce par ligne, en grandes capitales, avec
- * son numéro. Au survol et au focus, le mot prend la couleur d'accent (et
- * grandit, en bureau), les autres s'estompent (en CSS, § 7.5).
- * Le parent décide du repère : <nav aria-label="Menu principal"> sur l'accueil.
+ * Menu typographique géant : une pièce par ligne, avec son numéro. Au survol
+ * et au focus, le mot est mis en avant, les autres s'estompent (CSS). Le
+ * parent décide du repère (<nav> sur l'accueil).
  *
  * @param {object} props
- * @param {{ label: string, href: string, number: string }[]} props.items - les pièces,
- *   dans leur ordre ; chaque href doit être unique
- *
- * @example
- * <GiantMenu items={[{ label: 'À propos', href: '#about', number: '01' }]} />
+ * @param {{ label: string, href: string, number: string }[]} props.items - les
+ *   pièces, dans leur ordre ; chaque href est unique
  */
 export function GiantMenu({ items = [] }) {
-  // une liste vide serait annoncée « liste, 0 élément » : on n'affiche rien
+  // une liste vide serait annoncée « liste, 0 élément »
   if (items.length === 0) return null
 
   return (
-    // role="list" : sans puces, Safari ne l'annoncerait plus comme une liste (§ 10)
+    // role="list" : sans puces, Safari ne l'annoncerait plus comme une liste
     <ol className="giant-menu" role="list">
       {items.map(({ label, href, number }) => (
-        // chaque ligne entre avec l'accueil (variant unblur, § 7.4) ; seul, le
-        // menu ne bouge pas
+        // chaque ligne entre avec l'accueil (unblur)
         <m.li key={href} className="giant-menu__item" variants={unblur}>
           <a className="giant-menu__link" href={href}>
             {label}

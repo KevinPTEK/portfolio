@@ -1,7 +1,6 @@
 @use './styles/abstracts' as *;
 
-// La cible du lien d'évitement : focalisable par le code (tabIndex -1), elle
-// n'est pas un contrôle — pas d'anneau autour de toute la page
+// la cible du lien d'évitement : pas d'anneau autour de toute la page
 .main {
   @include focus-target;
 }

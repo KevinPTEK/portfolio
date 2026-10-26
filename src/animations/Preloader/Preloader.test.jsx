@@ -61,9 +61,8 @@ describe('Preloader', () => {
   })
 })
 
-// Le brouillard (canvas) : son calcul (fog.js) est chargé après le premier
-// affichage, hors du chemin critique (§ 11) ; le voile CSS couvre l'attente.
-// Un faux contexte 2D, et de fausses images
+// Le brouillard, chargé après le premier affichage ; le voile CSS couvre
+// l'attente. Un faux contexte 2D, et de fausses images
 describe('Preloader — le brouillard', () => {
   beforeEach(() => {
     vi.useFakeTimers({

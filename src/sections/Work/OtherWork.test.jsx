@@ -2,13 +2,9 @@ import { render, screen, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { OtherWork } from './OtherWork.jsx'
 
-// « Autres réalisations » : la pièce des sites vitrines, après les projets
-// phares — une carte par site de sites.json (§ 5.1 bis).
-// Deux sites inventés à la place des vraies données : avec le seul
-// Tourn&Marou, un ordre inversé ou un 2e site oublié passeraient inaperçus.
-// Les vraies données sont rendues par le test de Work (la pièce en fait
-// partie) et vérifiées par sites.test.js.
-// (hoisted : un test peut retirer le 2e site, pour l'introduction au singulier)
+// Deux sites inventés : avec le seul Tourn&Marou, un ordre inversé ou un 2e
+// site oublié passeraient inaperçus. Modifiables (hoisted) : un test retire le
+// 2e site
 const data = vi.hoisted(() => ({
   sites: [
     {
@@ -54,7 +50,6 @@ describe('OtherWork', () => {
     render(<OtherWork />)
     expect(screen.getByText('Et aussi')).toBeInTheDocument()
     // « réalisations. » seul dans son élément : l'accent est bien posé
-    // (un accent qui ne finit pas le titre est ignoré sans erreur, § 6)
     const title = screen.getByRole('heading', { level: 2 })
     expect(within(title).getByText('réalisations.')).toBeInTheDocument()
     expect(
@@ -64,9 +59,7 @@ describe('OtherWork', () => {
     ).toBeInTheDocument()
   })
 
-  // l'introduction suit le nombre de sites (un seul aujourd'hui, Tourn&Marou :
-  // « des sites… pour des clients » était faux — revue du 19 oct.) ; un site
-  // ajouté aux données la remet au pluriel
+  // l'introduction suit le nombre de sites
   it('introduit un seul site au singulier', () => {
     const removed = data.sites.splice(1)
     try {

@@ -45,10 +45,8 @@ canvas {
   max-width: 100%;
 }
 
-// …et une image réduite par max-width garde ses proportions : sans height:
-// auto, son attribut height l'emporte (Cover, 1 200 × 900 : 900 px de haut
-// dans une carte de 340 px de large — étape 5). Les images seulement : sur
-// un <svg>, height est un attribut de présentation, que la règle écraserait
+// …et une image réduite garde ses proportions (sinon son attribut height
+// l'emporte). Pas sur <svg>, dont height est un attribut de présentation
 img {
   height: auto;
 }
@@ -61,7 +59,7 @@ select {
   font: inherit;
 }
 
-// 8. Un mot trop long (une adresse e-mail…) passe à la ligne au lieu de déborder (320 px, WCAG 1.4.10)
+// 8. Un mot trop long passe à la ligne au lieu de déborder (WCAG 1.4.10)
 p,
 h1,
 h2,

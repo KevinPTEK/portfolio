@@ -18,13 +18,11 @@ import {
   useFakeIntersectionObserver,
 } from './testing/FakeIntersectionObserver.js'
 
-// La page entière : lien d'évitement, nav, puis les pièces dans <main>.
-// La pièce courante vient de IntersectionObserver (faux ici, § 7.7).
+// La page entière. La pièce courante vient de IntersectionObserver (faux ici).
 
-// la nav, par son repère « Sections » : Testing Library compte aussi comme
-// bannières les <header> des sections, que HTML-AAM exclut (un <header> dans
-// une <section> n'est pas une bannière — à vérifier dans Chrome, § 8), et
-// donne un nom vide à un repère masqué : on lit son aria-label
+// la nav, par son repère « Sections » : Testing Library compte aussi les
+// <header> des sections comme bannières (à tort), et donne un nom vide à un
+// repère masqué
 const banner = () =>
   screen
     .getAllByRole('navigation', { hidden: true })
@@ -48,8 +46,7 @@ describe('App', () => {
   })
 
   it('donne au contenu la cible du lien, focalisable par le code', () => {
-    // tabindex -1 : le focus y arrive vraiment (lecteurs d'écran compris),
-    // sans que <main> entre dans la tabulation
+    // tabindex -1 : le focus y arrive, sans que <main> entre dans la tabulation
     render(<App />)
     const main = screen.getByRole('main')
     expect(main).toHaveAttribute('id', 'main')
@@ -71,8 +68,7 @@ describe('App', () => {
     }
   })
 
-  // (au-dessus de la nav par son z-index : FlyingAvatar.styles.test.js)
-  it('place l’avatar volant après la nav et avant le contenu (ordre de la § 8)', () => {
+  it('place l’avatar volant après la nav et avant le contenu', () => {
     render(<App />)
     const flying = document.querySelector('.flying-avatar')
     const following = (before, after) =>
@@ -124,7 +120,7 @@ describe('App', () => {
   })
 
   it('anime le défilement : un lien du menu met le focus sur la pièce et l’adresse à jour', () => {
-    // useScrollTo branché (le trajet lui-même : useScrollTo.test.jsx)
+    // useScrollTo est branché (le trajet : useScrollTo.test.jsx)
     render(<App />)
     const link = within(
       screen.getByRole('navigation', { name: 'Menu principal' }),
@@ -169,8 +165,7 @@ describe('App', () => {
   })
 })
 
-// L'intro (§ 7.4) : au premier chargement de la session, le voile passe
-// devant tout ; l'accueil et l'avatar volant attendent qu'elle rende la main
+// L'intro : l'accueil et l'avatar volant attendent qu'elle rende la main
 describe('App — l’intro', () => {
   useFakeIntersectionObserver()
   afterEach(() => {
@@ -191,12 +186,10 @@ describe('App — l’intro', () => {
         <App />
       </MotionProvider>,
     )
-    // le moteur, chargé après le premier rendu (import) : attendu pour de
-    // bon — une attente au hasard laissait le test passer sans lui (revue)
+    // le moteur, chargé après le premier rendu
     await vi.dynamicImportSettled()
     await act(async () => {})
-    // puis deux images : Motion démarre une animation à l'image suivante (sans
-    // elles, un accueil qui entrerait trop tôt n'aurait pas encore bougé)
+    // puis deux images : Motion démarre une animation à l'image suivante
     await act(
       () =>
         new Promise((r) =>
@@ -211,8 +204,7 @@ describe('App — l’intro', () => {
     ).toBe('blur(14px)')
   })
 
-  // à « ready » (2,9 s) et pas seulement à la fin : ils entrent sous la brume
-  // qui se lève (revue de la tâche 8 : rien ne le vérifiait)
+  // à « ready » (2,9 s), pas seulement à la fin : sous la brume qui se lève
   it('à « ready », sous la brume, l’accueil et l’avatar volant entrent', async () => {
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
     MotionGlobalConfig.skipAnimations = true

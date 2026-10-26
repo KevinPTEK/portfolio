@@ -2,7 +2,7 @@ import { Icon } from '../Icon/Icon.jsx'
 import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden.jsx'
 import './Button.scss'
 
-// L'icône découle de ce que fait le bouton : on ne peut pas l'oublier
+// l'icône découle de ce que fait le bouton
 function getIcon({ external, download, arrow }) {
   if (external) return 'external'
   if (download) return 'download'
@@ -22,10 +22,6 @@ function getIcon({ external, download, arrow }) {
  * @param {boolean} [props.external=false] - autre site : nouvel onglet, annoncé (icône ↗ + texte masqué)
  * @param {boolean} [props.download=false] - fichier à télécharger (icône ↓) ; le texte doit dire le format
  * @param {boolean} [props.arrow=false] - flèche → après le texte
- *
- * @example
- * <Button href="https://github.com/KevinPTEK" external>GitHub</Button>
- * <Button variant="primary" onClick={openProject} arrow>Voir le projet</Button>
  */
 export function Button({
   children,

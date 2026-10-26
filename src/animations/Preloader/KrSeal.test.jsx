@@ -4,10 +4,8 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { MotionProvider } from '../MotionProvider.jsx'
 import { KrSeal } from './KrSeal.jsx'
 
-// Le sceau et ses trois états (§ 7.4), moteur chargé, animations finies tout
-// de suite. Chaque test part du sceau dessiné : son état de départ (opacité
-// 0) ressemble à « effacé », un test qui partirait de là ne prouverait rien
-// (revue : jamais dissous, jamais effacé au geste, ces mutants passaient)
+// Les trois états du sceau, animations finies tout de suite. Chaque test part
+// du sceau dessiné : son état de départ (opacité 0) ressemble à « effacé »
 const seal = () => document.querySelector('.kr-seal')
 const sealed = (props) => (
   <MotionProvider>

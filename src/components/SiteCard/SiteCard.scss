@@ -4,9 +4,8 @@ $border-width: 1px;
 // les coins hauts de la capture : ceux de la carte, moins son filet
 $inner-radius: $radius-md - $border-width;
 
-// La carte : la capture en haut, à bord perdu, puis le texte. Fond translucide
-// du thème (--surface), sans backdrop-filter : un flou recalculé à chaque image
-// du défilement, pour un effet à peine visible (§ 11).
+// La carte : la capture en haut, puis le texte ; pas de backdrop-filter (un
+// flou recalculé à chaque image du défilement)
 .site-card {
   display: flex;
   flex-direction: column;
@@ -15,8 +14,7 @@ $inner-radius: $radius-md - $border-width;
   background-color: var(--surface);
 }
 
-// Le texte prend la hauteur restante : dans une rangée de cartes étirées
-// par la grille, les liens restent en bas, alignés d'une carte à l'autre
+// les liens restent en bas, alignés d'une carte à l'autre
 .site-card__body {
   flex-grow: 1;
   display: flex;
@@ -41,8 +39,8 @@ $inner-radius: $radius-md - $border-width;
   margin-top: auto;
 }
 
-// La capture : ses coins du haut suivent ceux de la carte, moins le filet,
-// plutôt qu'un overflow: hidden sur la carte (il couperait un contenu zoomé)
+// coins arrondis sur la capture plutôt qu'un overflow: hidden sur la carte,
+// qui couperait un contenu zoomé
 .site-card__cover {
   @include cover-frame;
   border-bottom: $border-width solid var(--line);

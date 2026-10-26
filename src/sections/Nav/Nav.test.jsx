@@ -4,8 +4,7 @@ import menu from '../../data/menu.json'
 import socials from '../../data/socials.json'
 import { Nav } from './Nav.jsx'
 
-// La nav fixe : une colonne en bureau, une barre en haut sur mobile et
-// tablette (sa mise en page se vérifie dans le navigateur, § 8)
+// La nav fixe (sa mise en page se vérifie dans le navigateur)
 
 const sections = () => screen.getByRole('navigation', { name: 'Sections' })
 
@@ -24,8 +23,7 @@ describe('Nav', () => {
   it("mène à chaque pièce du menu, numérotée, dans l'ordre", () => {
     render(<Nav />)
     const links = within(sections()).getAllByRole('link')
-    // le numéro devant, dans le code comme à l'écran : le nom suit l'ordre
-    // visible (« 01 À propos » — WCAG 2.5.3, commande vocale)
+    // le numéro devant : le nom suit l'ordre visible (WCAG 2.5.3)
     expect(links.map((link) => link.textContent)).toEqual(
       menu.map(
         ({ label }, index) => `${String(index + 1).padStart(2, '0')} ${label}`,
@@ -71,7 +69,7 @@ describe('Nav', () => {
     ).toBe(expected)
   })
 
-  // l'arrivée sur la page : les couleurs de la pièce d'emblée (16 oct.)
+  // l'arrivée sur la page : les couleurs de la pièce d'emblée
   it.each([
     [true, true],
     [false, false],
@@ -83,8 +81,7 @@ describe('Nav', () => {
   })
 
   it('a quatre enfants, dans l’ordre de la cascade (Nav.scss les vise par leur rang)', () => {
-    // identité (immobile : l'avatar volant s'y pose, § 7.9), pièces,
-    // « Menu », © — un enfant ajouté ou déplacé décalerait la cascade
+    // identité, pièces, « Menu », © : un enfant ajouté décalerait la cascade
     render(<Nav />)
     expect(
       [...screen.getByRole('banner').children].map(
@@ -105,11 +102,10 @@ describe('Nav', () => {
     const brand = screen.getByRole('link', { name: /^Kevin Renou/ })
     expect(brand.textContent).toBe('Kevin Renou.')
     expect(brand).toHaveAttribute('href', '#home')
-    // alt vide : mon nom est écrit juste à côté
     expect(brand.querySelector('img')).toHaveAttribute('alt', '')
   })
 
-  it('pose son portrait dans l’emplacement d’arrivée de l’avatar volant (§ 7.9)', () => {
+  it('pose son portrait dans l’emplacement d’arrivée de l’avatar volant', () => {
     render(<Nav />)
     const brand = screen.getByRole('link', { name: /^Kevin Renou/ })
     const slot = brand.querySelector('[data-avatar-slot="nav"]')
@@ -119,9 +115,7 @@ describe('Nav', () => {
 
   it('ramène au menu géant par « Menu » (barre mobile)', () => {
     render(<Nav />)
-    // la fenêtre de happy-dom fait 1 024 px de large, où le CSS masque ce lien
-    // (barre mobile seulement) : son nom accessible y est vide, on le trouve
-    // par son texte
+    // masqué à 1 024 px (la fenêtre de happy-dom) : trouvé par son texte
     const link = screen.getByText('Menu')
     expect(link.tagName).toBe('A')
     expect(link).toHaveAttribute('href', '#menu')

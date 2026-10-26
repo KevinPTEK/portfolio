@@ -1,19 +1,14 @@
-// Le trajet du défilement animé, image par image (§ 7.6). Écrit à la main
-// plutôt qu'avec animate() de Motion : ≈ 11 Ko de moins au démarrage (§ 11,
-// décision de Kevin du 10 oct.). Même forme qu'animate() : une valeur qui va
-// de from à to, et de quoi l'arrêter ou attendre sa fin.
+// Le trajet du défilement animé, image par image. Écrit à la main plutôt
+// qu'avec animate() de Motion (≈ 11 Ko de moins au démarrage), avec la même
+// forme : une valeur de from à to, et de quoi l'arrêter ou attendre sa fin.
 
 /**
- * @param {number} from - la valeur de départ (la position de défilement)
- * @param {number} to - la valeur d'arrivée
+ * @param {number} from - la position de départ
+ * @param {number} to - la position d'arrivée
  * @param {{ duration: number, ease: (t: number) => number,
- *   onUpdate: (value: number) => void }} options - duration en secondes ;
- *   ease : la courbe (easing.js) ; onUpdate : appelée à chaque image
+ *   onUpdate: (value: number) => void }} options - duration en secondes
  * @returns {{ stop: () => void, then: (callback: () => void) => Promise<void> }}
- *   stop : arrête net (la fin n'est alors jamais annoncée) ; then : à l'arrivée
- *
- * @example
- * scrollAnimation(scrollY, 900, { duration: 0.8, ease: easeInOutQuint, onUpdate: (y) => scrollTo(0, y) })
+ *   stop arrête net (la fin n'est alors jamais annoncée)
  */
 export function scrollAnimation(from, to, { duration, ease, onUpdate }) {
   let frame = 0

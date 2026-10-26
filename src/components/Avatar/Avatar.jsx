@@ -11,11 +11,7 @@ import './Avatar.scss'
  * @param {number} props.size - diamètre affiché, en pixels
  * @param {'lazy' | 'eager'} [props.loading] - "lazy" sous la ligne de flottaison
  * @param {string} [props.className] - mix BEM : la classe du parent qui place le portrait
- * @param {import('react').Ref<HTMLImageElement>} [props.ref] - l'image (React 19 : ref
- *   est une prop ordinaire) — l'avatar volant la déplace (§ 7.9)
- *
- * @example
- * <Avatar src={avatar256} srcSet={avatarSrcSet} alt="" size={104} />
+ * @param {import('react').Ref<HTMLImageElement>} [props.ref] - l'image
  */
 export function Avatar({ src, srcSet, alt, size, loading, className, ref }) {
   return (

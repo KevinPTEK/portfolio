@@ -1,45 +1,38 @@
 @use 'sass:list';
 @use 'tokens' as *;
 
-// Mouvement réduit
+// « réduire les animations » demandé
 @mixin reduced-motion {
   @media (prefers-reduced-motion: reduce) {
     @content;
   }
 }
 
-// Mouvement permis : seulement si « réduire les animations » n'est pas
-// demandé — écrire le mouvement ici plutôt que l'annuler dans reduced-motion
+// mouvement permis : l'écrire ici plutôt que l'annuler dans reduced-motion
 @mixin motion-allowed {
   @media (prefers-reduced-motion: no-preference) {
     @content;
   }
 }
 
-// Le survol n'existe qu'avec une souris (ou un stylet) : au doigt, un effet
-// de survol resterait « collé » après le toucher
+// le survol n'existe qu'avec une souris : au doigt, il resterait « collé »
 @mixin hover-capable {
   @media (hover: hover) {
     @content;
   }
 }
 
-// Contraste forcé (Windows) : le navigateur remplace les couleurs et retire
-// les fonds — une forme faite d'un fond (un point, une jauge) disparaîtrait ;
-// on impose alors une couleur système (CanvasText…)
+// contraste forcé : une forme faite d'un fond disparaîtrait ; on impose une
+// couleur système (CanvasText)
 @mixin forced-colors {
   @media (forced-colors: active) {
     @content;
   }
 }
 
-// Un élément qu'une animation d'entrée fait partir caché, flou ou décalé
-// (Motion écrit son état de départ dans l'attribut style) se montre quand même
-// dans trois cas : le moteur ne s'est pas chargé (<html data-motion="off">,
-// § 7.1), l'impression, et le focus clavier entré dans l'élément (son anneau
-// resterait invisible le temps de l'entrée). @content : ce qui le remet en
-// place, en !important — seul moyen de l'emporter sur un style écrit dans
-// l'attribut. Pour Reveal (§ 7.3), l'entrée de l'accueil et l'avatar volant (§ 7.4)
+// Un élément qu'une animation d'entrée fait partir caché se montre quand même
+// sans moteur, à l'impression et au focus clavier. @content : ce qui le remet
+// en place, en !important (Motion écrit dans l'attribut style)
 @mixin shown-without-motion {
   [data-motion='off'] & {
     @content;
@@ -54,7 +47,7 @@
   }
 }
 
-// Le même filet pour l'entrée « flou → net » (variant unblur) : net, en place
+// le même filet pour l'entrée « flou → net » (unblur)
 @mixin unblurred-without-motion {
   @include shown-without-motion {
     filter: none !important;
@@ -62,13 +55,9 @@
   }
 }
 
-// Le passage d'une pièce à l'autre (§ 7.7) : le fond glisse en S
-// ($ease-theme), le texte change d'un coup à mi-chemin. Animer les deux
-// ensemble les ferait passer par le même gris (1,09 : 1, calcul de la revue
-// du 8 oct.). La courbe est symétrique : la moitié du temps tombe toujours
-// sur la moitié de la couleur.
-// $more : les autres transitions de l'élément (une seule déclaration
-// transition par élément)
+// Le passage d'une pièce à l'autre : le fond glisse en S, le texte change
+// d'un coup à mi-chemin (animés ensemble, ils passeraient par le même gris).
+// $more : les autres transitions de l'élément
 @mixin theme-fade($more...) {
   $half: $duration-theme * 0.5;
   $fade: (
@@ -82,17 +71,14 @@
   transition: list.join($fade, $more, $separator: comma);
 }
 
-// Cible d'un lien interne ou du lien d'évitement : focalisable par le code
-// seulement (tabindex -1, posé par useScrollTo ou dans le JSX), ce n'est pas
-// un contrôle — pas d'anneau autour d'une pièce ou de la page entière
-// (<main>, les pièces, « Travaux », le menu de l'accueil)
+// cible d'un lien interne : focalisable par le code, ce n'est pas un contrôle
+// (pas d'anneau autour d'une pièce)
 @mixin focus-target {
   &:focus {
     outline: none;
   }
 }
 
-// Anneau de focus clavier
 @mixin focus-ring {
   &:focus-visible {
     outline: 2px solid var(--accent);
@@ -100,7 +86,7 @@
   }
 }
 
-// Étiquette en capitales (« 01 — À propos », « Front-end »…)
+// étiquette en capitales (« 01 — À propos »)
 @mixin label {
   font-size: $font-size-label;
   font-weight: 600;
@@ -111,14 +97,14 @@
 
 @mixin accent-word {
   font-family: $font-serif;
-  font-size: 108%; // léger agrandissement de la maquette (1.08em, écrit en % : § 4.3)
+  font-size: 108%;
   font-style: italic;
   font-weight: 400;
   letter-spacing: 0;
   color: var(--accent);
 }
 
-// Masqué à l'écran, mais lu par les lecteurs d'écran
+// masqué à l'écran, lu par les lecteurs d'écran
 @mixin visually-hidden {
   position: absolute;
   width: 1px;
@@ -131,12 +117,9 @@
   border: 0;
 }
 
-// La capture d'un site (ProjectCard, ProjectDetails, SiteCard) : écrite après
-// le texte dans le code (le titre ouvre la carte), remise en premier à l'écran ;
-// cadre 4:3 réservé avant son chargement (aucun saut de mise en page).
-// Pas de hauteur ici : aspect-ratio ne joue que si elle reste automatique,
-// ce que le reset garantit à toutes les images (sans quoi l'attribut height
-// de Cover, 900, l'emportait — 16 oct.)
+// La capture d'un projet : après le texte dans le code, en premier à l'écran,
+// dans un cadre 4:3. Pas de hauteur : aspect-ratio ne joue que si elle reste
+// automatique (le reset)
 @mixin cover-frame {
   order: -1;
   width: 100%;
@@ -144,16 +127,14 @@
   object-fit: cover;
 }
 
-// Au doigt, une cible de 44 px de haut (spec § 10, critère AAA 2.5.5 ; le AA
-// 2.5.8 n'en demande que 24, ce que la souris garde). Nav, pied de page.
+// au doigt, une cible de 44 px (AAA 2.5.5) ; la souris garde 24 px (AA 2.5.8)
 @mixin touch-target {
   @media (pointer: coarse) {
     min-height: 44px;
   }
 }
 
-// Une rangée de boutons qui passent à la ligne quand la place manque
-// (ProjectDetails, SiteCard, About, Contact)
+// une rangée de boutons qui passent à la ligne
 @mixin actions-row {
   display: flex;
   flex-wrap: wrap;

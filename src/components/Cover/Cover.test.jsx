@@ -37,10 +37,7 @@ describe('Cover', () => {
     )
   })
 
-  // revue : cachée avec sa modale (display: none), une image « auto » est
-  // remesurée par Chrome à 100vw — l'originale de 1 200 px re-téléchargée à
-  // chaque fermeture, sur un écran ×1. La liste, elle, ne dépend pas de
-  // l'affichage
+  // cachée avec sa modale, une image « auto » serait remesurée à 100vw
   it('autoSizes={false} : la liste du parent seule, sans mesure', () => {
     render(
       <Cover

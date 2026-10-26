@@ -7,19 +7,17 @@ import socials from '../../data/socials.json'
 import './Nav.scss'
 
 /**
- * La nav fixe, cachée sur l'accueil (le menu géant y fait office de nav).
- * Bureau : une colonne à gauche — mon nom, mon métier, mes profils, les
- * pièces, « © 2026 ». Tablette : une barre en haut avec les pièces. Mobile :
- * la barre ne garde que mon nom et « Menu », qui ramène au menu géant (charte).
- * Ses couleurs sont celles du <body>, donc de la pièce courante (§ 7.7).
+ * La nav fixe, cachée sur l'accueil. Colonne à gauche en bureau, barre en haut
+ * en tablette ; sur mobile, la barre ne garde que mon nom et « Menu ». Aux
+ * couleurs de la pièce courante.
  *
  * @param {object} props
  * @param {string | null} [props.currentSection] - id de la section affichée
  *   (« work »…) : son lien est marqué aria-current="location"
- * @param {boolean} [props.isArriving=false] - la page vient d'arriver : les
- *   couleurs de la pièce d'emblée, sans fondu (useCurrentRoom)
- * @param {boolean} [props.isHidden=false] - masquée (accueil) : invisible et
- *   hors de la tabulation (une classe, pas l'attribut HTML hidden)
+ * @param {boolean} [props.isArriving=false] - la page vient d'arriver : pas
+ *   de fondu des couleurs
+ * @param {boolean} [props.isHidden=false] - masquée (accueil), hors de la
+ *   tabulation
  */
 export function Nav({
   currentSection = null,
@@ -38,10 +36,8 @@ export function Nav({
     <header className={className}>
       <div className="nav__identity">
         <a className="nav__brand" href="#home">
-          {/* l'emplacement du portrait : 28 px en barre, 56 px en colonne ;
-              l'arrivée de l'avatar volant (§ 7.9) */}
+          {/* l'arrivée de l'avatar volant */}
           <span className="nav__avatar" data-avatar-slot="nav">
-            {/* alt vide : mon nom est écrit juste à côté */}
             <Avatar src={avatar.src} srcSet={avatar.srcSet} alt="" size={56} />
           </span>
           <span>
@@ -56,7 +52,7 @@ export function Nav({
       </div>
 
       <nav className="nav__sections" aria-label="Sections">
-        {/* role="list" : sans puces, Safari ne l'annoncerait plus comme une liste (§ 10) */}
+        {/* role="list" : sans puces, Safari ne l'annoncerait plus comme une liste */}
         <ol className="nav__list" role="list">
           {menuItems.map(({ id, label, href, number }) => (
             <li key={id}>
@@ -65,8 +61,7 @@ export function Nav({
                 href={href}
                 aria-current={id === currentSection ? 'location' : undefined}
               >
-                {/* devant, dans le code comme à l'écran : le nom « 01 À propos »
-                    suit l'ordre visible (WCAG 2.5.3, commande vocale) */}
+                {/* le numéro devant : le nom suit l'ordre visible (WCAG 2.5.3) */}
                 <span className="nav__number">{number}</span> {label}
               </a>
             </li>

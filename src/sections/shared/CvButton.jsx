@@ -2,10 +2,8 @@ import { Button } from '../../components/Button/Button.jsx'
 import profile from '../../data/profile.json'
 
 /**
- * Le bouton du CV, partagé par « À propos » et « Contact » (il était écrit
- * deux fois, et les deux copies divergeaient déjà — revue du 9 oct.). Caché
- * tant que le PDF manque (profile.json : cv null) ; sinon un lien de
- * téléchargement qui dit son format et son poids (GOV.UK, AcceDe Web).
+ * Le bouton du CV (« À propos », « Contact »). Caché tant que le PDF manque
+ * (profile.json : cv null) ; il dit le format et le poids du fichier.
  *
  * @param {object} props
  * @param {'primary' | 'ghost'} [props.variant='ghost'] - plein ou bordé

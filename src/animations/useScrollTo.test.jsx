@@ -274,7 +274,7 @@ describe('useScrollTo', () => {
   })
 
   it('la fin tardive du premier trajet n’efface pas le second : un 3e clic l’arrête encore', () => {
-    // sinon deux trajets tourneraient ensemble (mutant survivant)
+    // sinon deux trajets tourneraient ensemble
     render(<Page />)
     click('about')
     click('skills')
@@ -311,10 +311,8 @@ describe('useScrollTo', () => {
     expect(document.getElementById('skills')).toHaveFocus()
   })
 
-  // revue générale (19 oct.) : sur mobile, les polices arrivent souvent après
-  // le saut — les textes au-dessus de la pièce changent de hauteur, et elle
-  // finissait jusqu'à 103 px plus haut (mesuré à 375 px). On resaute une fois
-  // les polices là, si le visiteur n'a pas repris la main
+  // les polices arrivent souvent après le saut et déplacent la pièce : on
+  // resaute une fois, si le visiteur n'a pas repris la main
   describe('lien direct, polices arrivées après le saut', () => {
     // les polices : une promesse qu'on tient à la main
     let fontsLoaded
@@ -352,8 +350,7 @@ describe('useScrollTo', () => {
       ])
     })
 
-    // un clic aussi : un lecteur d'écran active un lien sans pointerdown, et
-    // le second saut le ramenait à la pièce du lien direct (revue du 19 oct.)
+    // un clic aussi : un lecteur d'écran active un lien sans pointerdown
     it.each([
       'wheel',
       'touchStart',

@@ -1,12 +1,11 @@
-// Le brouillard de l'intro (maquette v5, § 7.4), en fonctions pures : rien ici
-// ne touche au DOM ; Fog.jsx les branche sur un <canvas>. Deux temps, chacun
-// guidé par un champ de bruit :
+// Le brouillard de l'intro, en fonctions pures. Deux temps, chacun guidé par
+// un champ de bruit :
 //  1. la lumière : la lueur du sceau se diffuse en volutes dans le voile
 //     sombre, qui devient brume crème ;
 //  2. le lever : la brume s'amincit par nappes et découvre la page.
 import { easeInOutQuad } from '../easing.js'
 
-// Réglages (maquette v5)
+// Réglages de la maquette
 const VEIL_DEEP = [58, 51, 44] // le voile #4E463D, plus sombre aux bords…
 const VEIL_LIGHT = [102, 92, 80] // …plus clair dans les volutes
 const MIST = [247, 238, 225] // la brume : crème, un ton au-dessus du kraft

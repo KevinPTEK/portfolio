@@ -2,10 +2,8 @@ import { join } from 'node:path'
 import { compile } from 'sass-embedded'
 
 /**
- * Les thèmes tels que le navigateur les reçoit, pour les tests (Node
- * seulement : jamais importé par le site). On compile l'entrée main.scss et
- * non base/_themes.scss : un maillon de la chaîne d'imports oublié (§ 4.1)
- * vide la page de ses couleurs, et ce test le verrait.
+ * Les thèmes tels que le navigateur les reçoit (pour les tests, en Node) : on
+ * compile l'entrée main.scss.
  *
  * @returns {{ css: string, themes: { name: string, declarations: Record<string, string> }[] }}
  *   le CSS compilé, et un objet par bloc [data-theme=…] :
@@ -14,9 +12,7 @@ import { compile } from 'sass-embedded'
 export function readThemes() {
   const { css } = compile(join(import.meta.dirname, 'main.scss'))
 
-  // Sass retire les guillemets quand le nom n'en a pas besoin ('nina' → nina)
-  // et passe aux guillemets doubles quand il en a besoin ("724events", qui
-  // commence par un chiffre) : on accepte les trois écritures
+  // Sass écrit le nom avec ou sans guillemets (nina, "724events")
   const blocks = css.matchAll(
     /\[data-theme=(["']?)([^\]"']+)\1\]\s*\{([^}]*)\}/g,
   )

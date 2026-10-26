@@ -1,22 +1,14 @@
 import './LivingBackground.scss'
 
 /**
- * Le fond d'une pièce, derrière son contenu : du papier (pièces personnelles)
- * ou la capture floutée d'un projet, voilée de la couleur de la pièce.
- * Décoratif : caché aux lecteurs d'écran. Immobile : la respiration de la
- * capture a été abandonnée le 10 oct. (§ 7.8 ; WCAG 2.2.2, plus de 5 s).
- * À passer à la prop `background` de Room.
+ * Le fond d'une pièce : du papier, ou la capture floutée d'un projet voilée
+ * de la couleur de la pièce. Décoratif et immobile. À passer à la prop
+ * `background` de Room.
  *
  * @param {object} props
  * @param {'paper' | 'cover'} [props.variant='paper'] - papier ou capture
- * @param {'kraft' | 'cool'} [props.tone='kraft'] - teinte du papier (kraft :
- *   accueil, contact ; cool : à propos, compétences) ; ignoré pour une capture
+ * @param {'kraft' | 'cool'} [props.tone='kraft'] - teinte du papier
  * @param {string} [props.image] - la capture pré-floutée (`project.cover.blur`)
- *
- * @example
- * <Room id="home" theme="paper-light" labelledBy="home-title"
- *   background={<LivingBackground tone="kraft" />}>…</Room>
- * <LivingBackground variant="cover" image="/images/argent-cover-blur.webp" />
  */
 export function LivingBackground({ variant = 'paper', tone = 'kraft', image }) {
   const modifiers =
@@ -27,8 +19,7 @@ export function LivingBackground({ variant = 'paper', tone = 'kraft', image }) {
   return (
     <div className={`living-background ${modifiers}`} aria-hidden="true">
       {variant === 'cover' && (
-        // une image et non un fond CSS : son adresse change d'un projet à
-        // l'autre, et un fond CSS demanderait un style inline
+        // une image plutôt qu'un fond CSS, qui demanderait un style inline
         <img
           className="living-background__image"
           src={image}

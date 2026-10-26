@@ -8,20 +8,18 @@ import { useProjectStack } from './useProjectStack.js'
 import './Work.scss'
 
 /**
- * Les travaux : une pièce par projet, aux couleurs du projet, empilées
- * (la suivante glisse par-dessus quand l'écran est assez grand), puis les
- * autres réalisations, et la modale de détail, ouverte par « Voir le projet ».
- * Le conteneur n'est pas une région : chaque projet en est une (§ 8).
+ * Les travaux : une pièce par projet, empilées (la suivante glisse par-dessus
+ * quand l'écran est assez grand), les autres réalisations, et la modale de
+ * détail.
  */
 export function Work() {
   const [isOpen, setIsOpen] = useState(false)
-  // la place du projet affiché dans la modale ; gardée à la fermeture : la modale
-  // reste montée (§ 9) et ne change pas de contenu pendant qu'elle se ferme
+  // le projet de la modale ; gardé à la fermeture (la modale reste montée)
   const [shownIndex, setShownIndex] = useState(0)
   const detailsTitleRef = useRef(null)
-  // « Projet suivant » vient-il d'être demandé ? (le focus suivra, après le rendu)
+  // « Projet suivant » vient d'être demandé : le focus suivra après le rendu
   const movedToNext = useRef(false)
-  // le passage entre projets : le recouvert recule, l'arrivant monte (§ 7.10)
+  // le passage entre projets : le recouvert recule, l'arrivant monte
   const stack = useProjectStack()
 
   const shown = projects[shownIndex]
@@ -38,14 +36,12 @@ export function Work() {
     setShownIndex((current) => (current + 1) % projects.length)
   }
 
-  // le contenu de la modale a changé : le focus va sur le nouveau titre,
-  // en haut du détail (APG : un contenu remplacé se signale par le focus)
+  // le contenu de la modale a changé : le focus va sur le nouveau titre
   useEffect(() => {
     const title = detailsTitleRef.current
     if (movedToNext.current && title) {
       movedToNext.current = false
-      // d'abord en haut du détail (sur mobile, la capture est au-dessus du titre),
-      // sans animation, puis le focus, sans nouveau défilement
+      // en haut du détail (sur mobile, la capture est au-dessus du titre)
       title
         .closest('.project-details')
         ?.scrollIntoView({ block: 'start', behavior: 'instant' })
@@ -55,9 +51,8 @@ export function Work() {
 
   function handleClose() {
     setIsOpen(false)
-    // le focus revient au bouton « Voir le projet » du projet affiché : Safari ne
-    // le rendrait pas de lui-même, et après « Projet suivant » ce n'est plus
-    // celui du départ. C'est le seul bouton de la pièce (ProjectCard).
+    // le focus revient au bouton « Voir le projet » du projet affiché (Safari
+    // ne le rend pas de lui-même) ; c'est le seul bouton de la pièce
     document.getElementById(shown.id)?.querySelector('button')?.focus()
   }
 

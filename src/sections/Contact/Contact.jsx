@@ -10,10 +10,8 @@ import { CvButton } from '../shared/CvButton.jsx'
 import './Contact.scss'
 
 /**
- * « Contact » : mon adresse e-mail en grand, écrite en toutes lettres (sans
- * logiciel de messagerie, on peut la copier), mes profils et mon CV (quand le
- * PDF existe : profile.cv). Kraft,
- * comme l'accueil : la visite se referme sur le papier du départ.
+ * « Contact » : mon adresse en toutes lettres (sans logiciel de messagerie, on
+ * peut la copier), mes profils et mon CV (quand le PDF existe).
  */
 export function Contact() {
   return (

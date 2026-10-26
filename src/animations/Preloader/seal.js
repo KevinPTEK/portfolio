@@ -1,10 +1,8 @@
-// Le sceau « KR » de l'intro (maquette v5, § 7.4) : ses traits et ses
-// mouvements, en données (KrSeal.jsx les dessine)
+// Le sceau « KR » de l'intro : ses traits et ses mouvements (KrSeal les dessine)
 import { EASE_OUT } from '../variants.js'
 
-// les six traits du K et du R, dans l'ordre du tracé ; delay : leur départ,
-// compté à partir de 0,7 s — le cercle se referme encore (revue) — ; ils se
-// chevauchent, avec un souffle entre K et R
+// les six traits du K et du R, dans l'ordre du tracé ; delay compte à partir
+// de 0,7 s, quand le cercle se referme
 export const STROKES = [
   { d: 'M22 12 V108', delay: 0 },
   { d: 'M22 64 L74 12', delay: 0.13 },

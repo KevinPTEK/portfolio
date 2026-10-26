@@ -10,23 +10,20 @@ import './SocialLinks.scss'
  * @param {{ name: string, href: string }[]} props.links - profils, tirés de socials.json ;
  *   chaque adresse doit être unique
  * @param {string} [props.className] - mix BEM : la classe du parent qui place la liste
- *
- * @example
- * <SocialLinks links={socials} className="home__links" />
  */
 export function SocialLinks({ links = [], className }) {
-  // une liste vide serait annoncée « liste, 0 élément » : on n'affiche rien
+  // une liste vide serait annoncée « liste, 0 élément »
   if (links.length === 0) return null
 
   return (
-    // role="list" : sans puces, Safari ne l'annoncerait plus comme une liste (§ 10)
+    // role="list" : sans puces, Safari ne l'annoncerait plus comme une liste
     <ul
       className={className ? `social-links ${className}` : 'social-links'}
       role="list"
     >
       {links.map(({ name, href }) => (
         <li key={href}>
-          {/* me : ce profil, c'est moi (MDN, rel="me") */}
+          {/* rel="me" : ce profil, c'est moi */}
           <a
             className="social-links__link"
             href={href}

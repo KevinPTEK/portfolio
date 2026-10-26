@@ -2,9 +2,8 @@ import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { LivingBackground } from './LivingBackground.jsx'
 
-// Le fond d'une pièce : du papier (pièces personnelles) ou la capture
-// floutée d'un projet. Décoratif : rien à lire, rien à annoncer.
-// Son rendu (calques, fusions, contraste) se vérifie dans le navigateur (§ 7.8).
+// Décoratif : rien à lire, rien à annoncer ; son rendu se vérifie dans le
+// navigateur.
 
 function renderBackground(props) {
   const { container } = render(<LivingBackground {...props} />)

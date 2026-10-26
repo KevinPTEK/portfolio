@@ -1,8 +1,7 @@
 @use 'sass:map';
 @use '../../styles/abstracts' as *;
 
-// Les deux papiers de la charte (§ 5) : le kraft et le blanc bleuté.
-// Le milieu du dégradé est la couleur de fond du thème de la pièce.
+// Les deux papiers de la charte ; le milieu du dégradé est le fond du thème
 $paper-tones: (
   kraft: (
     highlight: #fff3e2,
@@ -13,7 +12,7 @@ $paper-tones: (
     grain: 0.62,
     clouds: 0.5,
     hatch: rgba(107, 75, 42, 0.075),
-    // 0,18 dans la charte : allégée le 8 oct. pour le texte des coins (§ 10)
+    // allégée (0,18 dans la charte) pour le contraste du texte des coins
     vignette: rgba(120, 90, 50, 0.12),
   ),
   cool: (
@@ -25,15 +24,12 @@ $paper-tones: (
     grain: 0.5,
     clouds: 0.42,
     hatch: rgba(65, 80, 107, 0.055),
-    // 0,14 dans la maquette : allégée le 9 oct., comme le kraft (§ 10)
+    // allégée, comme le kraft
     vignette: rgba(50, 66, 96, 0.1),
   ),
 );
 
-// ---------- Le calque ----------
-
-// Derrière le contenu de la pièce (Room l'isole : z-index -1 y reste) ;
-// il rogne ce qui dépasse, puisque Room ne le fait pas (§ 6)
+// Derrière le contenu (Room l'isole : z-index -1 y reste)
 .living-background {
   position: absolute;
   inset: 0;
@@ -41,22 +37,16 @@ $paper-tones: (
   overflow: hidden;
   pointer-events: none;
 
-  // contraste forcé : les images en url() ne sont pas retirées (MDN) — le
-  // bruit et la capture resteraient sous le texte aux couleurs du système ;
-  // plus de contraste demandé : le grain et la hachure aussi. Reste le fond
-  // uni de la pièce, celui des contrastes calculés (§ 10)
+  // contraste forcé ou renforcé : seul reste le fond uni de la pièce (les
+  // images en url() ne seraient pas retirées)
   @media (forced-colors: active), (prefers-contrast: more) {
     display: none;
   }
 }
 
-// ---------- Papier : un seul élément ----------
-
-// Les calques sont les images de fond d'un même élément, fusionnées entre
-// elles (background-blend-mode) : rien ne se mélange avec le reste de la page,
-// contrairement à des éléments en mix-blend-mode (la maquette). Du haut vers
-// le bas : vignette, hachure de crayon, nuances, grain, puis le dégradé du
-// papier. Entièrement fixe (charte : le papier ne bouge jamais).
+// Le papier : les calques sont les fonds d'un seul élément, fusionnés entre
+// eux (rien ne se mélange avec le reste de la page). Du haut vers le bas :
+// vignette, hachure, nuances, grain, puis le dégradé
 .living-background--paper {
   background-image:
     radial-gradient(
@@ -82,7 +72,7 @@ $paper-tones: (
       var(--paper-middle) 60%,
       var(--paper-bottom)
     );
-  // un mode par calque, dans le même ordre (vérifié par le test du style)
+  // un mode par calque, dans le même ordre
   background-blend-mode:
     normal, multiply, overlay, multiply, normal, normal, normal;
 }
@@ -101,25 +91,19 @@ $paper-tones: (
   }
 }
 
-// ---------- Capture d'un projet ----------
-
-// Mesurés sur le vrai rendu (décision de Kevin, 8 oct., § 10) : avec ce voile
-// de la couleur de la pièce et cette lueur, tout petit texte des trois projets
-// reste au-dessus de 5 : 1 au pixel le plus clair. La lueur de la maquette
-// (38 %) éclairait surtout la zone du texte : c'est elle qui coûtait le plus.
+// La capture d'un projet. Voile et lueur réglés sur le vrai rendu : le texte
+// des projets reste au-dessus de 5 : 1
 $cover-veil: 82%;
 $cover-glow: 15%;
 
-// La capture pré-floutée (flou et saturation cuits dans l'image : aucun
-// filtre à l'exécution, § 11), étirée sur toute la pièce
+// floutée d'avance : aucun filtre à l'exécution
 .living-background__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-// Par-dessus : le voile de la couleur de la pièce, un dégradé sombre vers le
-// bas, la lueur de l'accent et le grain (fusionné avec les calques du dessous)
+// par-dessus : le voile, un dégradé sombre vers le bas, la lueur et le grain
 .living-background--cover::after {
   content: '';
   position: absolute;

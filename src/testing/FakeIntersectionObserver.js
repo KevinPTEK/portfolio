@@ -1,13 +1,11 @@
 import { act } from '@testing-library/react'
 import { afterEach, beforeEach, vi } from 'vitest'
 
-// Pour les tests seulement : happy-dom ne calcule aucune position, ce faux
-// IntersectionObserver permet de dire « cette pièce croise la ligne ».
-// À installer par useFakeIntersectionObserver(), en tête du describe.
+// happy-dom ne calcule aucune position : ce faux IntersectionObserver permet
+// de dire « cette pièce croise la ligne ». À installer par
+// useFakeIntersectionObserver(), en tête du describe.
 export class FakeIntersectionObserver {
-  // le dernier observateur créé : celui de useCurrentRoom dans les tests
-  // d'App ; celui de Motion dans ceux de Reveal (un test qui monterait les
-  // deux ensemble ferait viser le mauvais à cross())
+  // le dernier observateur créé (celui que pilote cross())
   static last = null
 
   constructor(callback, options) {
@@ -41,8 +39,7 @@ export function cross(changes) {
   act(() => FakeIntersectionObserver.last.callback(entries))
 }
 
-// Installe le faux avant chaque test (remis à zéro : aucun test ne pilote
-// l'observateur du précédent) et rend ensuite le vrai et le thème du <body>
+// installe le faux avant chaque test, et rend le vrai ensuite
 export function useFakeIntersectionObserver() {
   beforeEach(() => {
     FakeIntersectionObserver.last = null

@@ -10,13 +10,12 @@
   border-radius: $radius-pill;
   font-size: $font-size-ui;
   font-weight: 500;
-  text-decoration: none; // un bouton se reconnaît à sa forme (§ 10)
+  text-decoration: none; // un bouton se reconnaît à sa forme
   cursor: pointer; // même curseur pour le lien et le bouton
   transition: transform $duration-fast $ease-out;
 
   @include focus-ring;
 
-  // le survol n'existe qu'avec une souris : pas d'effet « collé » au doigt
   @include hover-capable {
     &:hover {
       transform: translateY(-2px);

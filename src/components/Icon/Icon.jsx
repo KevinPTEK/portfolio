@@ -15,9 +15,6 @@ const PATHS = {
  * @param {object} props
  * @param {'arrow' | 'external' | 'download' | 'close'} props.name - icône à dessiner
  * @param {string} [props.className] - classe du parent qui place l'icône (mix BEM)
- *
- * @example
- * <Icon name="external" className="button__icon" />
  */
 export function Icon({ name, className }) {
   if (!Object.hasOwn(PATHS, name)) return null

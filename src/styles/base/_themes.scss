@@ -1,9 +1,8 @@
 @use 'sass:map';
 @use '../abstracts' as *;
 
-// Les couleurs du thème deviennent des propriétés typées (@property, Baseline
-// 2024) : le navigateur sait alors les animer, et la nav passe d'une pièce à
-// l'autre en fondu (§ 7.7). Valeur de départ : celles du thème par défaut.
+// Les couleurs du thème en propriétés typées (@property) : le navigateur sait
+// les animer (le fondu de la nav). Valeur de départ : le thème par défaut.
 @each $key, $value in map.get($themes, $default-theme) {
   @if $key != scheme {
     @property --#{$key} {

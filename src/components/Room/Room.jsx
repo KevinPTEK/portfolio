@@ -12,13 +12,7 @@ import './Room.scss'
  * @param {import('react').ReactNode} props.children - contenu de la pièce
  * @param {string} [props.className] - mix BEM : la classe de la section qui ajuste la pièce
  *   (l'accueil, sans nav visible, n'a pas les mêmes marges)
- * @param {import('react').Ref<HTMLElement>} [props.ref] - la section (React 19 : ref est une
- *   prop ordinaire) — le passage entre projets y écrit ses variables (§ 7.10)
- *
- * @example
- * <Room id="about" theme="paper-cool" labelledBy="about-title">
- *   <h2 id="about-title">À propos</h2>
- * </Room>
+ * @param {import('react').Ref<HTMLElement>} [props.ref] - la section
  */
 export function Room({
   id,

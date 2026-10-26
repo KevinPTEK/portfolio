@@ -1,9 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { playFog } from './playFog.js'
 
-// La boucle du brouillard (§ 7.4), image par image. Les images se jouent à la
-// main (frame) : on peut en sauter, comme un onglet masqué ou un retour
-// arrière. Un hasard reproductible, un faux canvas qui garde la dernière image
+// Les images se jouent à la main (frame) : on peut en sauter, comme un onglet
+// masqué. Un hasard reproductible, un faux canvas qui garde la dernière image
 function seeded(seed) {
   let state = seed
   return () => {
@@ -63,9 +62,6 @@ describe('playFog', () => {
     expect(painted).toHaveBeenCalledTimes(1)
   })
 
-  // revue : la boucle mesurait le lever depuis la première image vue après
-  // l'ouverture — un onglet masqué (images suspendues) rejouait le voile
-  // opaque sur une page déjà prête, puis le coupait net
   it('images sautées (onglet masqué) : le brouillard est là où l’heure le dit', () => {
     play()
     frame(16)

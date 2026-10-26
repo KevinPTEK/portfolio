@@ -17,29 +17,26 @@ import './App.scss'
 // les cibles du menu : la section courante est celle qui contient la pièce
 const SECTION_IDS = menuItems.map(({ id }) => id)
 
-// Les pièces du site, dans l'ordre (§ 8)
+// les pièces du site, dans l'ordre
 export function App() {
   const intro = usePreloader()
-  // l'accueil et l'avatar volant entrent quand l'intro rend la main (§ 7.4)
+  // l'accueil et l'avatar volant entrent quand l'intro rend la main
   const entered = intro.phase === 'ready' || intro.phase === 'done'
   const { room, section, arriving } = useCurrentRoom(SECTION_IDS)
-  // le défilement animé vers les pièces, et les liens directs (§ 7.6)
   useScrollTo()
 
   return (
     <>
-      {/* l'intro : purement visuelle, au-dessus de tout (§ 7.4) */}
       <Preloader phase={intro.phase} rushed={intro.rushed} />
       <SkipLink href="#main">Aller au contenu</SkipLink>
-      {/* cachée au chargement et sur l'accueil : le menu géant y fait office de nav */}
+      {/* cachée sur l'accueil : le menu géant y fait office de nav */}
       <Nav
         currentSection={section}
         isArriving={arriving}
         isHidden={room === null || room === 'home'}
       />
-      {/* décoratif, au-dessus de la nav (§ 7.9) */}
       <FlyingAvatar entered={entered} />
-      {/* tabIndex -1 : la cible du lien d'évitement reçoit vraiment le focus */}
+      {/* tabIndex -1 : la cible du lien d'évitement reçoit le focus */}
       <main className="main" id="main" tabIndex={-1}>
         <Home entered={entered} />
         <About />

@@ -10,12 +10,11 @@ import socials from '../../data/socials.json'
 import { CvButton } from '../shared/CvButton.jsx'
 import './About.scss'
 
-// présent : socials.test.js le vérifie
 const linkedin = socials.find(({ name }) => name === 'LinkedIn')
 
 /**
- * « À propos » : qui je suis, en trois paragraphes, mon portrait posé sur son
- * reflet flouté, mon CV (quand le PDF existe) et LinkedIn. Papier froid.
+ * « À propos » : trois paragraphes, mon portrait sur son reflet flouté, mon CV
+ * (quand le PDF existe) et LinkedIn.
  */
 export function About() {
   return (
@@ -59,8 +58,7 @@ export function About() {
           </div>
         </Reveal>
 
-        {/* après le texte dans le code (le titre ouvre la pièce), devant à
-            l'écran ; décoratif : mon prénom est le titre */}
+        {/* après le texte dans le code, devant à l'écran ; décoratif */}
         <Reveal className="about__portrait">
           <img className="about__reflection" src={avatar.blur} alt="" />
           <span className="about__avatar">

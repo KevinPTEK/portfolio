@@ -78,8 +78,7 @@ describe('usePreloader', () => {
     },
   )
 
-  // revue : le minuteur normal de la fin disparaissait au geste — un geste
-  // à 5,45 s finissait l'intro à 5,95 s au lieu de 5,65 s
+  // un geste à 5,45 s ne la finit pas à 5,95 s
   it('un geste dans la dernière demi-seconde n’allonge pas l’intro', () => {
     const { result } = renderHook(() => usePreloader())
     after(5450)
@@ -88,8 +87,7 @@ describe('usePreloader', () => {
     expect(result.current.phase).toBe('done')
   })
 
-  // revue : Maj seule, ou un raccourci du navigateur (Cmd+Tab, Cmd+L),
-  // accéléraient l'intro — ce ne sont pas des gestes vers la page
+  // Maj seule, ou un raccourci du navigateur : pas des gestes vers la page
   it.each([
     ['Maj seule', { key: 'Shift' }],
     ['Cmd+Tab', { key: 'Tab', metaKey: true }],

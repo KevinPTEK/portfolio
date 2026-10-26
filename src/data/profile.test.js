@@ -6,9 +6,7 @@ import { describe, expect, it } from 'vitest'
 import profile from './profile.json'
 import { FILLED, UNPROTECTED_SPACE } from './rules.js'
 
-// Qui je suis, partagé par l'accueil, la nav, « À propos », « Contact » et le
-// pied de page (§ 5.3). Le CV est null tant que le PDF n'existe pas : le
-// bouton reste caché, plutôt qu'un lien vers un fichier absent.
+// Le CV est null tant que le PDF n'existe pas : le bouton reste caché.
 
 const PUBLIC = join(import.meta.dirname, '../../public')
 const KB = 1000 // comme les « kB » des DevTools (images.test.js)
@@ -55,7 +53,7 @@ describe('profile.json', () => {
       )
     })
 
-    it('annonce son vrai poids (le libellé le donne, § 6)', () => {
+    it('annonce son vrai poids (le libellé le donne)', () => {
       const bytes = statSync(join(PUBLIC, name)).size
       expect(profile.cv.size).toBe(`${Math.round(bytes / KB)} Ko`)
     })

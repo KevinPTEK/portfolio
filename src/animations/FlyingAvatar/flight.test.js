@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { flightAt, flightDistance, flightSamples } from './flight.js'
 
-// Les emplacements mesurés dans Chrome (14 oct.). Bureau 1 440 × 900 : de
-// l'accueil (104 px) à la colonne (56 px)
+// Les emplacements mesurés dans Chrome, en bureau (1 440 × 900)
 const desktop = {
   from: { left: 40, top: 40, size: 104 },
   to: { left: 32, top: 32, size: 56 },
@@ -34,8 +33,7 @@ describe('flightAt', () => {
     expect(flightAt(0, desktop)).toEqual({ x: 40, y: 40, size: 104 })
   })
 
-  // la courbe part vite (choix de Kevin, 14 oct.) : au quart du défilement,
-  // déjà 44 % du vol — l'avatar quitte tôt le départ, qui défile
+  // la courbe part vite : au quart du défilement, déjà 44 % du vol
   it('au quart du vol : déjà bien en route vers la nav', () => {
     const { x, y, size } = flightAt(101.25, desktop)
     expect(x).toBeCloseTo(36.5, 10)

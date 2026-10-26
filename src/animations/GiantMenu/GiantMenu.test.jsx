@@ -14,12 +14,11 @@ describe('GiantMenu', () => {
     render(<GiantMenu items={items} />)
     const list = screen.getByRole('list')
     expect(within(list).getAllByRole('listitem')).toHaveLength(3)
-    // happy-dom voit une liste même sans role="list" ; Safari, lui, ne l'annonce
-    // plus comme une liste quand ses puces sont retirées (§ 10) : on vérifie l'attribut
+    // happy-dom voit une liste même sans role="list" : on protège l'attribut pour Safari
     expect(list).toHaveAttribute('role', 'list')
   })
 
-  it('nomme chaque ligne (giant-menu__item : ses filets de l’entrée, § 7.4)', () => {
+  it('nomme chaque ligne (giant-menu__item : ses filets de l’entrée)', () => {
     render(<GiantMenu items={items} />)
     for (const line of screen.getAllByRole('listitem')) {
       expect(line).toHaveClass('giant-menu__item')

@@ -4,9 +4,8 @@ import { FILLED, UNPROTECTED_SPACE, withoutDuplicates } from './rules.js'
 import sites from './sites.json'
 import skills from './skills.json'
 
-// Les compétences, par familles (§ 5.2). Des règles, pas un contenu : ajouter
-// une compétence ne doit rien casser. Une compétence peut citer la preuve
-// qui la montre : l'id d'un projet ou d'un site de la page.
+// Des règles, pas un contenu : ajouter une compétence ne doit rien casser.
+// Une preuve est l'id d'un projet ou d'un site de la page.
 
 const items = skills.flatMap((group) => group.items)
 const evidence = [...projects, ...sites].map((work) => work.id)

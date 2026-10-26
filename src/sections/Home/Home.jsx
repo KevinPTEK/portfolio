@@ -14,17 +14,11 @@ import socials from '../../data/socials.json'
 import './Home.scss'
 
 /**
- * L'accueil : qui je suis à gauche (portrait, nom, métier, profils),
- * le menu géant à droite. Sur mobile, l'un sous l'autre. Il entre en scène
- * (flou → net, le bloc identité puis les lignes du menu) quand l'intro rend
- * la main, ou d'emblée sous « réduire les animations » (§ 7.4).
+ * L'accueil : qui je suis, et le menu géant. Il entre en scène quand l'intro
+ * rend la main, ou d'emblée sous « réduire les animations ».
  *
  * @param {object} props
- * @param {boolean} [props.entered=true] - l'intro a rendu la main (ready) :
- *   l'accueil entre
- *
- * @example
- * <Home entered={intro.phase === 'ready' || intro.phase === 'done'} />
+ * @param {boolean} [props.entered=true] - l'intro a rendu la main
  */
 export function Home({ entered = true }) {
   const reduced = useMediaQuery(REDUCED_MOTION)
@@ -40,16 +34,13 @@ export function Home({ entered = true }) {
       <div className="home__layout">
         <m.div
           className="home__content"
-          // sous « réduire les animations » : en place d'emblée, sans attendre l'intro
           initial={reduced ? false : 'hidden'}
           animate={entered || reduced ? 'visible' : 'hidden'}
           variants={ENTRANCE}
         >
           <m.div className="home__identity" variants={unblur}>
-            {/* le départ de l'avatar volant (§ 7.9) — élément de la grille :
-                un bloc, sans règle de plus */}
+            {/* le départ de l'avatar volant */}
             <span data-avatar-slot="home">
-              {/* alt vide : mon nom est écrit juste à côté */}
               <Avatar
                 src={avatar.src}
                 srcSet={avatar.srcSet}
@@ -63,7 +54,7 @@ export function Home({ entered = true }) {
             <p className="home__job">{profile.job}</p>
             <SocialLinks links={socials} className="home__links" />
           </m.div>
-          {/* id : la cible du lien « Menu » de la barre mobile (Nav) */}
+          {/* id : la cible du lien « Menu » de la barre mobile */}
           <nav className="home__menu" id="menu" aria-label="Menu principal">
             <GiantMenu items={menuItems} />
           </nav>

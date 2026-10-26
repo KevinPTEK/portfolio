@@ -4,18 +4,14 @@ import { TagList } from '../TagList/TagList.jsx'
 import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden.jsx'
 import './SiteCard.scss'
 
-// La largeur de la capture selon l'écran, pour le navigateur qui ne la
-// mesure pas lui-même (Safari avant 27, Firefox avant 150) — mesurée le
-// 16 oct. ; approchée, la grille faisant varier la carte (écarts relevés par
-// les revues du 18 oct. : spec § 6). À remesurer si la mise en page change
+// la largeur de la capture, pour le navigateur qui ne la mesure pas
+// (approchée ; à remesurer si la mise en page change)
 const COVER_SIZES = '(min-width: 640px) 360px, calc(100vw - 40px)'
 
 /**
- * Carte d'un site vitrine (pièce « Autres réalisations ») : sa capture, son nom,
- * son résumé, ses technologies, le lien vers le site et, s'il est public, vers
- * le code. Plus petite qu'un projet : ni détail, ni modale.
- * Son titre est un <h3> : la carte se pose sous le <h2> d'une pièce.
- * Ne rend pas de <li> : la section écrit la liste.
+ * Carte d'un site vitrine : capture, nom, résumé, technologies, lien vers le
+ * site et, s'il est public, vers le code. Titre en <h3>, sous le <h2> de la
+ * pièce ; la section écrit la liste.
  *
  * @param {object} props
  * @param {{
@@ -24,10 +20,7 @@ const COVER_SIZES = '(min-width: 640px) 360px, calc(100vw - 40px)'
  *   tags: string[],
  *   links: { site: string, code?: string },
  *   cover: { src: string, alt: string },
- * }} props.site - un site de sites.json (§ 5.1 bis) : les champs lus ici
- *
- * @example
- * <SiteCard site={tournetmarou} />
+ * }} props.site - un site de sites.json
  */
 export function SiteCard({ site }) {
   const { name, summary, tags, links, cover } = site

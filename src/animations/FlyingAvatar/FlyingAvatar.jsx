@@ -14,40 +14,32 @@ import { ENTRANCE, unblur } from '../variants.js'
 import { flightAt, flightDistance, flightSamples } from './flight.js'
 import './FlyingAvatar.scss'
 
-const SIZE = 104 // le diamètre de départ, celui de l'accueil ; le vol le réduit par scale
+const SIZE = 104 // le diamètre de départ ; le vol le réduit par scale
 
 /**
- * L'avatar « fil rouge » (§ 7.9) : du portrait de l'accueil jusqu'à sa place
- * dans la nav, au rythme du défilement. Décoratif (les deux portraits fixes
- * ont alt=""). Pendant le vol, <html data-avatar="flying"> efface les deux
- * emplacements (data-avatar-slot). Il entre en scène avec le bloc identité
- * de l'accueil (flou → net, § 7.4). Sous « réduire les animations », pas de
- * vol : chaque emplacement montre son portrait.
+ * L'avatar « fil rouge » : du portrait de l'accueil jusqu'à sa place dans la
+ * nav, au rythme du défilement. Décoratif. Pendant le vol, <html
+ * data-avatar="flying"> efface les deux portraits fixes. Sous « réduire les
+ * animations », pas de vol : chaque emplacement montre son portrait.
  *
  * @param {object} props
- * @param {boolean} [props.entered=true] - l'intro a rendu la main (ready) :
- *   il entre, avec l'accueil
- *
- * @example
- * <FlyingAvatar entered={intro.phase === 'ready' || intro.phase === 'done'} />
+ * @param {boolean} [props.entered=true] - l'intro a rendu la main : il entre
+ *   avec l'accueil
  */
 export function FlyingAvatar({ entered = true }) {
   const reduced = useMediaQuery(REDUCED_MOTION)
   return reduced ? null : <Flight entered={entered} />
 }
 
-// Le vol (ses hooks ne tournent que s'il a lieu). Là où le navigateur connaît
-// ScrollTimeline (Chrome, Edge, Safari 26+), il trace le vol lui-même, au
-// rythme exact du défilement ; ailleurs (Firefox avant sa version 161), ou
-// s'il refuse nos réglages, notre code le calcule à chaque image, avec une
-// image de retard (mesuré, § 7.9)
+// Le vol. Avec ScrollTimeline, le navigateur le trace lui-même, collé au
+// défilement ; sans elle (Firefox), ou s'il refuse nos réglages, notre code
+// le calcule à chaque image
 function Flight({ entered }) {
   const [traced, setTraced] = useState(
     () => typeof ScrollTimeline === 'function',
   )
 
-  // avant le premier affichage : sinon une image montrerait l'avatar volant
-  // par-dessus le portrait de l'accueil (useLayoutEffect)
+  // avant le premier affichage, sinon deux avatars se superposent
   useLayoutEffect(() => {
     const root = document.documentElement
     root.dataset.avatar = 'flying'
@@ -57,8 +49,7 @@ function Flight({ entered }) {
   }, [])
 
   return (
-    // il entre avec le bloc identité de l'accueil : la même cascade (ENTRANCE)
-    // et le même flou → net (unblur) ; dedans, l'image vole
+    // il entre comme le bloc identité de l'accueil ; dedans, l'image vole
     <m.span
       className="flying-avatar"
       initial="hidden"
@@ -76,21 +67,18 @@ function Flight({ entered }) {
   )
 }
 
-// Le navigateur relie les points du vol (flightSamples) en suivant le
-// défilement : rien à calculer à chaque image
+// Le navigateur relie les points du vol en suivant le défilement
 function TimelineFlight({ onRefused }) {
   const image = useRef(null)
   const refuse = useEffectEvent(onRefused)
 
-  // avant le premier affichage : sinon une image montrerait l'avatar en haut
-  // à gauche de l'écran, hors de sa place (useLayoutEffect)
+  // avant le premier affichage, sinon l'avatar passe une image hors de sa place
   useLayoutEffect(() => {
     let flight = null
     let geometry = null
     function fly() {
       const next = measureFlight()
-      // un redimensionnement qui ne déplace pas les emplacements (la barre
-      // d'adresse mobile se replie) : le même vol, rien à refaire
+      // la barre d'adresse mobile se replie : les emplacements n'ont pas bougé
       if (JSON.stringify(next) === JSON.stringify(geometry)) return
       geometry = next
       flight?.cancel() // l'ancien vol, mesuré sur l'ancienne mise en page
@@ -102,18 +90,14 @@ function TimelineFlight({ onRefused }) {
           rangeEnd: `${geometry.distance}px`,
           fill: 'both',
         })
-        // une option inconnue est ignorée sans erreur : un navigateur qui ne
-        // retiendrait pas la plage ferait courir le vol sur toute la page.
-        // Chrome rend la plage retenue (un objet), « normal » sans elle
-        // (revue de branche)
+        // une option inconnue est ignorée sans erreur : sans la plage, le vol
+        // courrait sur toute la page
         if (!flight.rangeEnd || flight.rangeEnd === 'normal') {
           throw new TypeError('plage ignorée')
         }
       } catch {
         flight?.cancel()
-        // un navigateur qui refuserait ces réglages, ou ignorerait la plage :
-        // notre code prend le relais. Une erreur ici ferait tomber toute la
-        // page (revue)
+        // réglages refusés ou plage ignorée : notre code prend le relais
         flight = null
         refuse()
       }
@@ -142,8 +126,7 @@ function ScriptedFlight() {
     )
   })
 
-  // la fenêtre change de taille : à remesurer, à l'image que useScrollFrame
-  // demande alors
+  // la fenêtre change de taille : à remesurer à la prochaine image
   useEffect(() => {
     const remeasure = () => {
       geometry.current = null
@@ -168,11 +151,9 @@ function FlyingImage({ ref }) {
   )
 }
 
-// Où partir (l'accueil, dans la page : il défile avec elle) et où se poser
-// (la nav, dans l'écran : elle est fixe). La distance du vol suit la hauteur
-// de l'écran barre d'adresse affichée (documentElement.clientHeight), qui ne
-// bouge pas quand la barre se replie ; window.innerHeight, si : l'avatar
-// sautait de 20 px en plein vol (revue)
+// Où partir (l'accueil, dans la page) et où se poser (la nav, dans l'écran).
+// clientHeight plutôt qu'innerHeight : il ne bouge pas quand la barre
+// d'adresse mobile se replie
 function measureFlight() {
   const slot = (name) =>
     layoutOf(document.querySelector(`[data-avatar-slot="${name}"]`))
@@ -183,13 +164,9 @@ function measureFlight() {
   }
 }
 
-// La place d'un élément dans la mise en page, sans les transformations :
-// offsetLeft et offsetTop les ignorent, getBoundingClientRect les mesure — or
-// pendant l'intro, l'accueil est agrandi et son bloc identité décalé (§ 7.4),
-// le départ aurait été faux jusqu'au prochain redimensionnement. On remonte
-// les offsetParent (chaque décalage part de l'intérieur de la bordure du
-// parent) : jusqu'à la page pour l'accueil, jusqu'à la nav fixe pour la nav
-// (dont la place est dans l'écran)
+// La place d'un élément sans ses transformations (pendant l'intro, l'accueil
+// est agrandi) : offsetLeft et offsetTop les ignorent, getBoundingClientRect
+// non. On remonte les offsetParent, en ajoutant leur bordure
 function layoutOf(element) {
   let left = 0
   let top = 0
@@ -212,8 +189,7 @@ function keyframesOf(geometry) {
   }))
 }
 
-// la position du vol, en transformation de l'image (écrite pendant
-// l'exécution, § 7.1)
+// la position du vol, en transformation de l'image
 function transformOf({ x, y, size }) {
   return `translate(${x}px, ${y}px) scale(${size / SIZE})`
 }

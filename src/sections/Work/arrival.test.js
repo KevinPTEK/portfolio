@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { arrivalOf } from './arrival.js'
 
-// L'arrivée d'un projet, de 0 à 1 (§ 7.10) : de « son repère touche le bas
-// de l'écran » (0) à « son repère atteint le haut » (1)
+// L'arrivée d'un projet : 0 quand son repère touche le bas de l'écran, 1 en haut
 describe('arrivalOf', () => {
   it.each([
     [1000, 1000, 0], // le repère au bas de l'écran : rien n'est arrivé

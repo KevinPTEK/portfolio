@@ -9,30 +9,26 @@
   pointer-events: none;
 }
 
-// son entrée avec l'accueil (Motion : flou → net, 14 px de montée, § 7.4) ;
-// nette quand même sans moteur, à l'impression, au focus
+// son entrée avec l'accueil ; nette sans moteur, à l'impression et au focus
 .flying-avatar__entrance {
   display: block; // un <span> : en ligne, il ne serait pas transformé
   @include unblurred-without-motion;
 }
 
-// l'image vole par transform (§ 7.9) ; la forme ronde vient de .avatar (mix),
-// la taille de son attribut width
+// l'image vole par transform ; sa forme et sa taille viennent de .avatar
 .flying-avatar__image {
   transform-origin: 0 0;
 }
 
-// pendant le vol, les deux emplacements s'effacent : l'avatar volant les
-// recouvre. À l'écran seulement : à l'impression, la page ne défile pas,
-// chaque emplacement montre son portrait (sans dépendre de l'ordre des règles)
+// pendant le vol, l'avatar volant remplace les deux portraits fixes ; à
+// l'impression, chacun garde le sien
 @media not print {
   [data-avatar='flying'] [data-avatar-slot] {
     visibility: hidden;
   }
 }
 
-// à l'impression, pas d'avatar volant (un élément fixe se répète sur chaque
-// page imprimée)
+// à l'impression, un élément fixe se répéterait sur chaque page
 @media print {
   .flying-avatar {
     display: none;

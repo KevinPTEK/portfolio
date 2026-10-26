@@ -1,6 +1,5 @@
 @use '../../styles/abstracts' as *;
 
-// Étiquette, titre et introduction, les uns sous les autres
 .section-header {
   display: flex;
   flex-direction: column;
@@ -11,17 +10,15 @@
   @include label;
 }
 
-// Grand titre fluide, de 44 à 110 px
 .section-header__title {
   font-family: $font-serif;
-  // 44 px au plus petit : « Compétences, » tient dans les 280 px d'un écran de 320 px.
-  // 110 px au plus (et non 120, maquette) : max ≤ 2,5 × min, sinon le texte n'atteint
-  // pas 200 % au zoom de 500 % (183 % calculés dès 1 500 px — WCAG 1.4.4, Barvian)
+  // 44 px : « Compétences, » tient à 320 px ; 110 px au plus : max ≤ 2,5 × min
+  // pour que le texte double au zoom (WCAG 1.4.4)
   font-size: clamp(44px, 8vw, 110px);
   line-height: 0.95;
   letter-spacing: -0.01em;
 
-  // focalisable par le code (titleRef) : le même anneau que le reste du site
+  // focalisable par le code (titleRef)
   @include focus-ring;
 }
 
@@ -29,26 +26,21 @@
   @include accent-word;
 }
 
-// Introduction : 560 px au plus, soit 60 à 65 caractères par ligne
+// 560 px : 60 à 65 caractères par ligne
 .section-header__lead {
   max-width: 560px;
   font-size: $font-size-lead;
   color: var(--ink-2);
 }
 
-// Variante compacte : l'en-tête d'un projet partage la pièce avec sa capture
-// (ou la modale avec la capture). Sa colonne est étroite et change d'une mise
-// en page à l'autre : le titre suit donc la largeur de l'en-tête (requête de
-// conteneur), pas celle de la fenêtre.
+// Compacte : l'en-tête partage la place avec une capture ; le titre suit la
+// largeur de l'en-tête (cqi), pas celle de la fenêtre
 .section-header--compact {
-  container-type: inline-size; // l'en-tête devient le repère des unités cqi
+  container-type: inline-size;
 
   .section-header__title {
-    // « 724events. », d'un seul tenant, mesure 4,52 fois la taille du texte :
-    // à 21 % de la largeur de l'en-tête (21cqi), il tient toujours sur sa ligne.
-    // Une section dont le titre a un mot plus long règle --compact-title-scale
-    // sur elle-même (au plus 100 / largeur du mot en em). 84 / 44 < 2,5 : le
-    // titre atteint 200 % au zoom (§ 10)
+    // 21cqi : « 724events. », d'un seul tenant, tient sur sa ligne ; un mot
+    // plus long règle --compact-title-scale sur sa section
     font-size: clamp(44px, var(--compact-title-scale, 21cqi), 84px);
   }
 

@@ -136,11 +136,8 @@ describe('ProjectDetails', () => {
     expect(handleNext).toHaveBeenCalledTimes(1)
   })
 
-  // revue générale (19 oct.) : dans le <dialog>, le <header> du titre n'était
-  // rangé dans aucune section — Chrome l'annonçait « bannière », comme
-  // l'en-tête du site. Un <article> le range (HTML-AAM : en-tête de section).
-  // Testing Library ignore cette règle de portée (il voit une bannière même
-  // dans un article) : l'absence de bannière se vérifie dans Chrome
+  // dans un article, le <header> n'est plus la bannière du site ; Testing
+  // Library ignore cette règle : l'absence de bannière se vérifie dans Chrome
   it('est un article, qui contient son titre', () => {
     renderDetails()
     const title = screen.getByRole('heading', { level: 2 })
@@ -153,8 +150,7 @@ describe('ProjectDetails', () => {
     expect(cover).toHaveAttribute('src', nina.cover.src)
     // la modale est montée dès le départ : sans lazy, sa capture se chargerait tout de suite
     expect(cover).toHaveAttribute('srcset', coverSrcSet(nina.cover.src))
-    // sans auto : la modale fermée (display: none), Chrome remesurerait la
-    // capture à 100vw et rechargerait l'originale (revue de l'étape 5)
+    // sans auto : modale fermée, Chrome remesurerait la capture à 100vw
     expect(cover).toHaveAttribute(
       'sizes',
       '(min-width: 1024px) 481px, calc(100vw - 34px)',

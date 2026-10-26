@@ -1,6 +1,6 @@
 @use '../../styles/abstracts' as *;
 
-// La capture au-dessus du texte ; en bureau, à gauche (maquette)
+// la capture au-dessus du texte ; à gauche en bureau
 .project-details {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -11,7 +11,6 @@
   }
 }
 
-// Le texte : les rubriques les unes sous les autres
 .project-details__body {
   display: flex;
   flex-direction: column;
@@ -30,21 +29,20 @@
   color: var(--ink-2);
 }
 
-// « Contexte », « Problèmes rencontrés »… : des étiquettes, mais de vrais titres
+// des étiquettes à l'œil, de vrais titres pour les lecteurs d'écran
 .project-details__heading {
   @include label;
 }
 
 .project-details__list {
-  padding-left: $space-5; // les puces restent : ce sont de vraies listes
+  padding-left: $space-5; // les puces restent
 }
 
 .project-details__links {
   @include actions-row;
 }
 
-// La capture : en premier à l'écran, dans un cadre 4:3 réservé avant son chargement ;
-// en bureau, elle reste en haut de sa colonne pendant qu'on lit le texte
+// en bureau, la capture reste en haut de sa colonne pendant la lecture
 .project-details__cover {
   @include cover-frame;
 

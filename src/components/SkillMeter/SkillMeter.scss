@@ -1,6 +1,5 @@
 @use '../../styles/abstracts' as *;
 
-// Le nom à gauche, les points à droite
 .skill-meter {
   display: flex;
   align-items: center;
@@ -34,7 +33,6 @@
 .skill-meter__dot--filled {
   background-color: var(--accent);
 
-  // en contraste forcé, le navigateur remplace les fonds : on impose la couleur du texte
   @include forced-colors {
     background-color: CanvasText;
   }

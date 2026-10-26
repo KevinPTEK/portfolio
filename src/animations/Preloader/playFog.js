@@ -1,17 +1,12 @@
-// La boucle du brouillard de l'intro (§ 7.4) : une image par rafraîchissement
-// de l'écran, jusqu'à la brume levée. Chargée avec fog.js après le premier
-// affichage (Fog.jsx), hors du chemin critique (budget, § 11).
+// La boucle du brouillard : une image par rafraîchissement, jusqu'à la brume
+// levée. Chargée après le premier affichage, hors du chemin critique.
 import { createFog, createNoise, fogSize } from './fog.js'
 import { INTRO } from './usePreloader.js'
 
 /**
- * Fait jouer le brouillard sur un canvas.
- *
- * Une seule horloge, celle du calendrier de l'intro (usePreloader) : le
- * brouillard est là où l'heure le dit, quel que soit le nombre d'images
- * passées. Revue : il comptait le lever depuis la première image vue après
- * l'ouverture — un onglet masqué ou un retour arrière (images suspendues)
- * rejouait le voile opaque sur une page déjà prête, puis le coupait net.
+ * Fait jouer le brouillard sur un canvas, sur l'horloge du calendrier de
+ * l'intro : il est là où l'heure le dit, même après des images suspendues
+ * (onglet masqué).
  *
  * @param {object} options
  * @param {HTMLCanvasElement} options.canvas
@@ -21,9 +16,6 @@ import { INTRO } from './usePreloader.js'
  * @param {() => void} options.painted - appelé après la première image
  * @param {() => number} [options.random] - pour des tests reproductibles
  * @returns {() => void} de quoi l'arrêter
- *
- * @example
- * const stop = playFog({ canvas, context, start, readState, painted })
  */
 export function playFog({
   canvas,
@@ -48,7 +40,7 @@ export function playFog({
   resize()
 
   const openAt = start + INTRO.open * 1000 // l'ouverture, à l'heure du calendrier
-  let lifting = false // le lever a commencé (bornes mesurées sur le bruit du moment)
+  let lifting = false
   let rushedAt = null
   let rushedFrom = 0
   let progress = 0
@@ -58,7 +50,7 @@ export function playFog({
     const t = (now - start) / 1000
     lastT = t
     const { phase, rushed } = readState()
-    // trop tard dès la première image : le voile CSS s'efface déjà sans lui
+    // trop tard dès la première image : le voile CSS s'efface sans lui
     if (first && (phase !== 'drawing' || rushed)) return
     if ((rushed || now >= openAt) && !lifting) {
       lifting = true

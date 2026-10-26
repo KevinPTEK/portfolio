@@ -1,8 +1,7 @@
-// Les courbes de vitesse des animations écrites à la main (défilement, vol
-// de l'avatar, brouillard), en fonctions pures : t de 0 à 1 → avancée de 0 à 1
+// Les courbes des animations écrites à la main : t de 0 à 1 → avancée de 0 à 1
 
 /**
- * Quintique : démarre doucement, file, se pose (défilement, charte)
+ * Quintique : démarre doucement, file, se pose (défilement)
  *
  * @param {number} t - le temps écoulé, de 0 à 1
  * @returns {number} l'avancée du trajet, de 0 à 1
@@ -12,7 +11,7 @@ export function easeInOutQuint(t) {
 }
 
 /**
- * Quadratique : accélère puis freine, plus doucement (brouillard de l'intro)
+ * Quadratique : accélère puis freine (brouillard de l'intro)
  *
  * @param {number} t - le temps écoulé, de 0 à 1
  * @returns {number} l'avancée du trajet, de 0 à 1
@@ -23,7 +22,7 @@ export function easeInOutQuad(t) {
 
 /**
  * Quadratique qui freine : rapide au départ, posée à l'arrivée (vol de
- * l'avatar : il quitte tôt le portrait qui défile, § 7.9)
+ * l'avatar)
  *
  * @param {number} t - le temps écoulé, de 0 à 1
  * @returns {number} l'avancée du trajet, de 0 à 1

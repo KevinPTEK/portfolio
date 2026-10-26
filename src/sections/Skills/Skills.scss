@@ -1,8 +1,6 @@
 @use '../../styles/abstracts' as *;
 
-// Les familles : autant de colonnes d'au moins 280 px que la place en permet,
-// qui se partagent toute la largeur (auto-fit). Trois colonnes à partir
-// d'environ 1 212 px ; en dessous, deux, et la 3e carte seule sur sa ligne
+// autant de colonnes d'au moins 280 px que la place en permet
 .skills__groups {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
@@ -10,7 +8,7 @@
   margin-top: $space-7;
 }
 
-// Une carte translucide par famille (--surface, sans flou d'arrière-plan, § 11)
+// une carte par famille, sans flou d'arrière-plan
 .skills__group {
   padding: $space-5;
   border: 1px solid var(--line);
@@ -23,7 +21,7 @@
   margin-bottom: $space-2;
 }
 
-// un filet entre deux compétences (SkillMeter laisse la liste à la section)
+// un filet entre deux compétences
 .skills__item {
   padding-block: $space-3;
 
@@ -38,8 +36,7 @@
   color: var(--ink-2);
 }
 
-// lien dans le texte : souligné (§ 10), au texte principal. Une classe plutôt
-// qu'un sélecteur de balise, comme about__paragraph (revue générale)
+// lien dans le texte : souligné, en encre principale
 .skills__link {
   color: var(--ink);
 

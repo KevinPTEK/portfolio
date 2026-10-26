@@ -3,15 +3,13 @@ import { REDUCED_MOTION } from '../hooks/useMediaQuery.js'
 import { easeInOutQuint } from './easing.js'
 import { scrollAnimation } from './scrollAnimation.js'
 
-// ce qui reprend la main pendant un trajet : un geste du visiteur, ou le
-// bouton Retour (popstate : le navigateur restaure sa position, la boucle
-// ne doit pas continuer vers l'ancienne cible — revue)
+// ce qui rend la main au visiteur pendant un trajet (popstate : le navigateur
+// restaure lui-même sa position)
 const GESTURES = ['wheel', 'touchstart', 'keydown', 'pointerdown', 'popstate']
-// tout lien interne, sauf le lien d'évitement : il reste immédiat (§ 7.6)
+// tout lien interne, sauf le lien d'évitement, qui reste immédiat
 const INTERNAL_LINK = 'a[href^="#"]:not(.skip-link)'
 
-// écoute ces évènements sur window (passifs : ils ne retardent jamais le
-// défilement) ; renvoie de quoi arrêter d'écouter
+// écoute ces évènements sur window ; renvoie de quoi arrêter d'écouter
 function listen(types, handler) {
   types.forEach((type) =>
     window.addEventListener(type, handler, { passive: true }),
@@ -31,16 +29,12 @@ export function scrollDuration(distance) {
 }
 
 /**
- * Où défiler pour amener la cible en haut de l'écran, sous la barre du haut
- * (scroll-padding-top, § 8). Une pièce collée (sticky) ne dit pas où elle
- * commence — sa position est celle où elle colle : on part alors de son
- * parent, qui suit le flux, et on ajoute la hauteur des éléments d'avant.
+ * Où défiler pour amener la cible sous la barre du haut (scroll-padding-top).
+ * Une pièce collée (sticky) donne la position où elle colle : on part alors
+ * de son parent, et on ajoute la hauteur des éléments d'avant.
  *
  * @param {HTMLElement} target
  * @returns {number} la position de défilement visée, en pixels
- *
- * @example
- * window.scrollTo(0, scrollTargetTop(document.getElementById('skills')))
  */
 export function scrollTargetTop(target) {
   const padding =
@@ -67,42 +61,31 @@ function targetOf(hash) {
   try {
     return document.getElementById(decodeURIComponent(id))
   } catch {
-    // adresse mal formée (« #100% », un lien tronqué) : decodeURIComponent
-    // lève une erreur, qui laissait la page blanche (revue)
+    // adresse mal formée (« #100% ») : decodeURIComponent lève une erreur
     return document.getElementById(id)
   }
 }
 
-// une vraie arrivée sur la page : au rechargement et au Retour, le navigateur
-// restaure lui-même la position où l'on était (sauter à l'ancre l'écrasait)
+// au rechargement et au Retour, le navigateur restaure lui-même la position
 function isArrival() {
   const [navigation] = performance.getEntriesByType('navigation')
   return !navigation || navigation.type === 'navigate'
 }
 
-// le focus suit le lien, comme avec le saut natif (WCAG 2.4.3) : une pièce
-// n'est pas focalisable, tabindex="-1" la rend atteignable par le code seulement
+// le focus suit le lien, comme avec le saut natif (WCAG 2.4.3)
 function focusTarget(target) {
   if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1')
   target.focus({ preventScroll: true })
 }
 
 /**
- * Le défilement animé vers les pièces (§ 7.6) : un seul écouteur de clics
- * pour tous les liens internes. Sous « réduire les animations », le
- * navigateur fait son saut natif. Au chargement avec une adresse « #pièce »,
- * saute à la pièce (React affiche la page après la tentative du navigateur).
- * À appeler une fois, dans App.
- *
- * @example
- * export function App() {
- *   useScrollTo()
- *   …
- * }
+ * Le défilement animé vers les pièces : un seul écouteur de clics pour tous
+ * les liens internes. Sous « réduire les animations », le saut natif. Au
+ * chargement avec une adresse « #pièce », saute à la pièce. À appeler une
+ * fois, dans App.
  */
 export function useScrollTo() {
-  // lien direct : on saute à la pièce avant le premier affichage
-  // (useLayoutEffect : avec useEffect, une image de l'accueil passait d'abord)
+  // lien direct : avant le premier affichage, sinon l'accueil passe d'abord
   useLayoutEffect(() => {
     const target = targetOf(window.location.hash)
     if (!target || !isArrival()) return
@@ -110,13 +93,9 @@ export function useScrollTo() {
     jump()
     focusTarget(target)
 
-    // Les polices arrivent souvent après ce saut (qui, en mesurant la page,
-    // lance leur chargement). Sur mobile, les textes au-dessus de la pièce
-    // changent alors de hauteur : elle finissait jusqu'à 103 px plus haut sans
-    // ancrage du défilement (Safari), 44 px avec (Chrome, pièce collée) —
-    // revue générale, mesuré à 375 px. On resaute une fois les polices là,
-    // sauf si le visiteur a repris la main : un geste, ou un clic (un lecteur
-    // d'écran active un lien sans pointerdown — revue du 19 oct.)
+    // les polices arrivent souvent après ce saut et changent la hauteur des
+    // textes au-dessus de la pièce : on resaute une fois, sauf si le visiteur
+    // a repris la main (un lecteur d'écran clique sans pointerdown)
     if (!document.fonts) return
     let visitorMoved = false
     let unmounted = false
@@ -153,8 +132,7 @@ export function useScrollTo() {
       }
 
       const from = window.scrollY
-      // jamais au-dessus du haut de la page : sous la barre, le haut de
-      // <main> donnerait -56, et la fin ralentie du trajet serait coupée
+      // jamais au-dessus du haut de la page : la fin du trajet serait coupée
       const to = Math.max(0, scrollTargetTop(target))
       const animation = scrollAnimation(from, to, {
         duration: scrollDuration(to - from),
@@ -162,9 +140,7 @@ export function useScrollTo() {
         onUpdate: (y) => window.scrollTo(0, y),
       })
 
-      // le premier geste du visiteur arrête le trajet : il reprend la main.
-      // Sauf une touche maintenue : Entrée, qui a déclenché le clic, se répète
-      // tant qu'elle n'est pas relâchée (revue)
+      // un geste arrête le trajet, sauf la touche Entrée maintenue qui l'a lancé
       function release(gesture) {
         if (gesture?.repeat) return
         animation.stop()

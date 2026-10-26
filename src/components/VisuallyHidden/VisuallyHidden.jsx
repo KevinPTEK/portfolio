@@ -7,9 +7,6 @@ import './VisuallyHidden.scss'
  *
  * @param {object} props
  * @param {import('react').ReactNode} props.children - texte à faire lire
- *
- * @example
- * GitHub<VisuallyHidden> (nouvel onglet)</VisuallyHidden>
  */
 export function VisuallyHidden({ children }) {
   return <span className="visually-hidden">{children}</span>
