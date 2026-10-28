@@ -13,7 +13,7 @@ import './About.scss'
 const linkedin = socials.find(({ name }) => name === 'LinkedIn')
 
 /**
- * « À propos » : trois paragraphes, mon portrait sur son reflet flouté, mon CV
+ * « À propos » : cinq paragraphes, mon portrait sur son reflet flouté, mon CV
  * (quand le PDF existe) et LinkedIn.
  */
 export function About() {
@@ -42,13 +42,22 @@ export function About() {
             maquette au déploiement.
           </p>
           <p className="about__paragraph">
+            J'ai travaillé sur du code neuf comme sur celui des autres&nbsp;:
+            une application bancaire en React et Redux, un site à déboguer, un
+            autre à rendre plus rapide, et le site vitrine d'un vrai client.
+          </p>
+          <p className="about__paragraph">
             Ce qui me plaît&nbsp;: le soin du détail — un espacement juste, une
-            animation qui tombe bien, un site qui reste lisible pour tout le
+            animation qui tombe bien, un site rapide et lisible pour tout le
             monde.
           </p>
           <p className="about__paragraph">
             En dehors du code&nbsp;: le pixel art, les mangas, et les interfaces
             bien dessinées.
+          </p>
+          <p className="about__paragraph">
+            Je cherche aujourd'hui un poste de développeur web front-end, ou des
+            projets à construire.
           </p>
           <div className="about__actions">
             <CvButton variant="primary" />

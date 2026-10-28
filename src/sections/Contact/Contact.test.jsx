@@ -40,11 +40,10 @@ describe('Contact', () => {
     const title = screen.getByRole('heading', { level: 2 })
     expect(title.textContent).toBe('Travaillons ensemble.')
     expect(within(title).getByText('ensemble.')).toBeInTheDocument()
-    // espace insécable avant « : » (le texte ne se coupe pas devant) ;
-    // Testing Library normalise les espaces (\s couvre l'insécable) :
-    // on lit le texte brut
+    // insécable avant chaque « : » ; Testing Library normalise les espaces
+    // (\s couvre l'insécable) : on lit le texte brut
     const lead = screen.getByText(/je réponds vite\.$/)
-    expect(lead.textContent).toContain('question\u00a0:')
+    expect(lead.textContent).not.toMatch(UNPROTECTED_SPACE)
   })
 
   it.each(['kevin@exemple.fr', 'bonjour@kevin.dev'])(

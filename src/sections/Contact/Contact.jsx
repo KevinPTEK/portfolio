@@ -29,7 +29,7 @@ export function Contact() {
           title="Travaillons ensemble."
           accent="ensemble."
           lead={
-            'Un poste, une alternance, un projet, une simple question\u00a0: je réponds vite.'
+            'Je cherche un poste de développeur web front-end, ou des projets à mener\u00a0: un site, une application React, une interface à rendre plus rapide ou plus accessible. Une simple question compte aussi\u00a0: je réponds vite.'
           }
         />
       </Reveal>

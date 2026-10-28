@@ -6,7 +6,7 @@ import { UNPROTECTED_SPACE } from '../../data/rules.js'
 import socials from '../../data/socials.json'
 import { About } from './About.jsx'
 
-// « À propos » : qui je suis, en trois paragraphes, avec mon portrait,
+// « À propos » : qui je suis, en cinq paragraphes, avec mon portrait,
 // LinkedIn et mon CV (le bouton du CV est testé par CvButton.test.jsx)
 
 const room = () => screen.getByRole('region', { name: /^Bonjour/ })
@@ -32,9 +32,9 @@ describe('About', () => {
     expect(within(title).getByText('Kevin.')).toBeInTheDocument()
   })
 
-  it('se présente en trois paragraphes, sans espace sécable avant « : »', () => {
+  it('se présente en cinq paragraphes, sans espace sécable avant « : »', () => {
     const { container } = render(<About />)
-    expect(room().querySelectorAll('.about__paragraph')).toHaveLength(3)
+    expect(room().querySelectorAll('.about__paragraph')).toHaveLength(5)
     // la règle des données (rules.js), sur le texte rendu du JSX
     expect(container.textContent).not.toMatch(UNPROTECTED_SPACE)
   })
