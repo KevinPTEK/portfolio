@@ -2,6 +2,9 @@
 
 // la barre du haut (mobile, tablette)
 $bar-height: 56px;
+// la liste des pièces dans la barre : 5 liens et la marque demandent 702 px
+// (mesuré) ; en dessous, « Menu ». À remesurer si une pièce s'ajoute
+$sections-from: 720px;
 
 // Le rideau : la nav se dévoile de haut en bas en quittant l'accueil, puis
 // son contenu monte en cascade
@@ -171,7 +174,7 @@ html {
 .nav__sections {
   display: none;
 
-  @include up(tablet) {
+  @media (min-width: $sections-from) {
     display: block;
   }
 }
@@ -257,7 +260,7 @@ html {
   @include touch-target;
   @include focus-ring;
 
-  @include up(tablet) {
+  @media (min-width: $sections-from) {
     display: none;
   }
 }

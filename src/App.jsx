@@ -9,6 +9,7 @@ import { About } from './sections/About/About.jsx'
 import { Contact } from './sections/Contact/Contact.jsx'
 import { Footer } from './sections/Footer/Footer.jsx'
 import { Home } from './sections/Home/Home.jsx'
+import { Journey } from './sections/Journey/Journey.jsx'
 import { Nav } from './sections/Nav/Nav.jsx'
 import { Skills } from './sections/Skills/Skills.jsx'
 import { Work } from './sections/Work/Work.jsx'
@@ -40,6 +41,7 @@ export function App() {
       <main className="main" id="main" tabIndex={-1}>
         <Home entered={entered} />
         <About />
+        <Journey />
         <Work />
         <Skills />
         <Contact />

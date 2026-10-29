@@ -11,9 +11,8 @@
 // une carte par famille, sans flou d'arrière-plan
 .skills__group {
   padding: $space-5;
-  border: 1px solid var(--line);
-  border-radius: $radius-md;
-  background-color: var(--surface);
+
+  @include card-surface;
 }
 
 .skills__group-title {

@@ -34,9 +34,9 @@ describe('Contact', () => {
     )
   })
 
-  it('porte l’étiquette « 04 — Contact », l’accent et l’introduction', () => {
+  it('porte l’étiquette « 05 — Contact », l’accent et l’introduction', () => {
     render(<Contact />)
-    expect(screen.getByText('04 — Contact')).toBeInTheDocument()
+    expect(screen.getByText('05 — Contact')).toBeInTheDocument()
     const title = screen.getByRole('heading', { level: 2 })
     expect(title.textContent).toBe('Travaillons ensemble.')
     expect(within(title).getByText('ensemble.')).toBeInTheDocument()

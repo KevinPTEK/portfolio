@@ -24,9 +24,9 @@ describe('Skills', () => {
     )
   })
 
-  it("porte l'étiquette « 03 — Compétences », l'accent et la légende des niveaux", () => {
+  it("porte l'étiquette « 04 — Compétences », l'accent et la légende des niveaux", () => {
     render(<Skills />)
-    expect(screen.getByText('03 — Compétences')).toBeInTheDocument()
+    expect(screen.getByText('04 — Compétences')).toBeInTheDocument()
     const title = screen.getByRole('heading', { level: 2 })
     expect(title.textContent).toBe('Compétences, honnêtement.')
     expect(within(title).getByText('honnêtement.')).toBeInTheDocument()

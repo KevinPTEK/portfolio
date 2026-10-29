@@ -1,0 +1,39 @@
+[
+  {
+    "date": "2009",
+    "kind": "Diplôme",
+    "title": "BEP Maintenance industrielle",
+    "text": "Mes bases\u00a0: la mécanique, l'électricité et la logique du dépannage."
+  },
+  {
+    "date": "2011",
+    "kind": "Diplôme",
+    "title": "Bac pro Maintenance industrielle",
+    "text": "Diagnostiquer une panne avec méthode, et travailler en sécurité."
+  },
+  {
+    "date": "Depuis 2011",
+    "kind": "Entreprise",
+    "title": "Maintenance industrielle",
+    "text": "Sur le terrain\u00a0: dépanner les machines et les remettre en route."
+  },
+  {
+    "date": "2025",
+    "kind": "Déclic",
+    "title": "La passion pour l'IA",
+    "text": "L'envie de comprendre ces outils, puis de construire les miens.",
+    "turningPoint": true
+  },
+  {
+    "date": "2026",
+    "kind": "Développement",
+    "title": "Une plateforme pour mon travail",
+    "text": "En HTML, CSS et JavaScript, un outil léger pour trouver les codes des pièces."
+  },
+  {
+    "date": "2026",
+    "kind": "Formation",
+    "title": "Développeur web, OpenClassrooms",
+    "text": "React, accessibilité, performance\u00a0: douze projets, jusqu'à ce portfolio."
+  }
+]

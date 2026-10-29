@@ -1,0 +1,204 @@
+@use '../../styles/abstracts' as *;
+
+// La frise. Sur téléphone, la ligne à gauche et tout empilé ; dès la tablette,
+// la ligne au centre et les étapes en alternance. Le déclic et les étapes
+// suivantes tracent leur bout de ligne à l'accent (::before) : la couleur
+// bascule au point du déclic, sans JavaScript
+$axis: 12px; // milieu de la colonne des points, sur téléphone
+$line-width: 3px;
+$dot: 14px;
+$dot-turn: 22px;
+$step-gap: $space-7;
+// 24 px : un grand texte au sens du WCAG (3 : 1) ; l'accent garde ce
+// contraste sur le bas du kraft, plus sombre
+$date-size: 24px;
+$date-leading: 1.2;
+
+// un bout de ligne, sur l'axe
+@mixin segment($color) {
+  content: '';
+  position: absolute;
+  left: $axis;
+  width: $line-width;
+  translate: -50% 0;
+  background-color: $color;
+
+  // contraste forcé : un fond retiré effacerait la ligne
+  @include forced-colors {
+    background-color: CanvasText;
+  }
+}
+
+.journey__steps {
+  position: relative;
+  margin-top: $space-7;
+
+  // la ligne, sur toute la hauteur de la frise
+  &::before {
+    @include segment(var(--line));
+    inset-block: 0;
+  }
+}
+
+.journey__step {
+  // le centre du point, depuis le haut de l'étape : au milieu de la date
+  --dot-y: #{$date-size * $date-leading * 0.5};
+
+  position: relative;
+  display: grid;
+  grid-template-columns: 2 * $axis 1fr;
+  column-gap: $space-4;
+  padding-bottom: $step-gap;
+}
+
+.journey__dot {
+  position: relative; // au-dessus de la ligne
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: center;
+  width: $dot;
+  height: $dot;
+  margin-top: calc(var(--dot-y) - #{$dot * 0.5});
+  border: 2px solid var(--ink-2);
+  border-radius: $radius-pill;
+  background-color: var(--bg);
+}
+
+.journey__date {
+  grid-column: 2;
+  grid-row: 1;
+  font-family: $font-serif;
+  font-size: $date-size;
+  font-style: italic;
+  line-height: $date-leading;
+  color: var(--ink-2);
+}
+
+.journey__card {
+  grid-column: 2;
+  grid-row: 2;
+  margin-top: $space-2;
+  padding: $space-5;
+
+  @include card-surface;
+}
+
+.journey__kind {
+  @include label;
+  display: inline-block;
+  padding: $space-1 $space-3;
+  border-radius: $radius-pill;
+  background-color: var(--bg);
+}
+
+// « OpenClassrooms », d'un seul tenant, doit tenir dans la carte à 320 px
+.journey__title {
+  margin-top: $space-2;
+  font-family: $font-serif;
+  font-size: clamp(22px, 7vw, $font-size-card-title);
+  line-height: 1.15;
+}
+
+.journey__text {
+  margin-top: $space-2;
+  color: var(--ink-2);
+}
+
+// le déclic et la suite : la ligne, les points, les cartes et les étiquettes
+// à l'accent
+.journey__step--turn,
+.journey__step--after {
+  // 1 px sous l'étape : pas de fil clair entre deux bouts de ligne
+  &::before {
+    @include segment(var(--accent));
+    bottom: -1px;
+  }
+
+  .journey__dot,
+  .journey__card {
+    border-color: var(--accent);
+  }
+
+  .journey__date {
+    color: var(--accent);
+  }
+
+  .journey__kind {
+    color: var(--bg);
+    background-color: var(--accent);
+  }
+}
+
+.journey__step--after::before {
+  top: 0;
+}
+
+// la ligne d'accent part du point du déclic
+.journey__step--turn {
+  &::before {
+    top: var(--dot-y);
+  }
+
+  .journey__dot {
+    width: $dot-turn;
+    height: $dot-turn;
+    margin-top: calc(var(--dot-y) - #{$dot-turn * 0.5});
+    background-color: var(--accent);
+  }
+}
+
+@include up(tablet) {
+  .journey__steps::before,
+  .journey__step--turn::before,
+  .journey__step--after::before {
+    left: 50%;
+  }
+
+  .journey__step {
+    // le point est centré dans l'étape, marge du bas non comprise
+    --dot-y: calc(50% - #{$step-gap * 0.5});
+
+    // minmax(0, …) : deux colonnes égales, même si un mot long résiste
+    grid-template-columns: minmax(0, 1fr) $space-7 minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .journey__dot,
+  .journey__step--turn .journey__dot {
+    grid-column: 2;
+    margin-top: 0;
+  }
+
+  .journey__date,
+  .journey__card {
+    grid-row: 1;
+    margin-top: 0;
+  }
+
+  .journey__date {
+    font-size: $font-size-card-title;
+  }
+
+  // en alternance : la carte à gauche, puis à droite
+  .journey__step:nth-child(odd) {
+    .journey__card {
+      grid-column: 1;
+      text-align: right;
+    }
+
+    .journey__date {
+      grid-column: 3;
+    }
+  }
+
+  .journey__step:nth-child(even) {
+    .journey__card {
+      grid-column: 3;
+    }
+
+    .journey__date {
+      grid-column: 1;
+      text-align: right;
+    }
+  }
+}

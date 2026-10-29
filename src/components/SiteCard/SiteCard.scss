@@ -9,9 +9,8 @@ $inner-radius: $radius-md - $border-width;
 .site-card {
   display: flex;
   flex-direction: column;
-  border: $border-width solid var(--line);
-  border-radius: $radius-md;
-  background-color: var(--surface);
+
+  @include card-surface;
 }
 
 // les liens restent en bas, alignés d'une carte à l'autre

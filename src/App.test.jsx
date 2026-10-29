@@ -104,10 +104,11 @@ describe('App', () => {
 
   it.each([
     ['about', '01 À propos'],
-    ['argent', '02 Travaux'],
-    ['other-work', '02 Travaux'],
-    ['skills', '03 Compétences'],
-    ['contact', '04 Contact'],
+    ['journey', '02 Parcours'],
+    ['argent', '03 Travaux'],
+    ['other-work', '03 Travaux'],
+    ['skills', '04 Compétences'],
+    ['contact', '05 Contact'],
   ])('montre la nav sur %s et y marque « %s »', (room, link) => {
     render(<App />)
     cross({ home: false, [room]: true })
@@ -138,7 +139,7 @@ describe('App', () => {
     }
   })
 
-  it('range les pièces dans l’ordre du menu (01, 02, 03, 04)', () => {
+  it('range les pièces dans l’ordre du menu (01, 02, 03…)', () => {
     // les numéros du menu disent l'ordre de la visite
     render(<App />)
     const targets = menuItems.map(({ href }) => document.querySelector(href))

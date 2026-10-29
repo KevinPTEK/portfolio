@@ -1,6 +1,6 @@
 # Portfolio — Kevin Renou
 
-Portfolio de **développeur front-end React**, conçu et codé de zéro : une seule page, découpée en huit « pièces » plein écran, avec trois projets phares et un site réalisé pour un client.
+Portfolio de **développeur front-end React**, conçu et codé de zéro : une seule page, découpée en neuf « pièces » plein écran, avec mon parcours, trois projets phares et un site réalisé pour un client.
 
 ## Liens
 
@@ -37,7 +37,7 @@ Les projets présentés :
 
 ## Le concept
 
-Le site se lit comme une feuille de papier. L'accueil, les autres réalisations et le contact sont sur papier kraft, « À propos » et « Compétences » sur un papier blanc bleuté, et les trois projets sont les seules pièces colorées : la couleur de la page suit la pièce que l'on regarde. À l'arrivée sur le site, un sceau « KR » se dessine puis une brume se lève ; on arrive sur un menu typographique géant, et un clic fait défiler jusqu'à la pièce visée.
+Le site se lit comme une feuille de papier. L'accueil, le parcours, les autres réalisations et le contact sont sur papier kraft, « À propos » et « Compétences » sur un papier blanc bleuté, et les trois projets sont les seules pièces colorées : la couleur de la page suit la pièce que l'on regarde. À l'arrivée sur le site, un sceau « KR » se dessine puis une brume se lève ; on arrive sur un menu typographique géant, et un clic fait défiler jusqu'à la pièce visée.
 
 Chaque projet ouvre une fiche : le contexte, les problèmes rencontrés, ce que j'en ai appris, les technologies, et les liens vers le code et, quand il est en ligne, vers le site.
 
@@ -88,7 +88,7 @@ src/
   sections/     les pièces du site, qui assemblent composants et données
   animations/   tout ce qui bouge : intro, avatar volant, apparitions, défilement, thème courant
   hooks/        hooks React partagés
-  data/         le contenu en JSON : projets, sites, compétences, profil, menu, réseaux
+  data/         le contenu en JSON : parcours, projets, sites, compétences, profil, menu, réseaux
   styles/       design system Sass (abstracts : outils · base : styles globaux)
   assets/       le portrait : ses versions WebP, importées par le code, et sa source
   utils/        petites fonctions partagées

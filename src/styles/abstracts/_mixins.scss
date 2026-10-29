@@ -86,6 +86,13 @@
   }
 }
 
+// une carte posée sur le papier : filet, coins arrondis, fond translucide
+@mixin card-surface {
+  border: 1px solid var(--line);
+  border-radius: $radius-md;
+  background-color: var(--surface);
+}
+
 // étiquette en capitales (« 01 — À propos »)
 @mixin label {
   font-size: $font-size-label;
