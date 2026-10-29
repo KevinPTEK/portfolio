@@ -47,7 +47,7 @@ export function About() {
             autre à rendre plus rapide, et le site vitrine d'un vrai client.
           </p>
           <p className="about__paragraph">
-            Ce qui me plaît&nbsp;: le soin du détail — un espacement juste, une
+            Ce qui me plaît&nbsp;: le soin du détail, un espacement juste, une
             animation qui tombe bien, un site rapide et lisible pour tout le
             monde.
           </p>
